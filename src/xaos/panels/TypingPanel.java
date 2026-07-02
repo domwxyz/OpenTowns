@@ -273,6 +273,16 @@ public class TypingPanel {
     }
 
     public static String getKeyString(int key, boolean shift) {
+        // Layout-aware path: the character the OS keyboard layout produced
+        // for this key press (GLFW char callback, via the Keyboard shim).
+        // The switch below is only a fallback for presses that produce no
+        // character (e.g. with Ctrl held), where the old physical-key
+        // mapping still applies.
+        char eventCharacter = Keyboard.getEventCharacter();
+        if (isTypeableCharacter(eventCharacter)) {
+            return String.valueOf(eventCharacter);
+        }
+
         switch (key) {
             case Keyboard.KEY_SPACE:
                 return " "; //$NON-NLS-1$
@@ -363,6 +373,33 @@ public class TypingPanel {
         }
 
         return null;
+    }
+
+    /**
+     * Restricted to printable ASCII (the bitmap font has no wider coverage)
+     * minus the characters Windows forbids in filenames, because savegame
+     * names become files. The server-address panel additionally needs '/'
+     * and ':'.
+     */
+    private static boolean isTypeableCharacter(char c) {
+        if (c < ' ' || c > '~') {
+            return false;
+        }
+        switch (c) {
+            case '\\':
+            case '*':
+            case '?':
+            case '"':
+            case '<':
+            case '>':
+            case '|':
+                return false;
+            case '/':
+            case ':':
+                return TYPING_TYPE == TYPE_ADD_SERVER;
+            default:
+                return true;
+        }
     }
 
     public static String getTitle() {
