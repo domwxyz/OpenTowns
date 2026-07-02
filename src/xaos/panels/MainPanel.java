@@ -3,7 +3,7 @@ package xaos.panels;
 import java.awt.Point;
 import java.util.ArrayList;
 
-import org.lwjgl.input.Mouse;
+import xaos.compat.input.Mouse;
 import org.lwjgl.opengl.GL11;
 import xaos.TownsProperties;
 

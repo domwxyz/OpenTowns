@@ -5,8 +5,8 @@ import java.awt.Point;
 import java.util.ArrayList;
 import java.util.HashMap;
 
-import org.lwjgl.input.Keyboard;
-import org.lwjgl.input.Mouse;
+import xaos.compat.input.Keyboard;
+import xaos.compat.input.Mouse;
 import org.lwjgl.opengl.GL11;
 
 import xaos.TownsProperties;

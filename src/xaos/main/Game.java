@@ -13,12 +13,11 @@ import java.util.StringTokenizer;
 import javax.imageio.ImageIO;
 
 import org.lwjgl.BufferUtils;
-import org.lwjgl.LWJGLException;
-import org.lwjgl.Sys;
-import org.lwjgl.input.Keyboard;
-import org.lwjgl.input.Mouse;
-import org.lwjgl.opengl.Display;
-import org.lwjgl.opengl.DisplayMode;
+import xaos.compat.LWJGLException;
+import xaos.compat.input.Keyboard;
+import xaos.compat.input.Mouse;
+import xaos.compat.opengl.Display;
+import xaos.compat.opengl.DisplayMode;
 import org.lwjgl.opengl.GL11;
 
 import xaos.Towns;
@@ -1380,8 +1379,6 @@ public final class Game {
 			// lastFPS += 1000;
 			// }
 			// fps++;
-			// Pongo este método pq dice la doc de LWJGL que actualiza los timers y tiene que llamarse lo más posible
-			Sys.getTimerResolution ();
 
 			// Render
 			// if (getPanelMainMenu ().isActive () || (world != null && World.getCitizenIDs ().size () == 0)) {

@@ -9,8 +9,8 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.StringTokenizer;
 
-import org.lwjgl.input.Keyboard;
-import org.lwjgl.opengl.Display;
+import xaos.compat.input.Keyboard;
+import xaos.compat.opengl.Display;
 import org.lwjgl.opengl.GL11;
 
 import xaos.TownsProperties;

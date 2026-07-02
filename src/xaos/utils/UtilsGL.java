@@ -19,11 +19,11 @@ import java.util.HashMap;
 import javax.imageio.ImageIO;
 
 import org.lwjgl.BufferUtils;
-import org.lwjgl.LWJGLException;
-import org.lwjgl.input.Cursor;
-import org.lwjgl.input.Mouse;
-import org.lwjgl.opengl.Display;
-import org.lwjgl.opengl.DisplayMode;
+import xaos.compat.LWJGLException;
+import xaos.compat.input.Cursor;
+import xaos.compat.input.Mouse;
+import xaos.compat.opengl.Display;
+import xaos.compat.opengl.DisplayMode;
 import org.lwjgl.opengl.GL11;
 import org.lwjgl.opengl.GL13;
 

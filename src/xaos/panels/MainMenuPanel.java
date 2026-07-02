@@ -5,9 +5,9 @@ import java.io.File;
 import java.util.ArrayList;
 import java.util.Calendar;
 
-import org.lwjgl.input.Keyboard;
-import org.lwjgl.input.Mouse;
-import org.lwjgl.opengl.Display;
+import xaos.compat.input.Keyboard;
+import xaos.compat.input.Mouse;
+import xaos.compat.opengl.Display;
 import org.lwjgl.opengl.GL11;
 import xaos.property.PropertyFile;
 
@@ -135,7 +135,7 @@ public final class MainMenuPanel implements Runnable {
 
         SmartMenu menuAux;
         menu = new ContextMenu();
-        menu.setHeight(MainFrame.MIN_HEIGHT - UtilFont.MAX_HEIGHT * 8);
+        menu.setHeight(Game.MIN_DISPLAY_HEIGHT - UtilFont.MAX_HEIGHT * 8);
         Color textColor = Color.WHITE;
         Color creditsColor = Color.YELLOW;
         ColorGL borderColor = new ColorGL(Color.BLACK);
@@ -1042,7 +1042,7 @@ public final class MainMenuPanel implements Runnable {
         this.yMenu = 20;
 
         if (menu != null) {
-            menu.setHeight(MainFrame.MIN_HEIGHT - UtilFont.MAX_HEIGHT * 8);
+            menu.setHeight(Game.MIN_DISPLAY_HEIGHT - UtilFont.MAX_HEIGHT * 8);
             menu.setX(xMenu);
             menu.setY(yMenu);
             menu.resize();

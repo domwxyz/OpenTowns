@@ -24,11 +24,32 @@ sourceSets {
     }
 }
 
+repositories {
+    mavenCentral()
+}
+
 dependencies {
     // Vendored jars from the original Steam install (src/lib is gitignored).
+    // Only JNA (Steam) and the PNG decoder survive the LWJGL 3 port; the
+    // LWJGL 2, lwjgl_util and slick-util jars in src/lib are no longer used.
     // xaos.jar is the original compiled game: reference only, must never
     // be on the classpath or it can shadow the freshly built classes.
-    implementation fileTree(dir: 'src/lib', include: '*.jar', exclude: 'xaos.jar')
+    implementation fileTree(dir: 'src/lib', include: ['jna.jar', 'platform.jar', 'pngdecoder.jar'])
+
+    // LWJGL 3. Windowing/input goes through the xaos.compat shims (GLFW),
+    // rendering uses the same GL11/GL13 bindings the game always called,
+    // audio (UtilsAL) uses OpenAL + STB Vorbis.
+    implementation platform('org.lwjgl:lwjgl-bom:3.3.6')
+    implementation 'org.lwjgl:lwjgl'
+    implementation 'org.lwjgl:lwjgl-glfw'
+    implementation 'org.lwjgl:lwjgl-opengl'
+    implementation 'org.lwjgl:lwjgl-openal'
+    implementation 'org.lwjgl:lwjgl-stb'
+    runtimeOnly 'org.lwjgl:lwjgl::natives-windows'
+    runtimeOnly 'org.lwjgl:lwjgl-glfw::natives-windows'
+    runtimeOnly 'org.lwjgl:lwjgl-opengl::natives-windows'
+    runtimeOnly 'org.lwjgl:lwjgl-openal::natives-windows'
+    runtimeOnly 'org.lwjgl:lwjgl-stb::natives-windows'
 }
 
 tasks.withType(JavaCompile).configureEach {
@@ -41,8 +62,8 @@ application {
 
 tasks.named('run') {
     // The game resolves towns.ini, graphics.ini, audio.ini and data/
-    // relative to the working directory; lib/native holds the LWJGL,
-    // OpenAL, jinput and steam_api DLLs.
+    // relative to the working directory. lib/native is only needed for
+    // steam_api.dll now; LWJGL 3 natives come from the Maven classifier jars.
     workingDir = file('src')
     jvmArgs '-Djava.library.path=lib/native'
     // JDK 25: JNA and LWJGL 2 load native code from the unnamed module;
