@@ -14,9 +14,9 @@ import xaos.main.Game;
 
 public final class UtilFont {
 
-    public static short MAX_WIDTH = 16; // Ancho, se calcula con la info de la fuente, 16 es lo mínimo
-    public static short MAX_HEIGHT = 16; // Altura, se calcula con la info de la fuente, 16 es lo mínimo
-//	public static short MAX_HEIGHT_NUMBERS = 8; // Altura, se calcula con la info de la fuente, 16 es lo mínimo
+    public static short MAX_WIDTH = 16; // Ancho, se calcula con la info de la fuente, 16 es lo mÃ­nimo
+    public static short MAX_HEIGHT = 16; // Altura, se calcula con la info de la fuente, 16 es lo mÃ­nimo
+//	public static short MAX_HEIGHT_NUMBERS = 8; // Altura, se calcula con la info de la fuente, 16 es lo mÃ­nimo
 
     private static CharDef[] chars;
 
@@ -98,8 +98,8 @@ public final class UtilFont {
                 }
             }
 
-			// Hemos acabado, ahora recorro todos para restar pixels al yoffset (para tener lo mínimo yoffset=0)
-            // También seteamos el max_height aquí
+			// Hemos acabado, ahora recorro todos para restar pixels al yoffset (para tener lo mÃ­nimo yoffset=0)
+            // TambiÃ©n seteamos el max_height aquÃ­
             if (iMinOffset > 0) {
                 for (int i = 0; i < chars.length; i++) {
                     if (chars[i] != null) {
@@ -232,7 +232,7 @@ public final class UtilFont {
             }
         }
 
-        // Si llega aquí es que el primer espacio ya no cabe, partimos a saco
+        // Si llega aquÃ­ es que el primer espacio ya no cabe, partimos a saco
         iIndex = sText.indexOf(' ');
         if (iIndex == -1) {
             iIndex = sText.length() - 1;

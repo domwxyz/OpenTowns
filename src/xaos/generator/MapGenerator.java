@@ -49,7 +49,7 @@ public class MapGenerator extends Generator {
 
 		hmSeedsIDs = new HashMap<String, ArrayList<Point3DShort>> ();
 
-		// Leemos el gen_map.xml (si está en una misión se carga de otro sitio)
+		// Leemos el gen_map.xml (si estÃ¡ en una misiÃ³n se carga de otro sitio)
 		Generator generator = new Generator ();
 		ArrayList<String> alPaths = Utils.getPathToFile (XML_FILE, sCampaignID, sMissionID);
 
@@ -155,7 +155,7 @@ public class MapGenerator extends Generator {
 
 		// Events
 		if (STARTING_EVENTS != null && STARTING_EVENTS.size () > 0) {
-			// Si hay eventos miramos que la cola de PCTs sea del mismo tamaño
+			// Si hay eventos miramos que la cola de PCTs sea del mismo tamaÃ±o
 			if (alStartingEventsPCT == null || alStartingEventsPCT.size () != STARTING_EVENTS.size ()) {
 				Log.log (Log.LEVEL_ERROR, Messages.getString ("MapGenerator.14"), "MapGenerator"); //$NON-NLS-1$ //$NON-NLS-2$
 				Game.exit ();
@@ -301,7 +301,7 @@ public class MapGenerator extends Generator {
 		}
 		Game.getPanelMainMenu ().setLoadingText (Messages.getString ("MapGenerator.48")); //$NON-NLS-1$
 
-		// Mapa generado, vamos a eliminar las celdas AIR del último nivel
+		// Mapa generado, vamos a eliminar las celdas AIR del Ãºltimo nivel
 		iTerrainIDTmp = TerrainManager.getItem (alBaseTerrains.get (alBaseTerrains.size () - 1)).getTerrainID ();
 
 		for (int x = 0; x < World.MAP_WIDTH; x++) {
@@ -353,7 +353,7 @@ public class MapGenerator extends Generator {
 							}
 
 							// Flag fluid_1 de la celda
-							// No hace falta pq se chequean todas al acabar la generación
+							// No hace falta pq se chequean todas al acabar la generaciÃ³n
 							// cells[x][y][z].setFlagFluid1 (cells[x][y][z].getTerrain ().getFluidCount () == 1);
 						}
 					}
@@ -387,7 +387,7 @@ public class MapGenerator extends Generator {
 		// Diggeds
 		Cell.generateDiggedsMinedsAndBlockys (cells);
 
-		// Cambiamos los gráficos (al final pq usa el ismined de Cell)
+		// Cambiamos los grÃ¡ficos (al final pq usa el ismined de Cell)
 		// Terrain.changeSlopes (cells);
 		if (TownsProperties.DEBUG_MODE) {
 			Log.log (Log.LEVEL_DEBUG, Messages.getString ("MapGenerator.51"), "MapGenerator"); //$NON-NLS-1$ //$NON-NLS-2$
@@ -399,7 +399,7 @@ public class MapGenerator extends Generator {
 
 
 	private static boolean airAround (Cell[][][] cells, int x, int y, int z) {
-		// Miramos si algún vecino tiene AIR, incluido arriba y abajo
+		// Miramos si algÃºn vecino tiene AIR, incluido arriba y abajo
 
 		// Arriba
 		if (z > 0 && cells[x][y][z - 1].getTerrain ().getTerrainID () == TerrainManagerItem.TERRAIN_AIR_ID) {
@@ -724,7 +724,7 @@ public class MapGenerator extends Generator {
 
 		boolean bHaySeeds = true;
 		while (bHaySeeds) {
-			// Copiamos el auxiliar (y de paso miramos que aún haya seeds)
+			// Copiamos el auxiliar (y de paso miramos que aÃºn haya seeds)
 			bHaySeeds = false;
 			for (int x = 0; x < World.MAP_WIDTH; x++) {
 				for (int y = 0; y < World.MAP_HEIGHT; y++) {
@@ -744,7 +744,7 @@ public class MapGenerator extends Generator {
 				for (int y = 0; y < World.MAP_HEIGHT; y++) {
 					if (abMap[x][y]) {
 						// Raiseamos
-						// Buscamos el último _AIR
+						// Buscamos el Ãºltimo _AIR
 						boolean bHayAIRs = false;
 						for (int z = 0; z <= World.MAP_NUM_LEVELS_OUTSIDE; z++) {
 							if (asMap[x][y][z].getTerrainID () == TerrainManagerItem.TERRAIN_AIR_ID) {
@@ -752,7 +752,7 @@ public class MapGenerator extends Generator {
 							} else {
 								// Tenemos un no-air
 								if (bHayAIRs) {
-									// Tiene espacio por encima, así que simplemente cambiamos el terrain por el de abajo
+									// Tiene espacio por encima, asÃ­ que simplemente cambiamos el terrain por el de abajo
 									asMap[x][y][z - 1].setTerrainID (asMap[x][y][z].getTerrainID ());
 									asMap[x][y][z].setSpecial (MapGeneratorItem.SPECIAL_INT_NONE);
 								}

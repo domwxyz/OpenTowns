@@ -99,7 +99,7 @@ public class Terrain implements Externalizable {
                 currentCell.setMined(true);
                 currentCell.setBlocky(false);
 
-                // Vamos a diggear tambiÈn la casilla de justo arriba
+                // Vamos a diggear tambi√©n la casilla de justo arriba
                 if (z > 0) {
                     cellOver = World.getCell(x, y, z - 1);
                     cellOver.setDiscovered(true);
@@ -134,7 +134,7 @@ public class Terrain implements Externalizable {
                     discoverNeighbours(x, y, z - 1);
                 }
 
-                // Discovered abajo si la celda est· minada
+                // Discovered abajo si la celda est√° minada
                 if (z < (World.MAP_DEPTH - 1)) {
                     Cell cell = World.getCell(x, y, z + 1);
                     cell.setDiscovered(true);
@@ -142,11 +142,11 @@ public class Terrain implements Externalizable {
                 }
 
                 if (z > 0) {
-                    // Si la casilla de arriba est· digged las cosas deben caer
+                    // Si la casilla de arriba est√° digged las cosas deben caer
                     cellOver.fallThings();
                 }
 
-                // AÒadimos el item de la celda de arriba (si tiene) a la lista de items posibles a caer, tambien los de los lados (por si tienen glue)
+                // A√±adimos el item de la celda de arriba (si tiene) a la lista de items posibles a caer, tambien los de los lados (por si tienen glue)
                 Item item;
                 if (z > 0) {
                     item = cellOver.getItem();
@@ -179,7 +179,7 @@ public class Terrain implements Externalizable {
                     }
                 }
 
-                // Si no mina en la planta (floor) m·s baja descubrimos una nueva planta (floor)
+                // Si no mina en la planta (floor) m√°s baja descubrimos una nueva planta (floor)
                 Game.getWorld().discoverFloor(z);
 
                 if (z > 0) {
@@ -195,7 +195,7 @@ public class Terrain implements Externalizable {
                 MiniMapPanel.setMinimapReload(z - 1);
 
                 if (bMineLadder) {
-                    // Antes de minar miro si es un mine a ladder y pillo el ItemManagerItem, ya que luego quiz· la celda se ha convertido en AIR debido a otras tareas o lo que sea
+                    // Antes de minar miro si es un mine a ladder y pillo el ItemManagerItem, ya que luego quiz√° la celda se ha convertido en AIR debido a otras tareas o lo que sea
                     ItemManagerItem imiLadder = null;
                     // Bingo, creamos el item si se puede
                     String sLadderItem = TerrainManager.getItemByID(currentCell.getTerrain().getTerrainID()).getLadderItem();
@@ -231,7 +231,7 @@ public class Terrain implements Externalizable {
                 // Open cell
                 Cell.generateOpen(World.getCells(), x, y);
 
-                // ShouldPaintUnders 2 (potser pot anar a dalt, per si ac‡s no li poso :D )
+                // ShouldPaintUnders 2 (potser pot anar a dalt, per si ac√†s no li poso :D )
                 if (z < (World.MAP_DEPTH - 1)) {
                     Cell.setShouldPaintUnders(World.getCells(), x, y, (short) (z + 1));
                 }
@@ -470,7 +470,7 @@ public class Terrain implements Externalizable {
 //		return menuChangeGodStatus;
 //	}
     /**
-     * Fills a contextual men˙ refering citizens of a cell
+     * Fills a contextual men√∫ refering citizens of a cell
      *
      * @param cell
      * @param sm
@@ -577,7 +577,7 @@ public class Terrain implements Externalizable {
 
             if (alPatrolSoldiers.size() > 0 || alPatrolGroups.size() > 0) {
                 if (cell.getAstarZoneID() != -1) {
-                    // Hay soldados con patrol, creamos el men˙ de poner punto de patrol
+                    // Hay soldados con patrol, creamos el men√∫ de poner punto de patrol
                     SmartMenu menuPatrols = new SmartMenu(SmartMenu.TYPE_MENU, Messages.getString("Terrain.9"), sm, null, null); //$NON-NLS-1$
 
                     for (int i = 0; i < alPatrolSoldiers.size(); i++) {
@@ -595,7 +595,7 @@ public class Terrain implements Externalizable {
 
             // Ahora los remove patrol points
             if (cell.isFlagPatrol()) {
-                // Miramos si hay m·s de 1 aldeano con ese punto, para crear un men˙ lista (tambiÈn miramos los grupos)
+                // Miramos si hay m√°s de 1 aldeano con ese punto, para crear un men√∫ lista (tambi√©n miramos los grupos)
                 SmartMenu menuPatrols = new SmartMenu(SmartMenu.TYPE_MENU, Messages.getString("Terrain.10"), sm, null, null); //$NON-NLS-1$
 
                 for (int i = 0; i < alPatrolSoldiers.size(); i++) {
@@ -666,7 +666,7 @@ public class Terrain implements Externalizable {
 //			}
             if (cell.isMined() && cell.getCoordinates().z < (World.MAP_DEPTH - 1)) {
                 Point3DShort p3d = cell.getCoordinates();
-                // Si est· minado buscamos acciones de la celda de abajo
+                // Si est√° minado buscamos acciones de la celda de abajo
                 Cell cellUnder = World.getCell(p3d.x, p3d.y, p3d.z + 1);
                 TerrainManagerItem tmiUnder = TerrainManager.getItemByID(cellUnder.getTerrain().getTerrainID());
                 if (tmiUnder.hasActions()) {
@@ -721,8 +721,8 @@ public class Terrain implements Externalizable {
             return false;
         }
 
-		// Podr· ir hacia arriba si aquÌ hay una escalera operativa y arriba est· digado
-        // (ESTO YA NO APLICA) TambiÈn puede ir hacia arriba si arriba hay una escalera operativa esta digado y aquÌ est· minado
+		// Podr√° ir hacia arriba si aqu√≠ hay una escalera operativa y arriba est√° digado
+        // (ESTO YA NO APLICA) Tambi√©n puede ir hacia arriba si arriba hay una escalera operativa esta digado y aqu√≠ est√° minado
         // Up
         Cell cell = World.getCell(x, y, z - 1);
         if (!cell.isDiscovered() || !cell.isDigged()) {
@@ -735,7 +735,7 @@ public class Terrain implements Externalizable {
             return false;
         }
 
-        // Se cumplen los prerequisitos, sÛlo nos falta mirar que aquÌ o arriba haya escalera (S”LO AQUÕ, ARRIBA YA NO APLICA)
+        // Se cumplen los prerequisitos, s√≥lo nos falta mirar que aqu√≠ o arriba haya escalera (S√ìLO AQU√ç, ARRIBA YA NO APLICA)
         Item item = cell.getItem();
         if (item != null && item.isOperative() && item.isLocked()) {
             if (ItemManager.getItem(item.getIniHeader()).isZoneMergerUp()) {
@@ -775,8 +775,8 @@ public class Terrain implements Externalizable {
             return false;
         }
 
-		// Podr· ir hacia abajo si aquÌ hay una escalera operativa, est· digado y abajo est· minado (ESTO YA NO APLICA)
-        // TambiÈn puede ir hacia abajo si abajo hay una escalera operativa esta minado (se presupone) y aquÌ est· digado
+		// Podr√° ir hacia abajo si aqu√≠ hay una escalera operativa, est√° digado y abajo est√° minado (ESTO YA NO APLICA)
+        // Tambi√©n puede ir hacia abajo si abajo hay una escalera operativa esta minado (se presupone) y aqu√≠ est√° digado
         // Cell
         Cell cell = World.getCell(x, y, z);
         if (!cell.isDiscovered() || !cell.isDigged()) {
@@ -788,7 +788,7 @@ public class Terrain implements Externalizable {
             return false;
         }
 
-		// Se cumplen los prerequisitos, sÛlo nos falta mirar que aquÌ o abajo haya escalera (S”LO ABAJO)
+		// Se cumplen los prerequisitos, s√≥lo nos falta mirar que aqu√≠ o abajo haya escalera (S√ìLO ABAJO)
         // Item item = cell.getItem ();
         // if (item != null && item.isOperative () && item.isLocked ()) {
         // if (ItemManager.getItem (item.getIniHeader ()).isZoneMergerUpDown ()) {
@@ -814,7 +814,7 @@ public class Terrain implements Externalizable {
         Cell cellCurrent = cells[x][y][z];
         if (!cellCurrent.isMined()) {
             Cell cell;
-            // Miramos que gr·fico usar
+            // Miramos que gr√°fico usar
             buffer = new StringBuffer("_"); //$NON-NLS-1$
             if (y > 0) {
                 cell = cells[x][y - 1][z];
@@ -900,7 +900,7 @@ public class Terrain implements Externalizable {
     }
 
     /**
-     * Cambia los gr·ficos de todas las celdas seg˙n las adyacentes (slopes
+     * Cambia los gr√°ficos de todas las celdas seg√∫n las adyacentes (slopes
      * outside)
      *
      * @param cells

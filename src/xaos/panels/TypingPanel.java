@@ -135,7 +135,7 @@ public class TypingPanel {
     }
 
     /**
-     * Determina donde está el mouse y llama al render (mousePanel) Se usa, de
+     * Determina donde estÃ¡ el mouse y llama al render (mousePanel) Se usa, de
      * momento, desde el main menu, para teclear el nombre de la partida grabada
      */
     public static void render(int mouseX, int mouseY) {
@@ -204,7 +204,7 @@ public class TypingPanel {
     }
 
     /**
-     * Añade un caracter al texto y retorna true en caso de que ya haya
+     * AÃ±ade un caracter al texto y retorna true en caso de que ya haya
      * terminado.
      *
      * @param key
@@ -215,7 +215,7 @@ public class TypingPanel {
     }
 
     /**
-     * Añade un caracter al texto y retorna true en caso de que ya haya
+     * AÃ±ade un caracter al texto y retorna true en caso de que ya haya
      * terminado.
      *
      * @param key
@@ -256,7 +256,7 @@ public class TypingPanel {
                 String sChar = getKeyString(key, shift);
                 if (sChar != null) {
                     if (sChar.equals(" ")) { //$NON-NLS-1$
-                        // Si ya tenía un espacio al final pasamos de éste
+                        // Si ya tenÃ­a un espacio al final pasamos de Ã©ste
                         if (getNewText().length() > 0) {
                             if (getNewText().charAt(getNewText().length() - 1) != ' ') {
                                 setNewText(getNewText() + sChar);
@@ -388,7 +388,7 @@ public class TypingPanel {
     public static void setNewText(String newText) {
         TypingPanel.newText = newText;
 
-        // En el caso de que esté pòniendo el nombre de una partida, miraremos que no exista en disco
+        // En el caso de que estÃ© pÃ²niendo el nombre de una partida, miraremos que no exista en disco
         if (TYPING_TYPE == TYPE_SAVEGAME_NAME) {
             if (Utils.existsSavegame(getNewText())) {
                 setSubTitle(Messages.getString("TypingPanel.1")); //$NON-NLS-1$

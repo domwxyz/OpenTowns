@@ -56,8 +56,8 @@ public class Tile implements Externalizable {
     private transient short tileHeightOffset;
 
     // Animation
-    private transient short animationTiles; // Número de tiles de los que se compone la animación (0 o 1 es lo mismo)
-    private transient short animationFrameDelay; // Número de frames que deben pasar entre un tile y el siguiente
+    private transient short animationTiles; // NÃºmero de tiles de los que se compone la animaciÃ³n (0 o 1 es lo mismo)
+    private transient short animationFrameDelay; // NÃºmero de frames que deben pasar entre un tile y el siguiente
     private transient short currentAnimationTile;
     private transient short currentFrameDelay;
     private transient float currentTileTexX0; // Coordenada X0 de la textura
@@ -89,14 +89,14 @@ public class Tile implements Externalizable {
         // Guardamos las coordenadas del tileset
         setTileSetCoordinates(getIniHeader(), null);
 
-        // Guardamos el tamaño del tile
+        // Guardamos el tamaÃ±o del tile
         setTileSize(getIniHeader(), null);
 
         // Guardamos las coordenadas de la textura del tileset
         setTileSetTexCoordinates();
 
         // ANIMATION
-        // Guardamos el número de tiles para la animación
+        // Guardamos el nÃºmero de tiles para la animaciÃ³n
         setAnimationTiles(Towns.getPropertiesInt(PropertyFile.PROPERTY_FILE_GRAPHICS, "[" + getIniHeader() + "]ANIMATION_TILES")); //$NON-NLS-1$ //$NON-NLS-2$
         setAnimationFrameDelay(Towns.getPropertiesInt(PropertyFile.PROPERTY_FILE_GRAPHICS, "[" + getIniHeader() + "]ANIMATION_FRAME_DELAY", Game.FPS_INGAME)); //$NON-NLS-1$ //$NON-NLS-2$
         setCurrentAnimationTile(0);

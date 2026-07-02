@@ -129,7 +129,7 @@ public class Type implements Externalizable {
     }
 
     /**
-     * Devuelve el tipo principal de un nombre de tipo ej: food.meat devolvería
+     * Devuelve el tipo principal de un nombre de tipo ej: food.meat devolverÃ­a
      * food
      *
      * @param sTypeName
@@ -199,7 +199,7 @@ public class Type implements Externalizable {
             Document doc = UtilsXML.loadXMLFile(sXMLPath); //$NON-NLS-1$ //$NON-NLS-2$
 
 			// Tenemos el documento XML parseado
-            // Lo recorremos entero y vamos añadiendo los nombres a la hash
+            // Lo recorremos entero y vamos aÃ±adiendo los nombres a la hash
             NodeList nodeList = doc.getDocumentElement().getChildNodes();
             Node node;
             String sTypeID, sName;
@@ -224,7 +224,7 @@ public class Type implements Externalizable {
                     }
                     sName = UtilsXML.getChildValue(nodeList, sTypeID);
 
-                    // Lo añadimos a la hash
+                    // Lo aÃ±adimos a la hash
                     if (sName != null) {
                         typeNames.put(sTypeID, sName);
                     } else {

@@ -185,7 +185,7 @@ public class EventManager {
             Document doc = UtilsXML.loadXMLFile(sXMLName); //$NON-NLS-1$
 
 			// Tenemos el documento XML parseado
-            // Lo recorremos entero y vamos añadiendo las skills (SkillManagerItem) a la hash
+            // Lo recorremos entero y vamos aÃ±adiendo las skills (SkillManagerItem) a la hash
             NodeList nodeList = doc.getDocumentElement().getChildNodes();
             Node node;
             EventManagerItem emi;
@@ -438,7 +438,7 @@ public class EventManager {
                         emi.loadUseFile(sXMLName);
                     }
 
-                    // Lo añadimos a la hash
+                    // Lo aÃ±adimos a la hash
                     eventsList.put(sIniHeader, emi);
                 }
             }

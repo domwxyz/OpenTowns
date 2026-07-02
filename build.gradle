@@ -34,8 +34,7 @@ dependencies {
 }
 
 tasks.withType(JavaCompile).configureEach {
-    // Sources are ISO-8859-1 (Spanish comments), not UTF-8
-    options.encoding = 'ISO-8859-1'
+    options.encoding = 'UTF-8'
 }
 
 application {

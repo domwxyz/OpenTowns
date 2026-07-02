@@ -82,7 +82,7 @@ Nearly all game content is defined in `data/*.xml` and parsed at load time by th
 
 ## State of the code
 
-- Encoding is ISO-8859-1, not UTF-8 (accented Spanish comments throughout). The build compiles with that flag. Don't re-save files as UTF-8 ad hoc; a whole-repo conversion is planned as a single mechanical commit.
+- Sources are UTF-8 (converted from the original ISO-8859-1 in a mechanical commit; accented Spanish comments throughout). Java files must stay UTF-8 without a BOM — javac rejects BOMs.
 - Comments are mostly Spanish; sparse but generally accurate.
 - Java 6/7 idioms everywhere: no lambdas, no diamond operator, raw types are common (hence the `unchecked` compile warnings; these are expected). Heavy use of static state; `Game` and most managers are effectively singletons.
 - No tests. Verification is running the game. The manual smoke test: main menu appears, new game, worldgen completes, save, reload.

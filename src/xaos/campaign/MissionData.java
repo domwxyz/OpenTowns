@@ -12,7 +12,7 @@ import xaos.utils.Messages;
 
 /**
  * 
- * Aquí se guardan los datos de una misión. ID, Nombre, objetivos, ...
+ * AquÃ­ se guardan los datos de una misiÃ³n. ID, Nombre, objetivos, ...
  * 
  */
 public class MissionData implements Externalizable {

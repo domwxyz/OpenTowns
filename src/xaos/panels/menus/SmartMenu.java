@@ -65,18 +65,18 @@ public class SmartMenu implements Externalizable {
     public final static ColorGL COLORGL_SUBMENU = new ColorGL(COLOR_SUBMENU);
 
     private int type;
-    private String id; // Se usa en los menuXXX.xml , así los mods pueden referirse a un item para borrarlo
+    private String id; // Se usa en los menuXXX.xml , asÃ­ los mods pueden referirse a un item para borrarlo
     private String name;
     private SmartMenu parent;
     private ArrayList<SmartMenu> items;
-    private String command; // Acción que lanza este item
-    private String parameter; // Parámetro del comando
-    private String parameter2; // Parámetro 2 del comando
+    private String command; // AcciÃ³n que lanza este item
+    private String parameter; // ParÃ¡metro del comando
+    private String parameter2; // ParÃ¡metro 2 del comando
     private Point3D directCoordinates; // Se usa en los menus contextuales, ya que lanzan un comando en casillas concretas
     private ColorGL color;
-    private boolean trasparency; // Si es transparente no se dibuja el rectángulo negro abajo
+    private boolean trasparency; // Si es transparente no se dibuja el rectÃ¡ngulo negro abajo
     private boolean dynamic; // Para sustituir cadenas de texto de los menues
-    private boolean maintainOpen; // Para saber si hay que cerrar el menú al clicar en una opción
+    private boolean maintainOpen; // Para saber si hay que cerrar el menÃº al clicar en una opciÃ³n
     private ColorGL borderColor; // Si es distinto de null pinta un borde a los textos del color indicado
     private Tile icon; // Icono a usar en los menus
     private int iconType; // Tipo de icono (ui, items, ...)
@@ -297,7 +297,7 @@ public class SmartMenu implements Externalizable {
             UtilsGL.glEnd();
         }
 
-        // Rectángulito rojo en el item marcado (excepto TYPE_TEXT)
+        // RectÃ¡ngulito rojo en el item marcado (excepto TYPE_TEXT)
         int iY;
         int mouseX = Mouse.getX();
         int mouseY = UtilsGL.getHeight() - Mouse.getY() - 1;
@@ -319,7 +319,7 @@ public class SmartMenu implements Externalizable {
         GL11.glBindTexture(GL11.GL_TEXTURE_2D, Game.TEXTURE_FONT_ID);
         GL11.glTexEnvf(GL11.GL_TEXTURE_ENV, GL11.GL_TEXTURE_ENV_MODE, GL11.GL_MODULATE);
 
-        // Menú
+        // MenÃº
         UtilsGL.glBegin(GL11.GL_QUADS);
         String sTexto;
         SmartMenu item;
@@ -368,9 +368,9 @@ public class SmartMenu implements Externalizable {
     }
 
     /**
-     * Carga los menús del .xml y lo mapea todo a clases SmartMenu
+     * Carga los menÃºs del .xml y lo mapea todo a clases SmartMenu
      *
-     * @return el padre de todos los menús
+     * @return el padre de todos los menÃºs
      */
     public static void readXMLMenu(SmartMenu menuInicial, String sFilename, String sCampaignID, String sMissionID) {
         //SmartMenu menuInicial = new SmartMenu ();
@@ -400,7 +400,7 @@ public class SmartMenu implements Externalizable {
 
             String sLocale = Locale.getDefault().getLanguage() + Locale.getDefault().getCountry();
             if (node.getNodeType() == Node.ELEMENT_NODE) {
-                // Si el elemento se llama "item" es que es un item, en otro caso es un submenú
+                // Si el elemento se llama "item" es que es un item, en otro caso es un submenÃº
 
                 NamedNodeMap map = node.getAttributes();
                 if (node.getNodeName().equalsIgnoreCase("ITEM")) { //$NON-NLS-1$
@@ -452,7 +452,7 @@ public class SmartMenu implements Externalizable {
                             }
                         }
                         if (sName == null || sName.length() == 0) {
-                            // No encuentra name, miramos si es una tarea de CREATE, CREATEANDPLACE, CREATEANDPLACEROW o BUILD para obtener la cadena de la definición del item/edificio
+                            // No encuentra name, miramos si es una tarea de CREATE, CREATEANDPLACE, CREATEANDPLACEROW o BUILD para obtener la cadena de la definiciÃ³n del item/edificio
                             if (parameter != null
                                     && parameter.getNodeValue() != null
                                     && parameter.getNodeValue().length() > 0
@@ -525,7 +525,7 @@ public class SmartMenu implements Externalizable {
                             if (code != null && code.getNodeValue() != null && parameter != null && parameter.getNodeValue() != null) {
                                 String sCode = code.getNodeValue();
                                 String sParameter = parameter.getNodeValue();
-                                // Miramos si es un código de crear objeto, en ese caso el icono se pilla según el mismo
+                                // Miramos si es un cÃ³digo de crear objeto, en ese caso el icono se pilla segÃºn el mismo
                                 if (sCode.equals(CommandPanel.COMMAND_QUEUE) || sCode.equals(CommandPanel.COMMAND_QUEUE_AND_PLACE) || sCode.equals(CommandPanel.COMMAND_QUEUE_AND_PLACE_ROW) || sCode.equals(CommandPanel.COMMAND_QUEUE_AND_PLACE_AREA)) {
                                     ActionManagerItem ami = ActionManager.getItem(sParameter);
 
@@ -543,15 +543,15 @@ public class SmartMenu implements Externalizable {
                         // Prerequisitos
                         setPrerequisites(item, code, parameter);
 
-                        // Si es un back lo añadimos tal cual, en otro caso miramos que no haya un back, para añadirlo justo antes
+                        // Si es un back lo aÃ±adimos tal cual, en otro caso miramos que no haya un back, para aÃ±adirlo justo antes
                         if (item.getCommand() != null && item.getCommand().equalsIgnoreCase(CommandPanel.COMMAND_BACK)) {
                             smartMenu.addItem(item);
                         } else {
-                            // Miramos que el último no sea un back
+                            // Miramos que el Ãºltimo no sea un back
                             if (smartMenu.getItems().size() > 0) {
                                 SmartMenu smLast = smartMenu.getItems().get(smartMenu.getItems().size() - 1);
                                 if (smLast.getCommand() != null && smLast.getCommand().equals(CommandPanel.COMMAND_BACK)) {
-                                    // Hay un back, añadimos el item justo antes
+                                    // Hay un back, aÃ±adimos el item justo antes
                                     smLast = smartMenu.getItems().remove(smartMenu.getItems().size() - 1);
                                     smartMenu.addItem(item);
                                     smartMenu.addItem(smLast);
@@ -642,7 +642,7 @@ public class SmartMenu implements Externalizable {
         if (code != null && code.getNodeValue() != null && parameter != null && parameter.getNodeValue() != null) {
             String sCode = code.getNodeValue();
             String sParameter = parameter.getNodeValue();
-            // Miramos si es un código de crear objeto, en ese caso el icono se pilla según el mismo
+            // Miramos si es un cÃ³digo de crear objeto, en ese caso el icono se pilla segÃºn el mismo
             ItemManagerItem imi = null;
             LivingEntityManagerItem lemi = null;
             ArrayList<String> alMessages = new ArrayList<String>();
@@ -882,7 +882,7 @@ public class SmartMenu implements Externalizable {
                 alMessages.add(0, item.getName());
                 alColor.add(0, new ColorGL(null));
 
-                // Añadimos zonas
+                // AÃ±adimos zonas
                 boolean bBlankLineAdded = false;
                 if (imi != null && imi.getZones() != null && imi.getZones().size() > 0) {
                     // Linea en blanco
@@ -919,16 +919,16 @@ public class SmartMenu implements Externalizable {
 
     /**
      * Comprueba si se ha clicado en un submenu o en un item En el primer caso
-     * devuelve dicho submenú En el segundo caso ejecuta la acción
-     * correspondiente y se devuelve él mismo
+     * devuelve dicho submenÃº En el segundo caso ejecuta la acciÃ³n
+     * correspondiente y se devuelve Ã©l mismo
      *
-     * @param x X Relativa al menú
-     * @param y Y relativa al menú
+     * @param x X Relativa al menÃº
+     * @param y Y relativa al menÃº
      * @return
      */
     public SmartMenu mousePressed(int x, int y) {
         // Miramos donde ha clicado
-        int iMenuIndex = y / UtilFont.MAX_HEIGHT; // Posición donde ha clicado
+        int iMenuIndex = y / UtilFont.MAX_HEIGHT; // PosiciÃ³n donde ha clicado
 
         if (iMenuIndex >= getItems().size() || y < 0) {
             return this;
@@ -963,7 +963,7 @@ public class SmartMenu implements Externalizable {
     }
 
     /**
-     * Divide el menú en varias pantallas en el caso de que sea demasiado ganso
+     * Divide el menÃº en varias pantallas en el caso de que sea demasiado ganso
      *
      * @param menu
      */
@@ -995,7 +995,7 @@ public class SmartMenu implements Externalizable {
             alParts.add(sm);
         }
 
-        // Añadimos los forwards
+        // AÃ±adimos los forwards
         for (int i = 0; i < alParts.size(); i++) {
             if (i < (alParts.size() - 1)) {
                 alParts.get(i).addItem(new SmartMenu(TYPE_TEXT, null, null, null, null));

@@ -97,7 +97,7 @@ public class Generator {
                         gi.setId(sID);
                         gi.setName(child.getNodeName());
                         gi.setList(getNodes(child));
-                        // Si lo hemos borrado ponemos el nuevo item en la posición que estaba
+                        // Si lo hemos borrado ponemos el nuevo item en la posiciÃ³n que estaba
                         if (iIndexExists != -1) {
                             list.add(iIndexExists, gi);
                         } else {

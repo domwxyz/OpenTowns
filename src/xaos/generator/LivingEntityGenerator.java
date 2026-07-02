@@ -19,7 +19,7 @@ public class LivingEntityGenerator extends Generator {
      * Lee del gen_livingentities.xml
      */
     public static void generateLivingEntities(Cell[][][] cells, String sCampaignID, String sMissionID) {
-        // Leemos el gen_livingentities.xml (si est· en una misiÛn se carga de otro sitio)
+        // Leemos el gen_livingentities.xml (si est√° en una misi√≥n se carga de otro sitio)
         Generator generator = new Generator();
         ArrayList<String> alPaths = Utils.getPathToFile(XML_FILE, sCampaignID, sMissionID);
 

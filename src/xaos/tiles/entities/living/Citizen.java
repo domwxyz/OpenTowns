@@ -74,7 +74,7 @@ public class Citizen extends LivingEntity implements Externalizable {
     private int placesIndex;
 
     // Custom action
-    private Action currentCustomAction; // AcciÛn que el aldeano est· haciendo
+    private Action currentCustomAction; // Acci√≥n que el aldeano est√° haciendo
 
     // Exclamation
     private int showExclamationTurns;
@@ -150,7 +150,7 @@ public class Citizen extends LivingEntity implements Externalizable {
                     return;
                 }
 
-				// Primero de todo vamos a bloquear el primer <move> para que no vayan 5 aldeanos a hacer una tarea si sÛlo hay 2 benches (por ejemplo)
+				// Primero de todo vamos a bloquear el primer <move> para que no vayan 5 aldeanos a hacer una tarea si s√≥lo hay 2 benches (por ejemplo)
                 // Si no hay <move> pues perfecto, no hacemos nada
                 if (getCurrentCustomAction().getQueueData().getItemIDCurrentPlace() == -1) {
                     String firstMove = null;
@@ -208,7 +208,7 @@ public class Citizen extends LivingEntity implements Externalizable {
         if (getCurrentTask() != null) {
 			// Tiene tarea
 
-            // Miramos si es tarea de construcciÛn
+            // Miramos si es tarea de construcci√≥n
             if (getCurrentTask().getTask() == Task.TASK_CUSTOM_ACTION) {
                 doCustomActionTask();
             } else if (getCurrentTask().getTask() == Task.TASK_BUILD) {
@@ -248,7 +248,7 @@ public class Citizen extends LivingEntity implements Externalizable {
             }
 
         } else {
-            // Quitamos los Ìndices de tarea, no fuera que la tarea la haya terminado otro aldeano y Èste a˙n estÈ intentando hacerla
+            // Quitamos los √≠ndices de tarea, no fuera que la tarea la haya terminado otro aldeano y √©ste a√∫n est√© intentando hacerla
             resetTaskIndexes();
 
             // Ocioso, lo movemos a random
@@ -260,14 +260,14 @@ public class Citizen extends LivingEntity implements Externalizable {
                 if (getSoldierData().isSoldier()) {
                     doSoldierTasks();
                 } else {
-                    // Aldeano idle, miramos si hay alguna social zone para moverlo por ahÌ
+                    // Aldeano idle, miramos si hay alguna social zone para moverlo por ah√≠
                     Zone zone;
                     boolean bAldeanoEnZonaSocial = World.getCell(getCoordinates()).hasZone();
                     if (bAldeanoEnZonaSocial) {
-                        // Est· en una zona, miramos si es social
+                        // Est√° en una zona, miramos si es social
                         zone = Zone.getZone(World.getCell(getCoordinates()).getZoneID());
                         if (zone != null && ZoneManager.getItem(zone.getIniHeader()).getType() == ZoneManagerItem.TYPE_SOCIAL) {
-                            // Ya est· en una social, no hacemos nada
+                            // Ya est√° en una social, no hacemos nada
                         } else {
                             bAldeanoEnZonaSocial = false;
                         }
@@ -275,7 +275,7 @@ public class Citizen extends LivingEntity implements Externalizable {
 
                     if (!bAldeanoEnZonaSocial) {
                         if (Utils.getRandomBetween(1, 200) == 1) { // 0.5% de ir a una social zone (si existen)
-                            // No est· en una zona social, buscamos una y mandamos al aldeano allÌ
+                            // No est√° en una zona social, buscamos una y mandamos al aldeano all√≠
                             ArrayList<Zone> alZones = Game.getWorld().getZones();
                             int iCurrentASZID = World.getCell(getCoordinates()).getAstarZoneID();
                             Point3DShort p3dClosest = null, p3dTemp;
@@ -314,7 +314,7 @@ public class Citizen extends LivingEntity implements Externalizable {
                             moveAtRandom(getLivingEntityData().getMovePCTCurrent(), TYPE_CITIZEN);
                         }
                     } else {
-                        // Aldeano SI est· en una zona social, lo movemos m·s bien poco
+                        // Aldeano SI est√° en una zona social, lo movemos m√°s bien poco
                         if (Utils.getRandomBetween(1, 10) == 1) {
                             moveAtRandom(getLivingEntityData().getMovePCTCurrent(), TYPE_CITIZEN);
                         }
@@ -342,7 +342,7 @@ public class Citizen extends LivingEntity implements Externalizable {
     }
 
     /**
-     * Ejecuta la acciÛn de su hotpoint (minar, chopear, diggear, custom, ...)
+     * Ejecuta la acci√≥n de su hotpoint (minar, chopear, diggear, custom, ...)
      *
      * @return true if it's job it's finished
      */
@@ -368,7 +368,7 @@ public class Citizen extends LivingEntity implements Externalizable {
         }
 
         if (bReturn) {
-            // Seteamos la celda indicando que ya no tiene Ûrdenes (se usa para el dibujado)
+            // Seteamos la celda indicando que ya no tiene √≥rdenes (se usa para el dibujado)
             cell.setFlagOrders(false);
         }
 
@@ -380,12 +380,12 @@ public class Citizen extends LivingEntity implements Externalizable {
     }
 
     /**
-     * Borra la tarea actual del ciudadano y los Ìndices
+     * Borra la tarea actual del ciudadano y los √≠ndices
      */
     public void resetTaskIndexes() {
         if (getCurrentTask() != null && getCurrentTask().getTask() == Task.TASK_CUSTOM_ACTION) {
             boolean bFinished = true;
-            // Custom action, si no est· terminada la ponemos en la lista de tareas para que lo haga otro aldeano
+            // Custom action, si no est√° terminada la ponemos en la lista de tareas para que lo haga otro aldeano
             if (!getCurrentTask().isFinished()) {
                 if (getCurrentCustomAction() != null) {
                     QueueItem qi = null;
@@ -416,7 +416,7 @@ public class Citizen extends LivingEntity implements Externalizable {
     }
 
     /**
-     * Hace las cosas necesarias para ejecutar una tarea de construcciÛn (buscar
+     * Hace las cosas necesarias para ejecutar una tarea de construcci√≥n (buscar
      * materiales, llevarlos, ...)
      *
      * @param task
@@ -433,7 +433,7 @@ public class Citizen extends LivingEntity implements Externalizable {
         Building building = Building.getBuilding(hp.getHotPoint());
 
         if (building == null) {
-            // Esto no deberÌa pasar nunca, tiene que haber un edificio en esa casilla
+            // Esto no deber√≠a pasar nunca, tiene que haber un edificio en esa casilla
             Log.log(Log.LEVEL_ERROR, Messages.getString("Citizen.4") + hp.getHotPoint().x + "][" + hp.getHotPoint().y + "][" + hp.getHotPoint().z + "]", getClass().toString()); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$
             getCurrentTask().setFinished(true);
             Game.getWorld().getTaskManager().removeCitizen(this);
@@ -444,7 +444,7 @@ public class Citizen extends LivingEntity implements Externalizable {
         if (alPrerequisites != null && alPrerequisites.size() > 0) {
             // Primero de todo miramos si llevamos un material bueno encima y estamos en la casilla del edificio
             if (getCitizenData().getCarryingData().getCarrying() != null) {
-				// Llevamos algo encima, miramos si va bien para la construcciÛn
+				// Llevamos algo encima, miramos si va bien para la construcci√≥n
 
                 int iIndex = UtilsIniHeaders.contains(alPrerequisites, getCitizenData().getCarryingData().getCarrying().getNumericIniHeader());
                 if (iIndex != -1) {
@@ -457,7 +457,7 @@ public class Citizen extends LivingEntity implements Externalizable {
                         UtilsAL.play(UtilsAL.SOURCE_FX_BUILDING, z);
                         return;
                     } else {
-                        // No estamos ahÌ, nos movemos
+                        // No estamos ah√≠, nos movemos
                         setDestination(hp.getHotPoint());
                         return;
                     }
@@ -469,7 +469,7 @@ public class Citizen extends LivingEntity implements Externalizable {
 
             }
 
-			// No lleva item encima, buscamos el item m·s cercano que nos vaya bien
+			// No lleva item encima, buscamos el item m√°s cercano que nos vaya bien
             // Para evitar lag miramos que haya items en la hash de num items
             boolean bHayItems = false;
             forcountitems:
@@ -516,7 +516,7 @@ public class Citizen extends LivingEntity implements Externalizable {
                             }
                         }
                     } else {
-                        // Item por ahÌ
+                        // Item por ah√≠
                         setDestination(p3dItem);
                     }
                 }
@@ -531,7 +531,7 @@ public class Citizen extends LivingEntity implements Externalizable {
             if (alPrerequisitesLiving != null && alPrerequisitesLiving.size() > 0) {
                 // Primero de todo miramos si llevamos un living bueno encima y estamos en la casilla del edificio
                 if (getCitizenData().getCarryingData().getCarryingLiving() != null) {
-                    // Llevamos algo encima, miramos si va bien para la construcciÛn
+                    // Llevamos algo encima, miramos si va bien para la construcci√≥n
                     int iIndex = UtilsIniHeaders.contains(alPrerequisitesLiving, getCitizenData().getCarryingData().getCarryingLiving().getNumericIniHeader());
                     if (iIndex != -1) {
                         // Tenemos un living bueno, miramos si estamos en la casilla del edificio
@@ -551,7 +551,7 @@ public class Citizen extends LivingEntity implements Externalizable {
 
                             return;
                         } else {
-                            // No estamos ahÌ, nos movemos
+                            // No estamos ah√≠, nos movemos
                             setDestination(hp.getHotPoint());
                             return;
                         }
@@ -563,7 +563,7 @@ public class Citizen extends LivingEntity implements Externalizable {
 
                 }
 
-                // Buscamos el friendly m·s cercano que nos vaya bien
+                // Buscamos el friendly m√°s cercano que nos vaya bien
                 LivingEntity le = null;
                 for (int i = 0; i < alPrerequisitesLiving.size(); i++) {
                     le = searchLiving(getCoordinates(), alPrerequisitesLiving.get(i), true, null);
@@ -583,15 +583,15 @@ public class Citizen extends LivingEntity implements Externalizable {
                         // Tenemos el living, lo llevamos al edificio para construir el item
                         setDestination(hp.getHotPoint());
                     } else {
-                        // Living por ahÌ
+                        // Living por ah√≠
                         setDestination(le.getCoordinates());
                     }
                 }
             } else {
-				// Sin m·s prerequisitos, tarea terminada (edificio construido)
+				// Sin m√°s prerequisitos, tarea terminada (edificio construido)
                 // Por si acaso nos movemos al edificio (importante)
                 if (x != hp.getHotPoint().x || y != hp.getHotPoint().y || z != hp.getHotPoint().z) {
-                    // No estamos ahÌ, nos movemos
+                    // No estamos ah√≠, nos movemos
                     setDestination(hp.getHotPoint());
                     return;
                 } else {
@@ -664,7 +664,7 @@ public class Citizen extends LivingEntity implements Externalizable {
             if (iItemID != -1) {
                 // Item militar
                 Point3DShort p3dItemMilitar = Item.searchItemByID(iItemID);
-                // Debe existir (y en la zona) pq el taskmanager ya ha hecho esta b˙squeda
+                // Debe existir (y en la zona) pq el taskmanager ya ha hecho esta b√∫squeda
                 if (p3dItemMilitar == null) {
                     Game.getWorld().getTaskManager().removeCitizen(this);
                     return;
@@ -676,11 +676,11 @@ public class Citizen extends LivingEntity implements Externalizable {
 
                 p3dItemDestination = p3dItemMilitar;
             } else {
-                // Item genÈrico
+                // Item gen√©rico
                 int[] aiItemHeaders = new int[1];
                 aiItemHeaders[0] = UtilsIniHeaders.getIntIniHeader(sItemIniHeader);
                 Point3DShort p3dItem = Item.searchItem(false, getCoordinates(), aiItemHeaders, true, Item.SEARCH_FALSE, Item.SEARCH_DOESNTMATTER, null, World.MAP_DEPTH - 1);
-                // Debe existir pq el taskmanager ya ha hecho esta b˙squeda
+                // Debe existir pq el taskmanager ya ha hecho esta b√∫squeda
                 if (p3dItem == null) {
                     Game.getWorld().getTaskManager().removeCitizen(this);
                     return;
@@ -689,7 +689,7 @@ public class Citizen extends LivingEntity implements Externalizable {
                 p3dItemDestination = p3dItem;
             }
 
-            // Si llega aquÌ es que hemos encontrado el item, vamos a ver si ya estamos donde toca para pillarlo
+            // Si llega aqu√≠ es que hemos encontrado el item, vamos a ver si ya estamos donde toca para pillarlo
             if (p3dItemDestination.equals(getCoordinates())) {
                 // Item en la casilla actual
                 Cell cell = World.getCell(getCoordinates());
@@ -732,7 +732,7 @@ public class Citizen extends LivingEntity implements Externalizable {
                     return;
                 }
             } else {
-                // Item por ahÌ
+                // Item por ah√≠
                 setDestination(p3dItemDestination);
                 return;
             }
@@ -756,13 +756,13 @@ public class Citizen extends LivingEntity implements Externalizable {
                 }
             }
 
-            // Si llega aquÌ es que lleva el item bueno, hay que llevarlo a sitio
+            // Si llega aqu√≠ es que lleva el item bueno, hay que llevarlo a sitio
             if (leCaravan.getCoordinates().equals(getCoordinates())) {
                 CaravanData caravanData = Game.getWorld().getCurrentCaravanData();
                 if (caravanData != null) {
-                    // DeberÌa existir
+                    // Deber√≠a existir
                     if (caravanData.itemCarried(getCarrying())) {
-                        // Est· en el sitio, hacemos la transacciÛn y pacasa
+                        // Est√° en el sitio, hacemos la transacci√≥n y pacasa
                         setCarrying(null);
                         getCurrentTask().setFinished(true);
                     }
@@ -799,13 +799,13 @@ public class Citizen extends LivingEntity implements Externalizable {
                 }
             }
 
-            // Si llega aquÌ es que nadie tiene la living, debe haber muerto
+            // Si llega aqu√≠ es que nadie tiene la living, debe haber muerto
             getCurrentTask().setFinished(true);
             Game.getWorld().getTaskManager().removeCitizen(this);
             return;
         }
 
-        // Si llega aquÌ es que la living existe
+        // Si llega aqu√≠ es que la living existe
         LivingEntityManagerItem lemi = LivingEntityManager.getItem(leToFeed.getIniHeader());
 
         // Miramos si estamos en la misma zona
@@ -824,7 +824,7 @@ public class Citizen extends LivingEntity implements Externalizable {
                 return;
             }
 
-            // Si llega aquÌ es que hemos encontrado el item, vamos a ver si ya estamos donde toca para pillarlo
+            // Si llega aqu√≠ es que hemos encontrado el item, vamos a ver si ya estamos donde toca para pillarlo
             if (p3dItem.equals(getCoordinates())) {
                 // Item en la casilla actual
                 Cell cell = World.getCell(getCoordinates());
@@ -862,7 +862,7 @@ public class Citizen extends LivingEntity implements Externalizable {
                     return;
                 }
             } else {
-                // Item por ahÌ
+                // Item por ah√≠
                 setDestination(p3dItem);
                 return;
             }
@@ -875,9 +875,9 @@ public class Citizen extends LivingEntity implements Externalizable {
                 // Item bueno
             }
 
-            // Si llega aquÌ es que lleva el item bueno, hay que llevarlo a sitio
+            // Si llega aqu√≠ es que lleva el item bueno, hay que llevarlo a sitio
             if (leToFeed.getCoordinates().equals(getCoordinates())) {
-                // Est· en el sitio, hacemos la transacciÛn y pacasa
+                // Est√° en el sitio, hacemos la transacci√≥n y pacasa
                 setCarrying(null);
                 leToFeed.setFoodNeededTurns(lemi.getFoodNeededTurns());
                 getCurrentTask().setFinished(true);
@@ -903,7 +903,7 @@ public class Citizen extends LivingEntity implements Externalizable {
             return;
         }
 
-        // Tenemos el container, miramos si a˙n hay algo malo dentro, se supone que si
+        // Tenemos el container, miramos si a√∫n hay algo malo dentro, se supone que si
         if (!container.isWrongItemsInside()) {
             getCurrentTask().setFinished(true);
             Game.getWorld().getTaskManager().removeCitizen(this);
@@ -912,7 +912,7 @@ public class Citizen extends LivingEntity implements Externalizable {
 
         // Miramos si estamos en el sitio
         if (getCoordinates().equals(itemContainer.getCoordinates())) {
-            // Estamos donde el container, sacamos el item y se acabÛ
+            // Estamos donde el container, sacamos el item y se acab√≥
             setCarrying(container.removeBadItem());
             getCurrentTask().setFinished(true);
             Game.getWorld().getTaskManager().removeCitizen(this);
@@ -955,11 +955,11 @@ public class Citizen extends LivingEntity implements Externalizable {
                 // Estamos en el punto de inicio, pillamos el item
                 Cell cell = World.getCell(x, y, z);
                 if (!cell.hasItem()) {
-                    // No hay item aquÌ, lo habr· pillado alguien, fin de tarea
+                    // No hay item aqu√≠, lo habr√° pillado alguien, fin de tarea
                     getCurrentTask().setFinished(true);
                     Game.getWorld().getTaskManager().removeCitizen(this);
                 } else {
-                    // Miramos si est· el item
+                    // Miramos si est√° el item
                     if (cell.getEntity().getIniHeader().equals(task.getParameter())) {
                         // Tenemos el item que toca, lo pillamos
                         Item item = cell.getItem();
@@ -972,13 +972,13 @@ public class Citizen extends LivingEntity implements Externalizable {
                             cell.getEntity().delete();
                         }
                     } else {
-                        // Miramos que no estÈ en container
+                        // Miramos que no est√© en container
                         Item item = cell.getItem();
                         if (item != null) {
                             ItemManagerItem imi = ItemManager.getItem(item.getIniHeader());
                             if (imi != null) {
                                 if (imi.isContainer()) {
-                                    // Hay un container, vamos a ver si el item buscado est· dentro
+                                    // Hay un container, vamos a ver si el item buscado est√° dentro
                                     ArrayList<Container> containers = Game.getWorld().getContainers();
                                     Container container = null;
                                     for (int i = 0; i < containers.size(); i++) {
@@ -989,33 +989,33 @@ public class Citizen extends LivingEntity implements Externalizable {
                                         }
                                     }
                                     if (container != null && container.getItemID() == item.getID()) {
-                                        // A ver si est· dentro
+                                        // A ver si est√° dentro
                                         Item itemRemoved = container.removeItem(task.getParameter());
                                         if (itemRemoved != null) {
                                             // Lo tenemos !!!!
                                             setCarrying(itemRemoved);
                                         } else {
-                                            // Nanai, no deberÌa pasar
+                                            // Nanai, no deber√≠a pasar
                                             getCurrentTask().setFinished(true);
                                             Game.getWorld().getTaskManager().removeCitizen(this);
                                         }
                                     } else {
-                                        // Nunca deberÌa pasar
+                                        // Nunca deber√≠a pasar
                                         getCurrentTask().setFinished(true);
                                         Game.getWorld().getTaskManager().removeCitizen(this);
                                     }
                                 } else {
-                                    // Casilla vacÌa (lo habr· pillado otro aldeano). Fin de tarea
+                                    // Casilla vac√≠a (lo habr√° pillado otro aldeano). Fin de tarea
                                     getCurrentTask().setFinished(true);
                                     Game.getWorld().getTaskManager().removeCitizen(this);
                                 }
                             } else {
-                                // Nunca deberÌa pasar
+                                // Nunca deber√≠a pasar
                                 getCurrentTask().setFinished(true);
                                 Game.getWorld().getTaskManager().removeCitizen(this);
                             }
                         } else {
-                            // Nunca deberÌa pasar
+                            // Nunca deber√≠a pasar
                             getCurrentTask().setFinished(true);
                             Game.getWorld().getTaskManager().removeCitizen(this);
                         }
@@ -1095,7 +1095,7 @@ public class Citizen extends LivingEntity implements Externalizable {
                             }
                         }
 
-                        // Si llega aquÌ es que no ha podido meterlo o no es tarea de container (raro), soltamos el item y fin de tarea
+                        // Si llega aqu√≠ es que no ha podido meterlo o no es tarea de container (raro), soltamos el item y fin de tarea
                         cell.setFlagOrders(false);
                         getCurrentTask().setFinished(true);
                         dropCarryingItem();
@@ -1111,7 +1111,7 @@ public class Citizen extends LivingEntity implements Externalizable {
     }
 
     /**
-     * Lleva le material que est· cargando a alguna celda libre y suelta una
+     * Lleva le material que est√° cargando a alguna celda libre y suelta una
      * living si la lleva
      */
     private void doDropTask() {
@@ -1122,7 +1122,7 @@ public class Citizen extends LivingEntity implements Externalizable {
     }
 
     /**
-     * Suelta la living allÌ donde est·
+     * Suelta la living all√≠ donde est√°
      */
     private void executeDropLivingTask() {
         if (getCarryingLiving() != null) {
@@ -1212,7 +1212,7 @@ public class Citizen extends LivingEntity implements Externalizable {
     }
 
     /**
-     * Lleva le material que est· cargando a alguna celda libre, devuelve true
+     * Lleva le material que est√° cargando a alguna celda libre, devuelve true
      * si lo consigue. No saca al aldeano de ninguna tarea.
      *
      * @return true si finaliza la tarea
@@ -1232,15 +1232,15 @@ public class Citizen extends LivingEntity implements Externalizable {
             return true;
         }
 
-        // En la casilla actual no se puede soltar, vamos a buscar un punto y llevamos el aldeano allÌ
-        int distancia = 0; // Õndice para ir mirando casillas adyacentes
+        // En la casilla actual no se puede soltar, vamos a buscar un punto y llevamos el aldeano all√≠
+        int distancia = 0; // √çndice para ir mirando casillas adyacentes
         final int distanciaMAX = World.MAP_WIDTH;
 
         while (distancia < distanciaMAX) {
             distancia++;
             for (int x = (getX() - distancia); x <= (getX() + distancia); x++) {
                 for (int y = (getY() - distancia); y <= (getY() + distancia); y++) {
-                    if (Math.abs((getX() - x)) == distancia || Math.abs((getY() - y)) == distancia) { // Para que sÛlo mire puntos exteriores del radio
+                    if (Math.abs((getX() - x)) == distancia || Math.abs((getY() - y)) == distancia) { // Para que s√≥lo mire puntos exteriores del radio
                         if (Utils.isInsideMap(x, y, getZ())) {
                             cell = World.getCell(x, y, getZ());
                             if (cell.isEmpty() && !cell.isFlagOrders() && cell.getAstarZoneID() == World.getCell(getCoordinates()).getAstarZoneID() && isCellAllowed(cell)) {
@@ -1257,7 +1257,7 @@ public class Citizen extends LivingEntity implements Externalizable {
         }
 
 		// En todo el nivel no hay ni un hueco, haremos el truqui de buscar en un radio de 8x8 (por ejemplo) a partir
-        // de la posiciÛn de otros aldeanos
+        // de la posici√≥n de otros aldeanos
         int iNivelMalo = getZ();
         int iASZID = World.getCell(getCoordinates()).getAstarZoneID();
 
@@ -1277,7 +1277,7 @@ public class Citizen extends LivingEntity implements Externalizable {
                         distancia++;
                         for (int x = (le.getX() - distancia); x <= (le.getX() + distancia); x++) {
                             for (int y = (le.getY() - distancia); y <= (le.getY() + distancia); y++) {
-                                if (Math.abs((le.getX() - x)) == distancia || Math.abs((le.getY() - y)) == distancia) { // Para que sÛlo mire puntos exteriores del radio
+                                if (Math.abs((le.getX() - x)) == distancia || Math.abs((le.getY() - y)) == distancia) { // Para que s√≥lo mire puntos exteriores del radio
                                     if (Utils.isInsideMap(x, y, le.getZ())) {
                                         cell = World.getCell(x, y, le.getZ());
                                         if (cell.isEmpty() && !cell.isFlagOrders() && cell.getAstarZoneID() == iASZID && LivingEntity.isCellAllowed(cell)) {
@@ -1329,11 +1329,11 @@ public class Citizen extends LivingEntity implements Externalizable {
                                     setCarrying(item);
                                     getCitizenData().setHungryEating(0);
                                 } else {
-                                    // Ya no habÌa comida en el container, salimos de la tarea
+                                    // Ya no hab√≠a comida en el container, salimos de la tarea
                                     resetTaskIndexes();
                                 }
                             } else {
-                                // Algo ha pasado, en la casilla no hay nada que nos sirva (no deberÌa pasar, quiz· est·n moviendo un container)
+                                // Algo ha pasado, en la casilla no hay nada que nos sirva (no deber√≠a pasar, quiz√° est√°n moviendo un container)
                                 resetTaskIndexes();
                             }
                         } else {
@@ -1342,11 +1342,11 @@ public class Citizen extends LivingEntity implements Externalizable {
                             getCitizenData().setHungryEating(0);
                         }
                     } else {
-                        // Algo ha pasado, en la casilla no hay nada que nos sirva (no deberÌa pasar, quiz· est·n moviendo un container)
+                        // Algo ha pasado, en la casilla no hay nada que nos sirva (no deber√≠a pasar, quiz√° est√°n moviendo un container)
                         resetTaskIndexes();
                     }
                 } else {
-                    // Por ahÌ
+                    // Por ah√≠
                     getCurrentTask().setPointIni(p3dItem); // Ponemos esto para que otro aldeano pueda detectar que vamos a por la comida
                     setDestination(p3dItem);
                 }
@@ -1377,7 +1377,7 @@ public class Citizen extends LivingEntity implements Externalizable {
                     }
 
                     if (!bEstamosEnComedor) {
-                        // No estamos en comedor, buscamos uno y vamos hacia allÌ, si lo encontramos
+                        // No estamos en comedor, buscamos uno y vamos hacia all√≠, si lo encontramos
                         Point3DShort p3d = null;
                         Point3DShort p3dMinDistance = null;
                         int iMinDistance = Utils.MAX_DISTANCE;
@@ -1463,7 +1463,7 @@ public class Citizen extends LivingEntity implements Externalizable {
                         }
                     }
 
-                    // Effects despuÈs de comer
+                    // Effects despu√©s de comer
                     if (imi.getFoodEffects() != null) {
                         for (int i = 0; i < imi.getFoodEffects().size(); i++) {
                             addEffect(EffectManager.getItem(imi.getFoodEffects().get(i)), true);
@@ -1480,7 +1480,7 @@ public class Citizen extends LivingEntity implements Externalizable {
                         }
                     }
 
-                    // Events despuÈs de comer
+                    // Events despu√©s de comer
                     EventData ed;
                     for (int i = 0; i < Game.getWorld().getEvents().size(); i++) {
                         ed = Game.getWorld().getEvents().get(i);
@@ -1510,15 +1510,15 @@ public class Citizen extends LivingEntity implements Externalizable {
         ZoneManagerItem zmi;
         Zone zone = null;
 
-        // Miramos si est· en un hospital (o en una litera encima de la zone)
+        // Miramos si est√° en un hospital (o en una litera encima de la zone)
         if (cell.hasZone()) {
             zone = Zone.getZone(cell.getZoneID());
         } else {
-            // Miramos si est· en una cama encima de la zone
+            // Miramos si est√° en una cama encima de la zone
             Item itemTmp = cell.getItem();
             if (itemTmp != null) {
                 if (itemTmp.isLocked() && itemTmp.isOperative() && ItemManager.getItem(itemTmp.getIniHeader()).canBeUsedToSleep()) {
-                    // Est· en una cama, miramos a ver si abajo est· el hospital
+                    // Est√° en una cama, miramos a ver si abajo est√° el hospital
                     boolean bEnd = false;
                     int iIndexZ = z;
                     Cell cellAux;
@@ -1531,7 +1531,7 @@ public class Citizen extends LivingEntity implements Externalizable {
                                     zone = Zone.getZone(cellAux.getZoneID());
                                     bEnd = true;
                                 } else {
-                                    // Seguimos mirando hacia abajo si est· en un item cama
+                                    // Seguimos mirando hacia abajo si est√° en un item cama
                                     itemTmp = cell.getItem();
                                     if (itemTmp == null || !ItemManager.getItem(itemTmp.getIniHeader()).canBeUsedToSleep()) {
                                         bEnd = true; // Dejamos de mirar
@@ -1554,7 +1554,7 @@ public class Citizen extends LivingEntity implements Externalizable {
                 // Guais, a curarse toca
                 getCitizenData().setHealHealing(getCitizenData().getHealHealing() + 1);
 
-                // Si est· en cama se cura el doble
+                // Si est√° en cama se cura el doble
                 Item itemTmp = cell.getItem();
                 if (itemTmp != null) {
                     if (itemTmp.isLocked() && itemTmp.isOperative() && ItemManager.getItem(itemTmp.getIniHeader()).canBeUsedToSleep()) {
@@ -1573,7 +1573,7 @@ public class Citizen extends LivingEntity implements Externalizable {
             }
         }
 
-        // No est· en un hospital, buscamos uno
+        // No est√° en un hospital, buscamos uno
         Point3DShort p3d = null;
         Point3DShort p3dNearest = null;
         int iDistanceNearest = Utils.MAX_DISTANCE;
@@ -1626,7 +1626,7 @@ public class Citizen extends LivingEntity implements Externalizable {
         executeDropLivingTask();
 
 		// Si tiene zona personal vamos a ella
-        // Antes de mirar nada miraremos si est· en una cama, en ese caso no lo movemos pq ya est· durmiendo
+        // Antes de mirar nada miraremos si est√° en una cama, en ese caso no lo movemos pq ya est√° durmiendo
         boolean bEstaEnCama = false;
         Cell cell = World.getCell(getCoordinates());
         if (cell.hasItem()) {
@@ -1652,7 +1652,7 @@ public class Citizen extends LivingEntity implements Externalizable {
             if (zone != null) {
                 // Tenemos su zona, miramos si estamos en ella
                 if (cell.hasZone() && zone.isOperative() && cell.getZoneID() == zone.getID()) {
-                    // Est· en ella, no hacemos nada
+                    // Est√° en ella, no hacemos nada
                 } else {
                     // No estamos en su zona personal, vamos a ella
                     Point3DShort p3d = Zone.getFreeSleepItemAtRandom(zone, cell.getAstarZoneID());
@@ -1664,14 +1664,14 @@ public class Citizen extends LivingEntity implements Externalizable {
                         setDestination(p3d);
                         return;
                     } else {
-                        // Zona personal no accesible, no hacemos nada y que duerma allÌ donde estÈ
+                        // Zona personal no accesible, no hacemos nada y que duerma all√≠ donde est√©
                     }
                 }
             }
         }
 
-		// Si llega aquÌ es que ya tenemos que dormir
-        // Miramos si hay techo donde est·
+		// Si llega aqu√≠ es que ya tenemos que dormir
+        // Miramos si hay techo donde est√°
         // Miramos si hay un wall (iOver = 1) o un terrain encima (iOver = 2), lo primero que encontremos
         int iTechoCave = 0; // 1 - techo, 2 - cave
         int iZOver = getZ();
@@ -1681,7 +1681,7 @@ public class Citizen extends LivingEntity implements Externalizable {
             iZOver--;
             cellOVer = World.getCell(getX(), getY(), iZOver);
             if (!cellOVer.isMined()) {
-                // Si no est· minada se acabÛ
+                // Si no est√° minada se acab√≥
                 iTechoCave = 2; // Cave
             } else {
                 itemOver = cellOVer.getItem();
@@ -1700,10 +1700,10 @@ public class Citizen extends LivingEntity implements Externalizable {
             getCitizenData().setSleepSleeping(0);
             resetTaskIndexes();
             if (iTechoCave == 1) { // techo
-                // Con techo aguantar· un 25% m·s de tiempo sin dormir
+                // Con techo aguantar√° un 25% m√°s de tiempo sin dormir
                 getCitizenData().setSleep(getCitizenData().getMaxSleep() + (getCitizenData().getMaxSleep() / 4));
             } else if (iTechoCave == 2) { // cave
-                // Con cave aguantar· un 12.5% m·s de tiempo sin dormir
+                // Con cave aguantar√° un 12.5% m√°s de tiempo sin dormir
                 getCitizenData().setSleep(getCitizenData().getMaxSleep() + (getCitizenData().getMaxSleep() / 8));
             } else {
                 getCitizenData().setSleep(getCitizenData().getMaxSleep());
@@ -1739,7 +1739,7 @@ public class Citizen extends LivingEntity implements Externalizable {
                 getLivingEntityData().setHealthPoints(iHPHealed);
             }
 
-            // Events despuÈs de dormir
+            // Events despu√©s de dormir
             for (int i = 0; i < Game.getWorld().getEvents().size(); i++) {
                 EventData ed = Game.getWorld().getEvents().get(i);
                 EventManagerItem emi = EventManager.getItem(ed.getEventID());
@@ -1759,7 +1759,7 @@ public class Citizen extends LivingEntity implements Externalizable {
             int iItemID = Integer.parseInt(getCurrentTask().getParameter2());
             Item item = Item.getItemByID(iItemID);
             if (item == null) {
-                // Quiz· est· en container, lo buscamos
+                // Quiz√° est√° en container, lo buscamos
                 ArrayList<Container> alContainers = Game.getWorld().getContainers();
                 ArrayList<Item> alContainerItems;
                 breakcontainers:
@@ -1853,7 +1853,7 @@ public class Citizen extends LivingEntity implements Externalizable {
             return;
         }
 
-		// Si llega aquÌ es que no hemos seteado nada para equiparse (o ya ha equipado algo)
+		// Si llega aqu√≠ es que no hemos seteado nada para equiparse (o ya ha equipado algo)
         // Miramos si hay objetos militares en el mundo
         // Pillaremos los de mayor nivel para cada zona (cabeza, cuerpo, ...) (si el aldeano puede llegar al area, claro)
         Integer[] aItems = World.getItems().keySet().toArray(new Integer[0]);
@@ -1986,12 +1986,12 @@ public class Citizen extends LivingEntity implements Externalizable {
             }
         }
 
-        // Tenemos todos los items, vamos a ver quÈ le equipamos
+        // Tenemos todos los items, vamos a ver qu√© le equipamos
         if (doAutoEquipInternal(alHead, MilitaryItem.LOCATION_HEAD) || doAutoEquipInternal(alBody, MilitaryItem.LOCATION_BODY) || doAutoEquipInternal(alLegs, MilitaryItem.LOCATION_LEGS) || doAutoEquipInternal(alFeet, MilitaryItem.LOCATION_FEET) || doAutoEquipInternal(alWeapon, MilitaryItem.LOCATION_WEAPON)) {
             return;
         }
 
-        // Si llega aquÌ es que ya estamos
+        // Si llega aqu√≠ es que ya estamos
         getCurrentTask().setFinished(true);
         Game.getWorld().getTaskManager().removeCitizen(this);
     }
@@ -2028,7 +2028,7 @@ public class Citizen extends LivingEntity implements Externalizable {
     }
 
     private boolean doAutoEquipInternal(ArrayList<MilitaryItem> alList, int location) {
-        // Si ya lleva algo sÛlo se cambiarÌa si lo que hay en la lista es mejor
+        // Si ya lleva algo s√≥lo se cambiar√≠a si lo que hay en la lista es mejor
         MilitaryItem mi = getEquippedData().getLocation(location);
         if (mi != null && alList.size() > 0) {
             int iCurrentLevel = ItemManager.getItem(mi.getIniHeader()).getLevel();
@@ -2043,10 +2043,10 @@ public class Citizen extends LivingEntity implements Externalizable {
         Cell cell;
         ArrayList<Integer> alIndexes = new ArrayList<Integer>();
         for (int i = 0; i < alList.size(); i++) {
-            // Miramos por cada item si est· en la zona del aldeano
+            // Miramos por cada item si est√° en la zona del aldeano
             cell = World.getCell(alList.get(i).getCoordinates());
             if (cell.getAstarZoneID() == citizenCell.getAstarZoneID()) {
-                // Item bueno, lo aÒadimos a la lista para luego hacer un random
+                // Item bueno, lo a√±adimos a la lista para luego hacer un random
                 alIndexes.add(i);
             }
         }
@@ -2142,7 +2142,7 @@ public class Citizen extends LivingEntity implements Externalizable {
                 Game.getWorld().getTaskManager().removeCitizen(this);
             }
         } else {
-            // No estamos en la casilla, nos movemos hacia ahÌ
+            // No estamos en la casilla, nos movemos hacia ah√≠
             Cell cell = World.getCell(getCoordinates());
 
             if (cell.getAstarZoneID() == cellItem.getAstarZoneID()) {
@@ -2162,7 +2162,7 @@ public class Citizen extends LivingEntity implements Externalizable {
      */
     private void doWearOffTask() {
 		// Se quita el item y lo ponemos en el carrying
-        // DespuÈs lo dejamos en el suelo
+        // Despu√©s lo dejamos en el suelo
 
         if (getCarrying() != null) {
             dropCarryingItem();
@@ -2237,7 +2237,7 @@ public class Citizen extends LivingEntity implements Externalizable {
                     bEnDestino = (getCitizenData().getCarryingData().getCarrying().getX() == x && getCitizenData().getCarryingData().getCarrying().getY() == y && getCitizenData().getCarryingData().getCarrying().getZ() == z);
                 }
                 if (bEnDestino) {
-                    // Estamos en destino, soltamos el item lo ponemos operativo y se acabÛ la tarea
+                    // Estamos en destino, soltamos el item lo ponemos operativo y se acab√≥ la tarea
                     Cell cell = World.getCell(getCitizenData().getCarryingData().getCarrying().getCoordinates());
                     ItemManagerItem imi = ItemManager.getItem(getCarrying().getIniHeader());
                     if (cell.isEmpty() && Item.isCellAvailableForItem(imi, x, y, z, true, false)) {
@@ -2264,7 +2264,7 @@ public class Citizen extends LivingEntity implements Externalizable {
                         if (alPoints.size() > 0) {
                             setDestination(alPoints.get(0));
                         } else {
-                            // No se puede acceder, soltamos item y se acabÛ
+                            // No se puede acceder, soltamos item y se acab√≥
                             dropCarryingItem();
                             return;
                         }
@@ -2278,7 +2278,7 @@ public class Citizen extends LivingEntity implements Externalizable {
             }
         }
 
-		// Si llegamos aquÌ es que no tenemos item, estar· en el edificio, a˙n por construirse
+		// Si llegamos aqu√≠ es que no tenemos item, estar√° en el edificio, a√∫n por construirse
         // Obtenemos el edificio y el item
         Item item = null;
         Building building = Building.getBuilding(task.getPointIni());
@@ -2334,7 +2334,7 @@ public class Citizen extends LivingEntity implements Externalizable {
 		// Item no construido, procedemos a llevar los materiales al edificio
         // Primero de todo miramos si llevamos un material bueno encima y estamos en la casilla del edificio
         if (getCitizenData().getCarryingData().getCarrying() != null) {
-            // Llevamos algo encima, miramos si va bien para la construcciÛn
+            // Llevamos algo encima, miramos si va bien para la construcci√≥n
             if (alPrerequisites.contains(getCitizenData().getCarryingData().getCarrying().getIniHeader())) {
                 // Tenemos un material bueno, miramos si estamos en la casilla del edificio
                 if (x == p3dEntrance.x && y == p3dEntrance.y && z == p3dEntrance.z) {
@@ -2342,7 +2342,7 @@ public class Citizen extends LivingEntity implements Externalizable {
                     alPrerequisites.remove(alPrerequisites.indexOf(getCitizenData().getCarryingData().getCarrying().getIniHeader()));
                     setCarrying(null);
                 } else {
-                    // No estamos ahÌ, nos movemos
+                    // No estamos ah√≠, nos movemos
                     setDestination(p3dEntrance);
                 }
             } else {
@@ -2352,7 +2352,7 @@ public class Citizen extends LivingEntity implements Externalizable {
             return;
         }
 
-        // Buscamos el item m·s cercano que nos vaya bien
+        // Buscamos el item m√°s cercano que nos vaya bien
         Point3DShort p3dItem = Item.searchItem(false, getCoordinates(), UtilsIniHeaders.getIntsArray(alPrerequisites), true, Item.SEARCH_FALSE, Item.SEARCH_DOESNTMATTER, null, Game.getWorld ().getRestrictHaulEquippingLevel ());
 
         if (p3dItem == null) {
@@ -2383,7 +2383,7 @@ public class Citizen extends LivingEntity implements Externalizable {
                 }
 
             } else {
-                // Item por ahÌ
+                // Item por ah√≠
                 setDestination(p3dItem);
             }
         }
@@ -2427,7 +2427,7 @@ public class Citizen extends LivingEntity implements Externalizable {
                     // Primero miramos que la casilla actual no sea buena
                     if (!isGoodStockorContainerCell(item, getCoordinates())) {
 						// Si no es buena miramos el LOS
-                        // Miramos en LOS, haciendo "cÌrculos" desde donde est·
+                        // Miramos en LOS, haciendo "c√≠rculos" desde donde est√°
                         int iX, iY;
                         int x0 = getCoordinates().x;
                         int y0 = getCoordinates().y;
@@ -2494,10 +2494,10 @@ public class Citizen extends LivingEntity implements Externalizable {
             }
         }
 
-        // Creamos la tarea de DROP (se ejecutar· cuando llegue al destino)
+        // Creamos la tarea de DROP (se ejecutar√° cuando llegue al destino)
         Task task = new Task(Task.TASK_DROP);
         if (bFound) {
-            // Ponemos una marca para que no dejen el item a la primera casilla vacÌa
+            // Ponemos una marca para que no dejen el item a la primera casilla vac√≠a
             task.setParameter("P");
         }
         setCurrentTask(task);
@@ -2525,7 +2525,7 @@ public class Citizen extends LivingEntity implements Externalizable {
         if (cell.hasStockPile() || (cellImi != null && cellImi.isContainer())) {
 			// Pila o container encontrado
 
-            // Pila, para que sea v·lido no tiene que haber item en la celda
+            // Pila, para que sea v√°lido no tiene que haber item en la celda
             if (cell.hasStockPile() && cellImi == null) {
                 // Miramos que la pila sea buena
                 Stockpile pile = Stockpile.getStockpile(p3ds);
@@ -2679,7 +2679,7 @@ public class Citizen extends LivingEntity implements Externalizable {
                         }
                     }
                 } else {
-                    // No lelvamos item o no es el que toca ø?ø? ya estamos
+                    // No lelvamos item o no es el que toca ¬ø?¬ø? ya estamos
                     World.getCell(destPoint).setFlagOrders(false);
                     getCurrentCustomAction().getQueue().remove(0);
                 }
@@ -2784,11 +2784,11 @@ public class Citizen extends LivingEntity implements Externalizable {
                     int turns = Integer.parseInt(qi.getValue());
                     turns = (turns * 100) / speedUpPCT;
 
-					// 105% (o sea, m·s lento) si el aldeano no est· contento
+					// 105% (o sea, m√°s lento) si el aldeano no est√° contento
 //					if (getCitizenData ().getHappiness () < 20) {
 //						turns = (turns * 105) / 100;
 //					}
-                    // Nueva fÛrmula de happiness (de 0 a 50 la velocidad se ve afectada, de 50% a 100% m·s lento)
+                    // Nueva f√≥rmula de happiness (de 0 a 50 la velocidad se ve afectada, de 50% a 100% m√°s lento)
                     int iPCTHappiness = 100 - getCitizenData().getHappiness();
                     if (iPCTHappiness >= 50) {
                         turns = (turns * (100 + iPCTHappiness)) / 100;
@@ -2860,7 +2860,7 @@ public class Citizen extends LivingEntity implements Externalizable {
                     }
                 }
 
-                // Est· esperando
+                // Est√° esperando
                 if (getCurrentCustomAction().getQueueData().getWaitCounter() == 0) {
                     // Fin de la espera
                     getCurrentCustomAction().getQueueData().setWaitCounter(-1);
@@ -2886,7 +2886,7 @@ public class Citizen extends LivingEntity implements Externalizable {
                 // Pick
                 if (!((Item) entity).isLocked()) {
 					// Si es tarea de PICK lo pillamos y ya estamos, en otro caso ya estamos
-                    // Lo pillamos, si tenia algo en el carrying adiÛs muy buenas
+                    // Lo pillamos, si tenia algo en el carrying adi√≥s muy buenas
                     setCarrying((Item) cell.getEntity()); // Lo pillamos
                     cell.getEntity().delete(); // Lo borramos
                     todoOK = true;
@@ -2901,7 +2901,7 @@ public class Citizen extends LivingEntity implements Externalizable {
                     // Container
                     Container container = Game.getWorld().getContainer(entity.getID());
                     if (container != null) {
-                        // Lo pillamos, si tenia algo en el carrying adiÛs muy buenas
+                        // Lo pillamos, si tenia algo en el carrying adi√≥s muy buenas
                         Item it = container.removeItemWithPrerequisites(alPicks);
                         if (it != null) {
                             setCarrying(it); // Lo pillamos
@@ -2970,8 +2970,8 @@ public class Citizen extends LivingEntity implements Externalizable {
 
             // No hay item donde estamos, lo buscamos
             Point3DShort p3dCoordenadas = null;
-			// Antes de buscar miramos si tenemos algo bloqueado, en ese caso iremos ahÌ
-            // (para dar coherencia a la construcciÛn, que si no pueden construir un item en distintas mesas de carpintero por ejemplo)
+			// Antes de buscar miramos si tenemos algo bloqueado, en ese caso iremos ah√≠
+            // (para dar coherencia a la construcci√≥n, que si no pueden construir un item en distintas mesas de carpintero por ejemplo)
             if (getCurrentCustomAction().getQueueData().getItemIDCurrentPlace() != -1) {
                 Item it = Item.getItemByID(getCurrentCustomAction().getQueueData().getItemIDCurrentPlace());
                 if (it != null && it.isOperative() && alMoves.contains(it.getIniHeader())) {
@@ -3035,7 +3035,7 @@ public class Citizen extends LivingEntity implements Externalizable {
                 }
             }
 
-			// Si llega aquÌ es que tenemos que bloquear un item
+			// Si llega aqu√≠ es que tenemos que bloquear un item
             // No teniamos item bloqueado, lo buscamos normalmente
             Point3DShort p3dCoordenadas;
             if (qi.isUseSource() && getCurrentCustomAction().getEntityID() != -1) {
@@ -3075,7 +3075,7 @@ public class Citizen extends LivingEntity implements Externalizable {
         } else if (qi.getType() == QueueItem.TYPE_PICK_FRIENDLY) {
             getCurrentCustomAction().getQueueData().setLivingIDPick(-1);
 
-            // Miramos si est· en la celda actual
+            // Miramos si est√° en la celda actual
             LivingEntity le = null;
             ArrayList<String> alPicks = Utils.getArray(qi.getValue());
             if (qi.isUseSource() && getCurrentCustomAction().getEntityID() != -1) {
@@ -3094,7 +3094,7 @@ public class Citizen extends LivingEntity implements Externalizable {
 
             if (le != null) {
 				// Lo pillamos y ya estamos, en otro caso ya estamos
-                // Si tenia algo en el carrying adiÛs muy buenas
+                // Si tenia algo en el carrying adi√≥s muy buenas
                 setCarryingLiving(le); // Lo pillamos
                 le.delete(false); // Lo "borramos"
                 getCurrentCustomAction().getQueueData().setLastQueueItem(getCurrentCustomAction().getQueue().remove(0));
@@ -3143,7 +3143,7 @@ public class Citizen extends LivingEntity implements Externalizable {
             getCurrentCustomAction().getQueue().remove(0);
             getCurrentCustomAction().getQueueData().setLastQueueItem(null);
             Game.getWorld().setCoins(iAmmount);
-            if (Game.getWorld().getCoins() < 0) { // No deberÌa pasar
+            if (Game.getWorld().getCoins() < 0) { // No deber√≠a pasar
                 Game.getWorld().setCoins(0);
             }
         } else if (qi.getType() == QueueItem.TYPE_ADD_GOD_STATUS) {
@@ -3169,7 +3169,7 @@ public class Citizen extends LivingEntity implements Externalizable {
     private void doSoldierTasks() {
         int iSoldierState = getSoldierData().getState();
         if (iSoldierState == SoldierData.STATE_IN_A_GROUP) {
-            // Miramos el grupo en el que est·
+            // Miramos el grupo en el que est√°
             int iGroupState = Game.getWorld().getSoldierGroups().getGroup(getSoldierData().getGroup()).getState();
 
             if (iGroupState == SoldierGroupData.STATE_GUARD) {
@@ -3206,7 +3206,7 @@ public class Citizen extends LivingEntity implements Externalizable {
                         getSoldierData().setPatrolWaitTime(0);
                     }
 
-                    // Ya estamos, esperamos un ratito (media hora) y despuÈs vamos al siguiente patrol
+                    // Ya estamos, esperamos un ratito (media hora) y despu√©s vamos al siguiente patrol
                     if (getSoldierData().getPatrolWaitTime() == 0) {
                         // Patrol wait time a 0, vamos al siguiente
                         getSoldierData().setPatrolPointTarget(iIndexPatrol + 1);
@@ -3244,7 +3244,7 @@ public class Citizen extends LivingEntity implements Externalizable {
             if (getSoldierData().getTargetID() != -1) {
                 Citizen citTarget = (Citizen) World.getLivingEntityByID(getSoldierData().getTargetID());
                 if (citTarget != null) {
-					// Tenemos target, a por Èl
+					// Tenemos target, a por √©l
                     // Miramos si lo tenemos al lado
                     boolean bTargetClose = Math.abs(citTarget.getZ() - getZ()) <= 1 && Math.abs(citTarget.getY() - getY()) <= 1 && Math.abs(citTarget.getX() - getX()) <= 1;
 
@@ -3260,7 +3260,7 @@ public class Citizen extends LivingEntity implements Externalizable {
                     } else {
                         // No lo tenemos
                         if (World.getCell(citTarget.getCoordinates()).getAstarZoneID() != World.getCell(getCoordinates()).getAstarZoneID()) {
-                            // No est· en la zona, pacasa
+                            // No est√° en la zona, pacasa
                             getSoldierData().setTargetID(-1);
                         } else {
                             // A por el
@@ -3273,7 +3273,7 @@ public class Citizen extends LivingEntity implements Externalizable {
             } else {
                 // No tenemos target
                 if (getSoldierData().getCounter() < SoldierData.COUNTER_MAX_BOSS_AROUND) {
-                    // A˙n no toca buscar target
+                    // A√∫n no toca buscar target
                     getSoldierData().setCounter(getSoldierData().getCounter() + 1);
                     getSoldierData().setTargetID(-1);
                     moveAtRandom(getLivingEntityData().getMovePCTCurrent(), TYPE_CITIZEN);
@@ -3312,7 +3312,7 @@ public class Citizen extends LivingEntity implements Externalizable {
     }
 
     /**
-     * Hace las cosas necesarias para ejecutar una tarea genÈrica (chop/cut/dig)
+     * Hace las cosas necesarias para ejecutar una tarea gen√©rica (chop/cut/dig)
      *
      * @param task
      */
@@ -3335,9 +3335,9 @@ public class Citizen extends LivingEntity implements Externalizable {
         }
 
         // Miramos si ha llegado a destino
-        boolean bFirstTry = getPlacesIndex() == -1; // Significa que a˙n no ha intentado ir a ning˙n sitio del hotpoint
+        boolean bFirstTry = getPlacesIndex() == -1; // Significa que a√∫n no ha intentado ir a ning√∫n sitio del hotpoint
         if (bFirstTry) {
-            // Pondremos la place m·s cercana en el primer punto (esto evitar· movimientos raros como ir a minar un sitio dando toda la vuelta por un pasillo)
+            // Pondremos la place m√°s cercana en el primer punto (esto evitar√° movimientos raros como ir a minar un sitio dando toda la vuelta por un pasillo)
             ArrayList<Point3DShort> alPlaces = hp.getPlaces();
             if (alPlaces.size() > 1) {
                 int iIndexMenor = 0;
@@ -3367,12 +3367,12 @@ public class Citizen extends LivingEntity implements Externalizable {
             Point3DShort p3d = hp.getPlaces().get(getPlacesIndex());
 
             if (x != p3d.x || y != p3d.y || z != p3d.z) {
-                // No est· en destino, lo movemos
+                // No est√° en destino, lo movemos
 
                 if (!bFirstTry) { // Ya ha buscado camino y NO lo ha encontrado
                     setPlacesIndex(getPlacesIndex() + 1);
 
-                    // Si ya no hay m·s places es que este aldeano no puede llegar a destino, lo desligamos de la tarea y terminamos el turno
+                    // Si ya no hay m√°s places es que este aldeano no puede llegar a destino, lo desligamos de la tarea y terminamos el turno
                     if (getPlacesIndex() >= hp.getPlaces().size()) {
                         Game.getWorld().getTaskManager().removeCitizen(this);
                         return;
@@ -3383,7 +3383,7 @@ public class Citizen extends LivingEntity implements Externalizable {
 
                 setDestination(p3d, false, 0);
             } else {
-                // Est· en destino, actuamos
+                // Est√° en destino, actuamos
                 if (executeTask()) {
                     // Tarea terminada. Indicamos al manager que ya estamos y sacamos al aldeano de la lista
                     Game.getWorld().getTaskManager().setHotPointFinished(task, getHotPointIndex());
@@ -3448,8 +3448,8 @@ public class Citizen extends LivingEntity implements Externalizable {
     }
 
     /**
-     * Resta los contadores de comida y sueÒo, si muere de hambre retorna true,
-     * tambiÈn resta happiness (cada hora) en caso de hambre
+     * Resta los contadores de comida y sue√±o, si muere de hambre retorna true,
+     * tambi√©n resta happiness (cada hora) en caso de hambre
      */
     protected boolean updateEatSleep() {
         getCitizenData().setSleep(getCitizenData().getSleep() - 1);
@@ -3509,7 +3509,7 @@ public class Citizen extends LivingEntity implements Externalizable {
             }
 
             if (getCitizenData().getSleep() == 0) {
-                // Tiene sueÒo, que deje lo que tiene encima y lo sacamos de la tarea actual
+                // Tiene sue√±o, que deje lo que tiene encima y lo sacamos de la tarea actual
                 if (getCarrying() != null) {
                     dropCarryingItem();
                     return;
@@ -3531,11 +3531,11 @@ public class Citizen extends LivingEntity implements Externalizable {
     }
 
     /**
-     * Mira si el aldeano est· bajo de vida para ir a un hospital
+     * Mira si el aldeano est√° bajo de vida para ir a un hospital
      */
     protected void checkHealthPoints() {
         if (getLivingEntityData().getHealthPoints() <= getLivingEntityData().getHealthPointsMAXCurrent() / 3) { // <= 33% HP, vamos al hospital
-            // SÛlo si no est· comiendo / durmiendo, cur·ndose o luchando
+            // S√≥lo si no est√° comiendo / durmiendo, cur√°ndose o luchando
             // if (getCurrentTask () == null || (getCurrentTask ().getTask () != Task.TASK_EAT && getCurrentTask ().getTask () != Task.TASK_SLEEP && getCurrentTask ().getTask () != Task.TASK_HEAL && getCurrentTask ().getTask () != Task.TASK_FIGHT)) {
             if (getCurrentTask() == null) {
                 // Antes de sacarlo de la tarea y meterla la nueva miramos si existe un hospital con casillas libres
@@ -3593,12 +3593,12 @@ public class Citizen extends LivingEntity implements Externalizable {
     }
 
     /**
-     * Comprueba que una comida no estÈ "pillada" por alg˙n aldeano (pillada
+     * Comprueba que una comida no est√© "pillada" por alg√∫n aldeano (pillada
      * quiero decir que no haya un aldeano con tarea de EAT caminando hacia
      * ella)
      *
      * @param p3dItem Coordenada de la comida
-     * @param citID Aldeano que hace la comprobaciÛn
+     * @param citID Aldeano que hace la comprobaci√≥n
      * @return
      */
     public static boolean isCitizenWalkingToFood(Point3DShort p3dItem, int citID) {
@@ -3631,7 +3631,7 @@ public class Citizen extends LivingEntity implements Externalizable {
             if (p3dFull != null) {
                 p3d = p3dFull.toPoint3DShort();
                 if (p3d.equals(p3dItem)) {
-                    // Misma coordenada, quiz· es un container y tiene m·s comida, asÌ que miraremos que este aldeano no tenga ya comida en el carrying
+                    // Misma coordenada, quiz√° es un container y tiene m√°s comida, as√≠ que miraremos que este aldeano no tenga ya comida en el carrying
                     Item itemCarrying = citizen.getCarrying();
                     if (itemCarrying != null) {
                         // Tiene item, miramos si es "comible"
@@ -3651,7 +3651,7 @@ public class Citizen extends LivingEntity implements Externalizable {
     }
 
     /**
-     * Fills a contextual men˙ refering citizens of a cell
+     * Fills a contextual men√∫ refering citizens of a cell
      *
      * @param cell
      * @param sm
@@ -3659,7 +3659,7 @@ public class Citizen extends LivingEntity implements Externalizable {
     public static void fillMenu(Cell cell, SmartMenu sm) {
         Point3DShort p3d = cell.getCoordinates();
         if (cell.containsSpecificLiving(TYPE_CITIZEN) != null) {
-            // Equipar, miramos si hay objetos militares en el mundo, de paso ya hacemos una lista para poner en el men˙
+            // Equipar, miramos si hay objetos militares en el mundo, de paso ya hacemos una lista para poner en el men√∫
             Integer[] aItems = World.getItems().keySet().toArray(new Integer[0]);
             ArrayList<MilitaryItem> alHead = new ArrayList<MilitaryItem>(); // Head
             ArrayList<MilitaryItem> alBody = new ArrayList<MilitaryItem>(); // Body
@@ -3750,7 +3750,7 @@ public class Citizen extends LivingEntity implements Externalizable {
                             sm.addItem(new SmartMenu(SmartMenu.TYPE_TEXT, "Waiting " + citizen.isWaitingForPath(), null, null, null)); //$NON-NLS-1$
                         }
 
-                        // InformaciÛn del aldeano
+                        // Informaci√≥n del aldeano
                         if (citizen.getSoldierData().isSoldier()) {
                             if (citizen.getSoldierData().isSoldier() && citizen.getSoldierData().getState() == SoldierData.STATE_IN_A_GROUP && citizen.getSoldierData().getGroup() >= 0 && citizen.getSoldierData().getGroup() < SoldierGroups.MAX_GROUPS) {
                                 sm.addItem(new SmartMenu(SmartMenu.TYPE_TEXT, citizen.getCitizenData().getFullName() + Messages.getString("Citizen.6") + " (" + Game.getWorld().getSoldierGroups().getGroup(citizen.getSoldierData().getGroup()).getName() + ")", null, null, null, null, p3d.toPoint3D(), Color.YELLOW)); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
@@ -3877,7 +3877,7 @@ public class Citizen extends LivingEntity implements Externalizable {
                             // Groups
                             SoldierGroupData sgd;
                             for (int g = 0; g < SoldierGroups.MAX_GROUPS; g++) {
-                                // AÒadir a grupos existentes
+                                // A√±adir a grupos existentes
                                 sgd = Game.getWorld().getSoldierGroups().getGroup(g);
                                 if (iSoldierState != SoldierData.STATE_IN_A_GROUP || citizen.getSoldierData().getGroup() != sgd.getId()) {
                                     smChangeState.addItem(new SmartMenu(SmartMenu.TYPE_ITEM, sgd.getName(), null, CommandPanel.COMMAND_SOLDIER_SET_STATE, Integer.toString(citizen.getID()), Integer.toString(SoldierData.STATE_IN_A_GROUP), new Point3D(sgd.getId(), -1, -1)));
@@ -3962,10 +3962,10 @@ public class Citizen extends LivingEntity implements Externalizable {
      * hambre y la felicidad
      */
     public int getMalusSpeedPCT() {
-        // De momento sÛlo miramos lo hambriento que estÈ
+        // De momento s√≥lo miramos lo hambriento que est√©
         if (getCitizenData().getHungry() == 0 && getCitizenData().getHungryEating() < 0) {
             if (getCitizenData().getHungryEating() < -(World.TIME_MODIFIER_DAY)) {
-                // A las 24 horas ya camina el m·ximo de lento (20%)
+                // A las 24 horas ya camina el m√°ximo de lento (20%)
                 return 20;
             } else {
                 int iHE = World.TIME_MODIFIER_DAY + getCitizenData().getHungryEating(); // Es una suma pero el hungryEating es negativo
@@ -3984,11 +3984,11 @@ public class Citizen extends LivingEntity implements Externalizable {
     }
 
     /**
-     * Este mÈtodo es para notificar a una living entity que ha sido golpeado,
+     * Este m√©todo es para notificar a una living entity que ha sido golpeado,
      * se le pasa el atacante
      *
      * @param le El atacante
-     * @param bHitted Indica si le ha pegado o sÛlo lo ha intentado
+     * @param bHitted Indica si le ha pegado o s√≥lo lo ha intentado
      */
     public void hitted(LivingEntity le, boolean bHitted, int iDamage) {
         super.hitted(le, bHitted, iDamage);
@@ -4015,7 +4015,7 @@ public class Citizen extends LivingEntity implements Externalizable {
             }
         }
 
-        // TambiÈn buscamos hÈroes con moral alta
+        // Tambi√©n buscamos h√©roes con moral alta
         Hero hero;
         for (int i = 0; i < World.getHeroIDs().size(); i++) {
             hero = (Hero) World.getLivingEntityByID(World.getHeroIDs().get(i));

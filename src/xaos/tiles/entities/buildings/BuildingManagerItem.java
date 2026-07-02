@@ -97,7 +97,7 @@ public class BuildingManagerItem {
             StringBuffer sBuffer = new StringBuffer();
             sBuffer.append(Building.GROUND_ENTRANCE);
             for (int i = 1; i < (getHeight() * getWidth()); i++) {
-                // Las demás 0 -> No transitable
+                // Las demÃ¡s 0 -> No transitable
                 sBuffer.append(Building.GROUND_NON_TRANSITABLE);
             }
 

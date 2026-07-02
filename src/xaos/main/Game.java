@@ -196,7 +196,7 @@ public final class Game {
 		}
 		userFolder = fUserFolder.getAbsolutePath ();
 
-		// Música?
+		// MÃºsica?
 		musicON = Boolean.parseBoolean (Towns.getPropertiesString ("MUSIC")); //$NON-NLS-1$
 		FXON = Boolean.parseBoolean (Towns.getPropertiesString ("FX")); //$NON-NLS-1$
 
@@ -291,7 +291,7 @@ public final class Game {
 		// Cargamos las texturas
 		loadAllIniTextures ();
 
-		// Esto aquí, después de cargar las texturas, que si no empieza el contador del SMP logo a bajar antes de tiempo
+		// Esto aquÃ­, despuÃ©s de cargar las texturas, que si no empieza el contador del SMP logo a bajar antes de tiempo
 		panelMainMenu = new MainMenuPanel (0, 0, UtilsGL.getWidth (), UtilsGL.getHeight ());
 		panelMainMenu.setActive (true);
 
@@ -412,8 +412,8 @@ public final class Game {
 	/**
 	 * Empieza una partida desde 0
 	 * 
-	 * @param campaignID ID de la campaña, null en caso de partida normal
-	 * @param missionID ID de la misión, null en caso de partida normal
+	 * @param campaignID ID de la campaÃ±a, null en caso de partida normal
+	 * @param missionID ID de la misiÃ³n, null en caso de partida normal
 	 */
 	public static void startGame (String campaignID, String missionID) {
 		File fMapa;
@@ -445,7 +445,7 @@ public final class Game {
 		long lTime;
 		String sLog = null;
 
-		// Aquí mismo borro los alphas
+		// AquÃ­ mismo borro los alphas
 		UtilsGL.clearCachedAlphas ();
 
 		// Menus
@@ -575,7 +575,7 @@ public final class Game {
 		}
 		citizenGroups.setCitizensWithoutGroup (alCitsSinGrupo);
 
-		// Esto es un parche para solventar un bug. Antes no se borraban los ciudadanos de los job grupos al morir, y podría estar corrupto
+		// Esto es un parche para solventar un bug. Antes no se borraban los ciudadanos de los job grupos al morir, y podrÃ­a estar corrupto
 		citizenGroups.purgeNonExistentCitizens ();
 
 		// Bury
@@ -606,7 +606,7 @@ public final class Game {
 		Thread t = new Thread (new AStarQueue ());
 		t.start ();
 
-		// Paramos la música del main menú y arrancamos la música in-game
+		// Paramos la mÃºsica del main menÃº y arrancamos la mÃºsica in-game
 		UtilsAL.stop (UtilsAL.SOURCE_MUSIC_MAINMENU);
 		UtilsAL.play (UtilsAL.SOURCE_MUSIC_INGAME);
 
@@ -626,7 +626,7 @@ public final class Game {
 						Log.log (Log.LEVEL_ERROR, Messages.getString ("Game.14") + " [" + sCampaignID + "][" + sMissionID + "]", "Game"); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$ //$NON-NLS-5$
 						Game.exit ();
 						// } else {
-						// // Cargando una partida y no encuentra la campaña, ponemos todo vacío y pacasa
+						// // Cargando una partida y no encuentra la campaÃ±a, ponemos todo vacÃ­o y pacasa
 						//                    MissionData md = new MissionData(""); //$NON-NLS-1$
 						// missionPanel.setMissionData(md);
 					}
@@ -692,7 +692,7 @@ public final class Game {
 		Point3DShort p3ds;
 		int iBuryStartingZ = World.MAP_NUM_LEVELS_OUTSIDE + 2;
 		boolean bContinue = iBuryStartingZ < (World.MAP_DEPTH - 1);
-		while (bContinue) { // Nada de burying en el último nivel
+		while (bContinue) { // Nada de burying en el Ãºltimo nivel
 			// Obtenemos un bury al azar y cargamos los datos
 			BuryData bd = Utils.getRandomBuryData (sServerName);
 
@@ -773,7 +773,7 @@ public final class Game {
 					} else if (iYRandom > iMinY) {
 						iYMove = (iYRandom - iMinY);
 					}
-					// Comprobación pq no estoy seguro que se pueda salir de rango
+					// ComprobaciÃ³n pq no estoy seguro que se pueda salir de rango
 					if ((iMinX + iXMove) < 0 || (iMaxX + iXMove) >= World.MAP_WIDTH) {
 						iXMove = 0;
 					}
@@ -797,7 +797,7 @@ public final class Game {
 
 						if (!DungeonGenerator.hasFluidsAround (cells, p3dsAux.x, p3dsAux.y, p3dsAux.z)) {
 							if (!cells[p3dsAux.x][p3dsAux.y][p3dsAux.z].isMined ()) {
-								// Si no está minada la minamos
+								// Si no estÃ¡ minada la minamos
 								DungeonGenerator.removeBlock (cells, p3dsAux.x, p3dsAux.y, p3dsAux.z);
 							}
 							cells[p3dsAux.x][p3dsAux.y][p3dsAux.z].setBury (true);
@@ -808,7 +808,7 @@ public final class Game {
 						}
 					}
 
-					// Añadimos los datos
+					// AÃ±adimos los datos
 					int iHeight = (iMaxZ - iMinZ) + 1;
 					newBuryData.setHeight (iHeight);
 					newBuryData.setHash (hashPoints);
@@ -1051,7 +1051,7 @@ public final class Game {
 
 
 	/**
-	 * Obtiene eventos del mouse y llama al "panel" correspondiente según donde sea el click
+	 * Obtiene eventos del mouse y llama al "panel" correspondiente segÃºn donde sea el click
 	 */
 	private void checkMouseEvents () {
 		int mouseX = Mouse.getEventX ();
@@ -1078,14 +1078,14 @@ public final class Game {
 				// }
 
 				if (mouseButton == 0) {
-					// Botón izquierdo pulsado, miramos a qué panel pertenece y llamamos a su función mousePressed (x, y) (con x e y relativas al panel)
+					// BotÃ³n izquierdo pulsado, miramos a quÃ© panel pertenece y llamamos a su funciÃ³n mousePressed (x, y) (con x e y relativas al panel)
 					// Primero miramos que no haya un contextmenu
 					if (getCurrentState () == STATE_SHOWING_CONTEXT_MENU) {
-						// Context menú, miramos donde clica
+						// Context menÃº, miramos donde clica
 						if (mouseX >= getCurrentContextMenu ().getX () && mouseX < (getCurrentContextMenu ().getX () + getCurrentContextMenu ().getWidth ()) && mouseY >= getCurrentContextMenu ().getY () && mouseY < (getCurrentContextMenu ().getY () + getCurrentContextMenu ().getHeight ())) {
 							getCurrentContextMenu ().mousePressed (mouseX - getCurrentContextMenu ().getX (), mouseY - getCurrentContextMenu ().getY ());
 						} else {
-							// Cierra el menú
+							// Cierra el menÃº
 							deleteCurrentContextMenu ();
 						}
 					} else {
@@ -1101,7 +1101,7 @@ public final class Game {
 							getPanelUI ().mousePressed (mouseX, mouseY, mouseButton);
 						}
 					} else {
-						// Botón derecho pulsado, cancelamos tarea (si hay)
+						// BotÃ³n derecho pulsado, cancelamos tarea (si hay)
 						// y miramos que contextMenu cargar
 						if (getCurrentState () == STATE_CREATING_TASK) {
 							deleteCurrentTask ();
@@ -1143,7 +1143,7 @@ public final class Game {
 		// Bordes (scroll de mouse)
 		if (isMouseScrollON () && Mouse.isInsideWindow ()) {
 			if (!getPanelMainMenu ().isActive ()) {
-				final int BORDE = UIPanel.PIXELS_TO_BORDER; // Si se acerca X pixels al borde moveremos la cámara
+				final int BORDE = UIPanel.PIXELS_TO_BORDER; // Si se acerca X pixels al borde moveremos la cÃ¡mara
 				if (mouseX < BORDE) {
 					if (Game.isMouseScrollEarsON () || !UIPanel.isMouseCloseToOpenCloseProductionIcon (mouseX, mouseY)) {
 						if (getCurrentState () == STATE_SHOWING_CONTEXT_MENU) {
@@ -1155,7 +1155,7 @@ public final class Game {
 						}
 					}
 				} else if (mouseX > (UtilsGL.getWidth () - BORDE - 1)) {
-					// Miramos que no esté cerca del botón de abrir/cerrar el menu
+					// Miramos que no estÃ© cerca del botÃ³n de abrir/cerrar el menu
 					if (Game.isMouseScrollEarsON () || !UIPanel.isMouseCloseToOpenCloseMenuIcon (mouseX, mouseY)) {
 						if (getCurrentState () == STATE_SHOWING_CONTEXT_MENU) {
 							if (!(mouseX >= getCurrentContextMenu ().getX () && mouseX < (getCurrentContextMenu ().getX () + getCurrentContextMenu ().getWidth ()) && mouseY >= getCurrentContextMenu ().getY () && mouseY < (getCurrentContextMenu ().getY () + getCurrentContextMenu ().getHeight ()))) {
@@ -1201,12 +1201,12 @@ public final class Game {
 
 				// Main menu
 				if (getPanelMainMenu ().isActive ()) {
-					// Función
+					// FunciÃ³n
 					int iFN = UtilsKeyboard.getFN (iKEY);
 					if (iFN == UtilsKeyboard.FN_TOGGLE_FULLSCREEN) {
 						UtilsGL.toggleFullScreen ();
 					} else {
-						// Ha tecleado algo en el main menu, quizá seteando el nombre del savegame
+						// Ha tecleado algo en el main menu, quizÃ¡ seteando el nombre del savegame
 						getPanelMainMenu ().keyPressed (iKEY);
 					}
 					continue;
@@ -1231,7 +1231,7 @@ public final class Game {
 						// } else if (iKEY == Keyboard.KEY_ESCAPE && getCurrentState() == STATE_SHOWING_INFO_PANEL) {
 						// closeInfoPanel();
 					} else {
-						// Función
+						// FunciÃ³n
 						int iFN = UtilsKeyboard.getFN (iKEY);
 
 						if (iFN == UtilsKeyboard.FN_SHOW_MISSION) {
@@ -1243,7 +1243,7 @@ public final class Game {
 							// continue;
 							// }
 							// if (getCurrentState() != STATE_SHOWING_INFO_PANEL) {
-							// // Panel de misión
+							// // Panel de misiÃ³n
 							// MissionPanel panel = new MissionPanel(getWorld().getCampaignID(), getWorld().getMissionID());
 							// if (getCurrentMissionData () != null && getCurrentMissionData ().getText() != null && getCurrentMissionData ().getObjectives() != null && getCurrentMissionData ().getObjectives().size() > 0) {
 							// showInfoPanel(panel);
@@ -1310,9 +1310,9 @@ public final class Game {
 		// long fps = 0;
 		// long lastFPS = (Sys.getTime () * 1000) / Sys.getTimerResolution ();
 
-		// Hacemos sonar la música del main menú
+		// Hacemos sonar la mÃºsica del main menÃº
 		UtilsAL.play (UtilsAL.SOURCE_MUSIC_MAINMENU);
-//		int checkTrigger = (4 * FPS_INGAME); // Para que lo mire nada más empezar, en el primer ciclo
+//		int checkTrigger = (4 * FPS_INGAME); // Para que lo mire nada mÃ¡s empezar, en el primer ciclo
 //		boolean bVictory = false;
 
 //		int iMissionCompletedWidth = (UtilFont.getWidth (Messages.getString ("Game.2"))) / 2; //$NON-NLS-1$
@@ -1380,14 +1380,14 @@ public final class Game {
 			// lastFPS += 1000;
 			// }
 			// fps++;
-			// Pongo este método pq dice la doc de LWJGL que actualiza los timers y tiene que llamarse lo más posible
+			// Pongo este mÃ©todo pq dice la doc de LWJGL que actualiza los timers y tiene que llamarse lo mÃ¡s posible
 			Sys.getTimerResolution ();
 
 			// Render
 			// if (getPanelMainMenu ().isActive () || (world != null && World.getCitizenIDs ().size () == 0)) {
 			render ();
 
-			// Misión completada?
+			// MisiÃ³n completada?
 /*
 			if (bVictory) {
 				GL11.glBindTexture (GL11.GL_TEXTURE_2D, Game.TEXTURE_FONT_ID);
@@ -1781,7 +1781,7 @@ public final class Game {
 	private static void takeScreenshot () {
 		takeScreenshot = false;
 
-		// Buscamos un nombre válido
+		// Buscamos un nombre vÃ¡lido
 		File file = null;
 		boolean bNameFound = false;
 		int iNumber = 1;

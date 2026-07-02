@@ -239,7 +239,7 @@ public final class UtilsGL {
 	// byte[] texturePixels = imageData.imagePixels;
 	// byte[] texturePixels2 = new byte[texturePixels.length];
 	//
-	// // Giramos los pixels pq sale al revés
+	// // Giramos los pixels pq sale al revÃ©s
 	// int iPixel1, iPixel2;
 	// for (int x = 0; x < 16; x++) {
 	// for (int y = 0; y < 16; y++) {
@@ -586,7 +586,7 @@ public final class UtilsGL {
 
 		ImageData imageData = null;
 		try {
-			// Primero miramos que no estén en alguna carpeta de mod
+			// Primero miramos que no estÃ©n en alguna carpeta de mod
 			File fUserFolder = new File (Game.getUserFolder ());
 			if (fUserFolder.exists () && fUserFolder.isDirectory ()) {
 				ArrayList<String> alMods = Game.getModsLoaded ();
@@ -976,7 +976,7 @@ public final class UtilsGL {
 
 
 	public static boolean[][] generateAlpha (boolean[][] alphaArray, int width, int height) {
-		// Si llega aquí es que es un tamaño personalizado
+		// Si llega aquÃ­ es que es un tamaÃ±o personalizado
 		boolean[][] alphaPersonal = new boolean [width] [height];
 		float relationW = (float) alphaArray.length / (float) width;
 		float relationH = (float) alphaArray[0].length / (float) height;
@@ -1049,7 +1049,7 @@ public final class UtilsGL {
 
 
 	/**
-	 * Cambia la textura Y añade brillo
+	 * Cambia la textura Y aÃ±ade brillo
 	 * 
 	 * @param iTexture
 	 * @return la textura seteada
@@ -1108,7 +1108,7 @@ public final class UtilsGL {
 
 
 	/**
-	 * Cambia la textura Y añade brillo
+	 * Cambia la textura Y aÃ±ade brillo
 	 * 
 	 * @param iTexture
 	 * @return la textura seteada

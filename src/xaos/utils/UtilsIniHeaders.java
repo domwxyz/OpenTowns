@@ -153,7 +153,7 @@ public class UtilsIniHeaders {
     }
 
     /**
-     * Indica si el ID pasado est· en la lista, y devuelve la posiciÛn. -1 en
+     * Indica si el ID pasado est√° en la lista, y devuelve la posici√≥n. -1 en
      * caso de no encontrarlo
      *
      * @return

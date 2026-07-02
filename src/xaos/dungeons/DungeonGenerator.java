@@ -59,7 +59,7 @@ public class DungeonGenerator {
             }
         }
 
-        // Autómata (5 iteraciones)
+        // AutÃ³mata (5 iteraciones)
         for (int i = 0; i < 4; i++) {
             // Igualamos
             for (int x = 0; x < World.MAP_WIDTH; x++) {
@@ -108,7 +108,7 @@ public class DungeonGenerator {
     private static void generateDungeonRooms(Cell[][][] cells, int iLevel) {
         boolean[][] cellsMain = new boolean[World.MAP_WIDTH][World.MAP_HEIGHT];
 
-        // Metemos la primera room de 5x5 en un sitio sin líquidos
+        // Metemos la primera room de 5x5 en un sitio sin lÃ­quidos
         final int ROOM_WIDTH = 5;
         final int ROOM_HEIGHT = 5;
         int xRoom, yRoom;
@@ -116,7 +116,7 @@ public class DungeonGenerator {
             xRoom = Utils.getRandomBetween(ROOM_WIDTH, World.MAP_WIDTH - 1 - ROOM_WIDTH);
             yRoom = Utils.getRandomBetween(ROOM_WIDTH, World.MAP_WIDTH - 1 - ROOM_WIDTH);
 
-            // Miro que no haya líquidos
+            // Miro que no haya lÃ­quidos
             boolean bLiquids = false;
             liquidos:
             for (int x = xRoom; x < (xRoom + ROOM_WIDTH); x++) {
@@ -140,7 +140,7 @@ public class DungeonGenerator {
             }
         }
 
-        // Ahora vamos generando pasillos y rooms a partir de ésta
+        // Ahora vamos generando pasillos y rooms a partir de Ã©sta
         generateDungeonRooms(cells, cellsMain, xRoom, yRoom, ROOM_WIDTH, ROOM_HEIGHT, iLevel);
 
         // Quitamos los blocks
@@ -155,7 +155,7 @@ public class DungeonGenerator {
     }
 
     /**
-     * Genera pasillos y habitaciones a partir de una habitación
+     * Genera pasillos y habitaciones a partir de una habitaciÃ³n
      *
      * @param cells
      * @param cellsCopia
@@ -166,8 +166,8 @@ public class DungeonGenerator {
      * @param iLevel
      */
     private static void generateDungeonRooms(Cell[][][] cells, boolean[][] cellsCopia, int roomX, int roomY, int roomWidth, int roomHeight, int iLevel) {
-		// Pasillos en las 4 direcciones y después room al final de cada pasillo
-        // Se llamará recursivamente hasta que no quepan más
+		// Pasillos en las 4 direcciones y despuÃ©s room al final de cada pasillo
+        // Se llamarÃ¡ recursivamente hasta que no quepan mÃ¡s
 
         int xNorth = -1, xSouth = -1, yEast = -1, yWest = -1;
         int xNorthLength = 0, xSouthLength = 0, yEastLength = 0, yWestLength = 0;
@@ -180,7 +180,7 @@ public class DungeonGenerator {
         final int ROOM_HEIGHT_MAX = 15;
 
 		// Para cada punto cardinal miramos si cabe un pasillo
-        // El orden (n, s, e, o) será aleatorio, usamos un array de ints (1=N, 2=S, 4=E, 8=O)
+        // El orden (n, s, e, o) serÃ¡ aleatorio, usamos un array de ints (1=N, 2=S, 4=E, 8=O)
         int[] orden = new int[4];
         while ((orden[0] + orden[1] + orden[2] + orden[3]) != 15) { // Truquito para tener los 4 puntos
             orden[0] = Utils.getRandomBetween(1, 8);
@@ -367,7 +367,7 @@ public class DungeonGenerator {
 
     /**
      * Intenta meter una room en el sitio pasado, si lo consigue llama al
-     * generateDungeonRooms(....) para que meta pasillos, más rooms, ....
+     * generateDungeonRooms(....) para que meta pasillos, mÃ¡s rooms, ....
      *
      * @param cells
      * @param cellsCopia
@@ -382,7 +382,7 @@ public class DungeonGenerator {
             return false;
         }
 
-        // Habitación dentro del mapa, comprobamos que ninguna casilla ya está ocupada o tenga fluidos alrededor
+        // HabitaciÃ³n dentro del mapa, comprobamos que ninguna casilla ya estÃ¡ ocupada o tenga fluidos alrededor
         boolean bOK = true;
         room1:
         for (int x = roomX; x < (roomX + roomWidth); x++) {
@@ -395,14 +395,14 @@ public class DungeonGenerator {
         }
 
         if (bOK) {
-            // La habitación cabe de guais, la metemos
+            // La habitaciÃ³n cabe de guais, la metemos
             for (int x = roomX; x < (roomX + roomWidth); x++) {
                 for (int y = roomY; y < (roomY + roomHeight); y++) {
                     cellsCopia[x][y] = true;
                 }
             }
 
-            // Llamamos al generateDungeon (...) para que genere pasillos y más rooms
+            // Llamamos al generateDungeon (...) para que genere pasillos y mÃ¡s rooms
             generateDungeonRooms(cells, cellsCopia, roomX, roomY, roomWidth, roomHeight, iLevel);
             return true;
         }
@@ -411,7 +411,7 @@ public class DungeonGenerator {
     }
 
     /**
-     * Devuelve el número de vecinos discovereds Se usa en la generación de
+     * Devuelve el nÃºmero de vecinos discovereds Se usa en la generaciÃ³n de
      * dungeons
      *
      * @param cellsCopia Array de booleans indicando los discovered
@@ -429,7 +429,7 @@ public class DungeonGenerator {
                         iDiscovereds++;
                     }
                 } else {
-                    // Fuera del mapa, sólo el 20% son discovereds
+                    // Fuera del mapa, sÃ³lo el 20% son discovereds
                     if (Utils.getRandomBetween(1, 5) == 1) {
                         iDiscovereds++;
                     }

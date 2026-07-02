@@ -84,7 +84,7 @@ public final class UtilsAL {
      * Carga un fichero de audio en la hash
      *
      * @param sKey
-     * @param sFile Fichero, si se le pasa null (o vacío) no pasa nada, mete
+     * @param sFile Fichero, si se le pasa null (o vacÃ­o) no pasa nada, mete
      * null en la hash
      * @return
      */

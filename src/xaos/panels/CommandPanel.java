@@ -815,8 +815,8 @@ public final class CommandPanel {
                 task.setPointIni(p3dDirect);
                 Game.getWorld().getTaskManager().addTask(task);
             } else if (sCommand.equals(COMMAND_CUSTOM_ACTION_DIRECT_LIVING)) {
-				// Como esto es en diferido, quiz· el usuario hace botÛn derecho, deja pasar el tiempo y luego clica
-                // AsÌ que buscamos las coordenadas actuales de la living
+				// Como esto es en diferido, quiz√° el usuario hace bot√≥n derecho, deja pasar el tiempo y luego clica
+                // As√≠ que buscamos las coordenadas actuales de la living
                 LivingEntity le = World.getLivingEntityByID(Integer.parseInt(sParameter2));
                 if (le != null) {
                     Game.createTask(Task.TASK_CUSTOM_ACTION);
@@ -827,8 +827,8 @@ public final class CommandPanel {
                     Game.getCurrentTask().setPoint(le.getCoordinates().toPoint3D());
                 }
             } else if (sCommand.equals(COMMAND_CUSTOM_ACTION_DIRECT_ITEM)) {
-				// Como esto es en diferido, quiz· el usuario hace botÛn derecho, deja pasar el tiempo y luego clica
-                // AsÌ que buscamos las coordenadas actuales de la living
+				// Como esto es en diferido, quiz√° el usuario hace bot√≥n derecho, deja pasar el tiempo y luego clica
+                // As√≠ que buscamos las coordenadas actuales de la living
                 Item it = Item.getItemByID(Integer.parseInt(sParameter2));
                 if (it != null) {
                     Game.createTask(Task.TASK_CUSTOM_ACTION);
@@ -1024,7 +1024,7 @@ public final class CommandPanel {
 //				Utils.saveOptions ();
             } else if (sCommand.equals(COMMAND_MM_NEWGAME_SET_SAVE_NAME)) {
                 MainMenuPanel.useBuryTemporary = true;
-                // Si tiene el par·metro del point, ahÌ indica el n˙mero de servidor a usar
+                // Si tiene el par√°metro del point, ah√≠ indica el n√∫mero de servidor a usar
                 if (p3dDirect != null) {
                     Game.setServerToUse(p3dDirect.x);
                 } else {
@@ -1279,7 +1279,7 @@ public final class CommandPanel {
 
     /**
      * Limpia todos los datos (se usa cuando se sale de la partida y se va al
-     * men˙ principal)
+     * men√∫ principal)
      */
     public void clear() {
         currentMenu = null;

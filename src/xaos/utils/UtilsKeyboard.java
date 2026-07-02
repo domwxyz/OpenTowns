@@ -213,10 +213,10 @@ public final class UtilsKeyboard {
     }
 
     /**
-     * Retorna la función a partir de la tecla pulsada o -1 si no se encuentra
+     * Retorna la funciÃ³n a partir de la tecla pulsada o -1 si no se encuentra
      *
      * @param key Tecla
-     * @return la función a partir de la tecla pulsada o -1 si no se encuentra
+     * @return la funciÃ³n a partir de la tecla pulsada o -1 si no se encuentra
      */
     public static int getFN(int key) {
         for (int i = 0; i < shortcuts.length; i++) {
@@ -270,9 +270,9 @@ public final class UtilsKeyboard {
     }
 
     /**
-     * Indica si el usuario está pulsando alguna tecla de la función pasadas
+     * Indica si el usuario estÃ¡ pulsando alguna tecla de la funciÃ³n pasadas
      *
-     * @return true si el usuario está pulsando alguna tecla de la función
+     * @return true si el usuario estÃ¡ pulsando alguna tecla de la funciÃ³n
      * pasadas
      */
     public static boolean isFNKeyDown(int fn) {

@@ -24,7 +24,7 @@ public class LivingEntityData implements Externalizable {
 
     private transient String name;
 
-    private int healthPoints; // …ste va aparte pq los items no lo modifican. Modifican el healthPointsMAX.
+    private int healthPoints; // √âste va aparte pq los items no lo modifican. Modifican el healthPointsMAX.
 
     private int attackBase;
     private int attackSpeedBase;
@@ -254,7 +254,7 @@ public class LivingEntityData implements Externalizable {
     }
 
     public String getHealthStatus() {
-        // …sto nos dar· un n˙mero entre 0 (casi muerto) y 10 (vida m·xima)
+        // √âsto nos dar√° un n√∫mero entre 0 (casi muerto) y 10 (vida m√°xima)
         int iStatus;
         if (getHealthPointsMAXCurrent() <= 0) {
             iStatus = 0;
@@ -290,10 +290,10 @@ public class LivingEntityData implements Externalizable {
     }
 
     /**
-     * Setea los modificadores seg˙n lo que lleve puesto
+     * Setea los modificadores seg√∫n lo que lleve puesto
      *
      * @param mi
-     * @param level Se le pasa 0 o el nivel del hÈroe
+     * @param level Se le pasa 0 o el nivel del h√©roe
      */
     public void setModifiers(LivingEntity le) {
         int level = 0;
@@ -363,7 +363,7 @@ public class LivingEntityData implements Externalizable {
     }
 
     /**
-     * Setea los modificadores seg˙n un objeto dado, mete efectos si hace falta
+     * Setea los modificadores seg√∫n un objeto dado, mete efectos si hace falta
      * pero no les activa los modificadores
      *
      * @param mi Objeto
@@ -386,7 +386,7 @@ public class LivingEntityData implements Externalizable {
                 EffectManagerItem emi;
                 for (int i = 0, n = imi.getWearEffects().size(); i < n; i++) {
                     emi = EffectManager.getItem(imi.getWearEffects().get(i));
-                    if (emi != null) { // DeberÌa
+                    if (emi != null) { // Deber√≠a
                         le.addEffect(emi, false);
                     }
                 }

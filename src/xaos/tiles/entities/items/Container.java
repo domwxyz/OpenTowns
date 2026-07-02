@@ -58,7 +58,7 @@ public class Container implements Externalizable {
 	/**
 	 * Refresca el contenido del container
 	 * 
-	 * @return true si el container aún existe en el mundo
+	 * @return true si el container aÃºn existe en el mundo
 	 */
 	public boolean refreshTransients () {
 		boolean itemOnWorld = Item.getItemByID (itemID) != null;
@@ -69,7 +69,7 @@ public class Container implements Externalizable {
 		}
 
 		if (!itemOnWorld) {
-			// Item no está en el mundo, miramos el carrying de los citizens
+			// Item no estÃ¡ en el mundo, miramos el carrying de los citizens
 			Citizen citizen;
 			for (int i = 0; i < World.getCitizenIDs ().size (); i++) {
 				citizen = (Citizen) World.getLivingEntityByID (World.getCitizenIDs ().get (i));
@@ -102,7 +102,7 @@ public class Container implements Externalizable {
 		ItemManagerItem imiInside;
 		for (int i = 0; i < itemsInside.size (); i++) {
 			itemsInside.get (i).refreshTransients ();
-			Item.addItem (itemsInside.get (i)); // Para que sume 1 al número de items, ya que el item no existe realmente
+			Item.addItem (itemsInside.get (i)); // Para que sume 1 al nÃºmero de items, ya que el item no existe realmente
 
 			// Space left
 			imiInside = ItemManager.getItem (itemsInside.get (i).getIniHeader ());
@@ -132,13 +132,13 @@ public class Container implements Externalizable {
 
 
 	/**
-	 * Añade un item al container si o si, no chequea si cabe ni si es otro container ni nada
+	 * AÃ±ade un item al container si o si, no chequea si cabe ni si es otro container ni nada
 	 * 
 	 * @param item
 	 */
 	public void addItem (Item item) {
 		itemsInside.add (item);
-		Item.addItem (item); // Para que sume 1 al número de items, ya que el item no existe realmente
+		Item.addItem (item); // Para que sume 1 al nÃºmero de items, ya que el item no existe realmente
 		World.setTownValue (World.getTownValue () + PricesManager.getPrice (item));
 		Item itemContainer = Item.getItemByID (getItemID ());
 		if (itemContainer != null) {
@@ -149,7 +149,7 @@ public class Container implements Externalizable {
 
 
 	/**
-	 * Indica si hay items que no deben ir ahí
+	 * Indica si hay items que no deben ir ahÃ­
 	 * 
 	 * @return
 	 */
@@ -176,7 +176,7 @@ public class Container implements Externalizable {
 		for (int i = 0; i < itemsInside.size (); i++) {
 			if (itemsInside.get (i).getID () == iID) {
 				Item item = itemsInside.remove (i);
-				Item.removeItem (item); // Para que reste 1 al número de items, ya que el item no existe realmente
+				Item.removeItem (item); // Para que reste 1 al nÃºmero de items, ya que el item no existe realmente
 				World.setTownValue (World.getTownValue () - PricesManager.getPrice (item));
 				setWrongItemsInside (hasWrongItems ());
 
@@ -202,7 +202,7 @@ public class Container implements Externalizable {
 				imi = ItemManager.getItem (itemsInside.get (i).getIniHeader ());
 				if (imi.getLocation () == iLocation) {
 					Item item = itemsInside.remove (i);
-					Item.removeItem (item); // Para que reste 1 al número de items, ya que el item no existe realmente
+					Item.removeItem (item); // Para que reste 1 al nÃºmero de items, ya que el item no existe realmente
 					World.setTownValue (World.getTownValue () - PricesManager.getPrice (item));
 					setWrongItemsInside (hasWrongItems ());
 
@@ -217,7 +217,7 @@ public class Container implements Externalizable {
 
 
 	/**
-	 * Elimina un item del container y lo devuelve basándose en una lista de iniheaders
+	 * Elimina un item del container y lo devuelve basÃ¡ndose en una lista de iniheaders
 	 * 
 	 * @param iID ID del item a devolver
 	 * @return item del container o null si no lo encuentra
@@ -226,7 +226,7 @@ public class Container implements Externalizable {
 		for (int i = 0; i < itemsInside.size (); i++) {
 			if (alPrerequisites.contains (itemsInside.get (i).getIniHeader ())) {
 				Item item = itemsInside.remove (i);
-				Item.removeItem (item); // Para que reste 1 al número de items, ya que el item no existe realmente
+				Item.removeItem (item); // Para que reste 1 al nÃºmero de items, ya que el item no existe realmente
 				World.setTownValue (World.getTownValue () - PricesManager.getPrice (item));
 				setWrongItemsInside (hasWrongItems ());
 
@@ -240,7 +240,7 @@ public class Container implements Externalizable {
 
 
 	/**
-	 * Elimina un item del container y lo devuelve basándose en una lista de iniheaders
+	 * Elimina un item del container y lo devuelve basÃ¡ndose en una lista de iniheaders
 	 * 
 	 * @param iID ID del item a devolver
 	 * @return item del container o null si no lo encuentra
@@ -249,7 +249,7 @@ public class Container implements Externalizable {
 		for (int i = 0; i < itemsInside.size (); i++) {
 			if (UtilsIniHeaders.contains (alPrerequisites, itemsInside.get (i).getNumericIniHeader ()) != -1) {
 				Item item = itemsInside.remove (i);
-				Item.removeItem (item); // Para que reste 1 al número de items, ya que el item no existe realmente
+				Item.removeItem (item); // Para que reste 1 al nÃºmero de items, ya que el item no existe realmente
 				World.setTownValue (World.getTownValue () - PricesManager.getPrice (item));
 				setWrongItemsInside (hasWrongItems ());
 
@@ -263,7 +263,7 @@ public class Container implements Externalizable {
 
 
 	/**
-	 * Elimina un item del container y lo devuelve basándose en una lista de iniheaders
+	 * Elimina un item del container y lo devuelve basÃ¡ndose en una lista de iniheaders
 	 * 
 	 * @param iID ID del item a devolver
 	 * @return item del container o null si no lo encuentra
@@ -272,7 +272,7 @@ public class Container implements Externalizable {
 		for (int i = 0; i < itemsInside.size (); i++) {
 			if (UtilsIniHeaders.contains (aiPrerequisites, itemsInside.get (i).getNumericIniHeader ())) {
 				Item item = itemsInside.remove (i);
-				Item.removeItem (item); // Para que reste 1 al número de items, ya que el item no existe realmente
+				Item.removeItem (item); // Para que reste 1 al nÃºmero de items, ya que el item no existe realmente
 				World.setTownValue (World.getTownValue () - PricesManager.getPrice (item));
 				setWrongItemsInside (hasWrongItems ());
 
@@ -286,7 +286,7 @@ public class Container implements Externalizable {
 
 
 	/**
-	 * Elimina un item del container y lo devuelve basándose en un iniheader
+	 * Elimina un item del container y lo devuelve basÃ¡ndose en un iniheader
 	 * 
 	 * @param iID ID del item a devolver
 	 * @return item del container o null si no lo encuentra
@@ -295,7 +295,7 @@ public class Container implements Externalizable {
 		for (int i = 0; i < itemsInside.size (); i++) {
 			if (iniHeader.equals (itemsInside.get (i).getIniHeader ())) {
 				Item item = itemsInside.remove (i);
-				Item.removeItem (item); // Para que reste 1 al número de items, ya que el item no existe realmente
+				Item.removeItem (item); // Para que reste 1 al nÃºmero de items, ya que el item no existe realmente
 				World.setTownValue (World.getTownValue () - PricesManager.getPrice (item));
 				setWrongItemsInside (hasWrongItems ());
 
@@ -309,7 +309,7 @@ public class Container implements Externalizable {
 
 
 	/**
-	 * Elimina un item de comida del container y lo devuelve. Pillamos el de más value
+	 * Elimina un item de comida del container y lo devuelve. Pillamos el de mÃ¡s value
 	 * 
 	 * @param iID ID del item a devolver
 	 * @return item del container o null si no lo encuentra
@@ -335,7 +335,7 @@ public class Container implements Externalizable {
 
 		if (iIndex != -1) {
 			Item item = itemsInside.remove (iIndex);
-			Item.removeItem (item); // Para que reste 1 al número de items, ya que el item no existe realmente
+			Item.removeItem (item); // Para que reste 1 al nÃºmero de items, ya que el item no existe realmente
 			World.setTownValue (World.getTownValue () - PricesManager.getPrice (item));
 			setWrongItemsInside (hasWrongItems ());
 
@@ -358,7 +358,7 @@ public class Container implements Externalizable {
 			imi = ItemManager.getItem (itemsInside.get (i).getIniHeader ());
 			if (!getType ().contains (imi.getIniHeader ())) {
 				Item item = itemsInside.remove (i);
-				Item.removeItem (item); // Para que reste 1 al número de items, ya que el item no existe realmente
+				Item.removeItem (item); // Para que reste 1 al nÃºmero de items, ya que el item no existe realmente
 				World.setTownValue (World.getTownValue () - PricesManager.getPrice (item));
 				setWrongItemsInside (hasWrongItems ());
 
@@ -388,7 +388,7 @@ public class Container implements Externalizable {
 			return false;
 		}
 
-		// Si llega aquí es que no es container y es stackable, miramos si cabe
+		// Si llega aquÃ­ es que no es container y es stackable, miramos si cabe
 		Item itemContainer = Item.getItemByID (itemID);
 		if (itemContainer == null) {
 			return false;
@@ -511,7 +511,7 @@ public class Container implements Externalizable {
 
 
 	/**
-	 * Habilita todos los elementos del container. Si se le pasa un subtipo habilita sólo esos
+	 * Habilita todos los elementos del container. Si se le pasa un subtipo habilita sÃ³lo esos
 	 */
 	public void enableAll (String sSubType) {
 		if (sSubType == null || sSubType.length () == 0) {
@@ -558,7 +558,7 @@ public class Container implements Externalizable {
 
 
 	/**
-	 * Inhabilita todos los elementos del container. Si se le pasa un subtipo elimina sólo esos
+	 * Inhabilita todos los elementos del container. Si se le pasa un subtipo elimina sÃ³lo esos
 	 */
 	public void disableAll (String sSubType) {
 		if (sSubType == null || sSubType.length () == 0) {
@@ -584,7 +584,7 @@ public class Container implements Externalizable {
 	public void disableAll () {
 		getType ().removeElements ();
 
-		// Marcamos el flag de wrongItemsInside si tiene algún item
+		// Marcamos el flag de wrongItemsInside si tiene algÃºn item
 		if (getItemsInside ().size () > 0) {
 			setWrongItemsInside (true);
 		}
@@ -640,7 +640,7 @@ public class Container implements Externalizable {
 		String sContainerID = Integer.toString (container.getItemID ());
 		SmartMenu smContainerMenu = new SmartMenu (SmartMenu.TYPE_MENU, Messages.getString ("Container.2"), null, null, sContainerID); //$NON-NLS-1$
 
-		// Añadimos el enable todo/disable todo
+		// AÃ±adimos el enable todo/disable todo
 		SmartMenu smAux = new SmartMenu (SmartMenu.TYPE_ITEM, Messages.getString ("Container.3"), null, CommandPanel.COMMAND_CONTAINER_ENABLE_ALL, Integer.toString (iContainerID), null, null, Color.GREEN); //$NON-NLS-1$
 		smAux.setIcon ("iconenableall"); //$NON-NLS-1$
 		smContainerMenu.addItem (smAux);
@@ -648,7 +648,7 @@ public class Container implements Externalizable {
 		smAux.setIcon ("icondisableall"); //$NON-NLS-1$
 		smContainerMenu.addItem (smAux);
 
-		// Añadimos 1 linea por cada objeto del tipo de container (para poner/quitar)
+		// AÃ±adimos 1 linea por cada objeto del tipo de container (para poner/quitar)
 		Type fullType = Types.getType (container.getType ().getID ());
 
 		ItemManagerItem imi;
@@ -691,7 +691,7 @@ public class Container implements Externalizable {
 				smSubMenu.setIcon (Type.getIcon (alElementsWithSubtypeName.get (i)));
 			}
 
-			// Añadimos el enable todo/disable todo
+			// AÃ±adimos el enable todo/disable todo
 			smAux = new SmartMenu (SmartMenu.TYPE_ITEM, Messages.getString ("Container.3"), null, CommandPanel.COMMAND_CONTAINER_ENABLE_ALL, Integer.toString (iContainerID), alElementsWithSubtypeName.get (i), null, Color.GREEN); //$NON-NLS-1$
 			smAux.setIcon ("iconenableall"); //$NON-NLS-1$
 			smSubMenu.addItem (smAux);
@@ -746,11 +746,11 @@ public class Container implements Externalizable {
 
 
 	/**
-	 * Se recorre todo el menú y setea el valor de los items a enabled o disabled según la configuración del contenedor
+	 * Se recorre todo el menÃº y setea el valor de los items a enabled o disabled segÃºn la configuraciÃ³n del contenedor
 	 * 
 	 * @param iContainerID
 	 * @param menuPile
-	 * @return true si todo está ok
+	 * @return true si todo estÃ¡ ok
 	 */
 	public static boolean regenerateContainerPanelMenu (int iContainerID, SmartMenu menuPile) {
 		if (menuPile == null) {
@@ -781,7 +781,7 @@ public class Container implements Externalizable {
 				if (smAux.getCommand ().equals (CommandPanel.COMMAND_CONTAINER_ENABLE_ITEM) || smAux.getCommand ().equals (CommandPanel.COMMAND_CONTAINER_DISABLE_ITEM)) {
 					// Toca mirar si va a ser enabled o disabled
 					if (container.getType ().contains (smAux.getParameter2 ())) {
-						// Existe, pués lo ponemos para disable
+						// Existe, puÃ©s lo ponemos para disable
 						smAux.setCommand (CommandPanel.COMMAND_CONTAINER_DISABLE_ITEM);
 					} else {
 						// No existe, lo ponemos para enable

@@ -187,7 +187,7 @@ public final class MainMenuPanel implements Runnable {
                     String missionName = alCampaigns.get(i).getMissions().get(j).getName();
                     String sMissionID = alCampaigns.get(i).getMissions().get(j).getId();
 
-                    // Añadimos la opción de bajar burieds
+                    // AÃ±adimos la opciÃ³n de bajar burieds
                     if (Game.isAllowBury() && alCampaigns.get(i).getMissions().get(j).isAllowBury()) {
                         SmartMenu loadBurieds = new SmartMenu(SmartMenu.TYPE_MENU, missionName, campaign, null, null, null, null, textColor);
                         loadBurieds.setTrasparency(true);
@@ -291,7 +291,7 @@ public final class MainMenuPanel implements Runnable {
 
                 // Load game
                 menuLoad.addItem(new SmartMenu(SmartMenu.TYPE_ITEM, Messages.getString("MainMenuPanel.40") + Utils.removeExtension(fAux.getName()) + sDate, null, CommandPanel.COMMAND_MM_CONTINUEGAME, fAux.getName(), null, null, textColor)); //$NON-NLS-1$
-                // Delete game (con su submenú de confirmación)
+                // Delete game (con su submenÃº de confirmaciÃ³n)
                 SmartMenu menuDelete = new SmartMenu(SmartMenu.TYPE_MENU, Messages.getString("MainMenuPanel.49") + Utils.removeExtension(fAux.getName()) + sDate, menuLoad, null, null, null, null, Color.RED); //$NON-NLS-1$
                 menuDelete.setTrasparency(mainMenu.isTrasparency());
                 menuDelete.setBorderColor(borderColor);
@@ -598,7 +598,7 @@ public final class MainMenuPanel implements Runnable {
                 if (ld.mod == null || Game.getModsLoaded() == null) {
                     menuAux = new SmartMenu(SmartMenu.TYPE_ITEM, ld.name, null, CommandPanel.COMMAND_CHANGE_LANGUAGE, ld.language, ld.country, null, textColor);
                 } else {
-                    // Buscamos el índice del mod
+                    // Buscamos el Ã­ndice del mod
                     int iModIndex = -1;
                     for (int m = 0; m < Game.getModsLoaded().size(); m++) {
                         if (Game.getModsLoaded().get(m).equals(ld.mod)) {
@@ -769,7 +769,7 @@ public final class MainMenuPanel implements Runnable {
 
     /**
      * Cambia los textos de todos los menus COMMAND_CHANGE_HOTKEY Se llama
-     * después deredifinir alguna tecla.
+     * despuÃ©s deredifinir alguna tecla.
      *
      */
     private void checkChangeHotkeyMenusText(SmartMenu sm) {
@@ -839,7 +839,7 @@ public final class MainMenuPanel implements Runnable {
             UtilsGL.drawTexture(centerX - imageLoadingWidth / 2, centerY + 10, centerX + imageLoadingWidth / 2, centerY + 10 + imageLoadingHeight, 0, 0, 1, 1);
             UtilsGL.glEnd();
 
-            // Si hay texto de loading lo pintamos también
+            // Si hay texto de loading lo pintamos tambiÃ©n
             String sLoadingText = getLoadingText();
             if (sLoadingText.length() > 0) {
                 bTextureFontLoaded = true;
@@ -852,7 +852,7 @@ public final class MainMenuPanel implements Runnable {
             }
         }
 
-        // Versión del juego abajo a la derecha
+        // VersiÃ³n del juego abajo a la derecha
         if (!bTextureFontLoaded) {
             GL11.glBindTexture(GL11.GL_TEXTURE_2D, Game.TEXTURE_FONT_ID);
             GL11.glTexEnvf(GL11.GL_TEXTURE_ENV, GL11.GL_TEXTURE_ENV_MODE, GL11.GL_MODULATE);
@@ -871,7 +871,7 @@ public final class MainMenuPanel implements Runnable {
         UtilsGL.glEnd();
 
         if (!loadingGame && !isSettingSavegameName() && !isSettingHotkey() && !isSettingNewServer()) {
-            // Pintamos el menú
+            // Pintamos el menÃº
             menu.render();
         }
 
@@ -883,7 +883,7 @@ public final class MainMenuPanel implements Runnable {
     }
 
     /**
-     * Método que se llama cuando pulse con el ratón.
+     * MÃ©todo que se llama cuando pulse con el ratÃ³n.
      *
      * @param x Coordenada X
      * @param y Coordenada Y
@@ -894,7 +894,7 @@ public final class MainMenuPanel implements Runnable {
         } else {
             if (mouseButton == 0) {
                 if (isSettingSavegameName()) {
-                    // Ha pulsado en algún sitio mientras el panel de savegame name está abierto
+                    // Ha pulsado en algÃºn sitio mientras el panel de savegame name estÃ¡ abierto
                     int iMousePanel = TypingPanel.whereIsMouse(x, y);
                     if (iMousePanel == UIPanel.MOUSE_TYPING_PANEL_CLOSE) {
                         // Cerramos
@@ -902,20 +902,20 @@ public final class MainMenuPanel implements Runnable {
                     } else if (iMousePanel == UIPanel.MOUSE_TYPING_PANEL_CONFIRM) {
                         if (TypingPanel.getNewText() != null && TypingPanel.getNewText().length() > 0) {
                             // Confirmamos y empieza la partida
-                            if (!Utils.existsSavegame(TypingPanel.getNewText())) { // Sólo si no existe en disco previamente
+                            if (!Utils.existsSavegame(TypingPanel.getNewText())) { // SÃ³lo si no existe en disco previamente
                                 startGame(TypingPanel.getNewText());
                             }
                         }
                     }
                 } else if (isSettingHotkey()) {
-                    // Ha pulsado en algún sitio mientras el panel de hotkeys está abierto
+                    // Ha pulsado en algÃºn sitio mientras el panel de hotkeys estÃ¡ abierto
                     int iMousePanel = TypingPanel.whereIsMouse(x, y);
                     if (iMousePanel == UIPanel.MOUSE_TYPING_PANEL_CLOSE) {
                         // Cerramos
                         setSettingHotkey(false, 0);
                     }
                 } else if (isSettingNewServer()) {
-                    // Ha pulsado en algún sitio mientras el panel de new server está abierto
+                    // Ha pulsado en algÃºn sitio mientras el panel de new server estÃ¡ abierto
                     int iMousePanel = TypingPanel.whereIsMouse(x, y);
                     if (iMousePanel == UIPanel.MOUSE_TYPING_PANEL_CLOSE) {
                         // Cerramos
@@ -938,7 +938,7 @@ public final class MainMenuPanel implements Runnable {
     }
 
     /**
-     * Método llamado al pulsar una tecla cuando estamos en el main menu
+     * MÃ©todo llamado al pulsar una tecla cuando estamos en el main menu
      *
      * @param iKey
      */
@@ -947,7 +947,7 @@ public final class MainMenuPanel implements Runnable {
             if (TypingPanel.keyPressed(iKey)) {
                 // Ya ha acabado (o ha pulsado ESC)
                 if (TypingPanel.getNewText() != null && TypingPanel.getNewText().length() > 0) {
-                    // Todo ok, toca empezar la partida (sólo si la partida no existe previamente en disco)
+                    // Todo ok, toca empezar la partida (sÃ³lo si la partida no existe previamente en disco)
                     if (!Utils.existsSavegame(TypingPanel.getNewText())) {
                         startGame(TypingPanel.getNewText());
                     }
