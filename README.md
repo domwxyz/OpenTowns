@@ -1,26 +1,29 @@
-# Towns
-Repository for the [Towns game][]
+# OpenTowns
 
-This game was originally developed over a decade ago. For a while, it built a small but active community. Today, that community is much smaller, but the project still lives on in different ways.
+OpenTowns is an open restoration and modernization of [Towns][Towns game], the 2012 town-building indie game. It builds on the official release of the game's full source code, released under the GPLv3.
 
-Over the years, several people have reached out asking for access to the source code to understand how it works, modify it, or create their own versions. Until now, I had always chosen to keep it private.
+The original game shipped against Java-6-era APIs and the long-abandoned LWJGL 2, which means today it cannot run at all on modern Macs and is increasingly fragile everywhere else.
 
-I think it’s time to change that.
-
-This repository is the result of that decision.
+**Mission Statement:** Upgrade the original Towns code to run on Java 25 and LWJGL 3, bringing a beloved game back to life on modern machines.
 
 
-# Repository Contents
+# Status
 
-- Full source code of the game
-- Basic game data (.ini files, .xml files)
+The codebase currently compiles and runs from source with Gradle and a Java 8 toolchain.
+
+
+# Building
+
+You need a copy of the original game (available on [Steam][Towns game]) for its assets, which are proprietary and not included here.
+
+1. Clone this repository.
+2. From your Towns installation, copy `lib/` and the `data/graphics`, `data/audio`, and `data/fonts` folders into `src/`.
+3. Run `./gradlew run` (or `gradlew.bat run` on Windows). Gradle bootstraps itself, including the correct JDK toolchain.
 
 
 # Code License
 
-The source code is released under the [GNU GPL v3 license][LICENSE].
-
-In simple terms:
+The source code is released under the [GNU GPL v3 license][LICENSE], as was the original code drop this project is forked from:
 
 - You can use, study, and modify the code
 - You can redistribute it
@@ -31,33 +34,21 @@ See the [LICENSE][] file for the full text.
 
 # Original Assets License Notice
 
-The original game assets (including graphics, audio, and other media) used by this project are not covered by the same license as the source code.
+The original game assets (graphics, audio, and other media) are **not** covered by the code license. They remain the property of their respective authors:
 
-These assets remain the property of their respective authors and may be subject to separate usage and distribution restrictions. Therefore:
+- They must NOT be included in this repository or any fork of it
+- They must NOT be redistributed without permission from their original authors
 
-- They must NOT be included in public forks of this repository
-- They must NOT be redistributed under the GPL or any other license without permission from their original authors
-
-This repository only contains code and/or assets that are safe and legal to redistribute under its license.
+This repository contains only code and data that is safe to redistribute.
 
 
-# Contributions & Forks
+# Community & Credits
 
-You are welcome to fork the project, experiment, or create your own versions.
+Towns was created by its original developers, who graciously released the source code in 2026. This project would not exist without that decision.
 
-I don’t guarantee reviewing pull requests or maintaining the project, but I’d genuinely enjoy seeing what comes out of it.
-
-
-# Community
-If you build something interesting, feel free to share it on the Discord server.
-
-It's also the place to discuss ideas, mods, and the future of Towns with other contributors.
+The Towns community Discord is the place to discuss ideas, mods, and the future of the game:
 
 [[Discord invite link](https://discord.gg/wAW28PkrwF)]
-
-
-
-Thanks to everyone who has been part of this project.
 
 [Towns game]: https://store.steampowered.com/app/221020/Towns/
 [LICENSE]: ./LICENSE
