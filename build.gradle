@@ -69,8 +69,8 @@ tasks.named('run') {
     // JDK 25: JNA and LWJGL 2 load native code from the unnamed module;
     // restricted native access will be blocked by default in a future JDK.
     jvmArgs '--enable-native-access=ALL-UNNAMED'
-    // JDK 25: LWJGL 2 (MemoryUtilSun) still uses sun.misc.Unsafe memory
-    // access, deprecated for removal (JEP 498). The LWJGL 3 port removes
-    // this dependency; until then, opt in explicitly.
+    // JDK 25: LWJGL 3's MemoryUtil still uses sun.misc.Unsafe memory
+    // access, deprecated for removal (JEP 498). Opt in explicitly until
+    // LWJGL moves to the FFM API.
     jvmArgs '--sun-misc-unsafe-memory-access=allow'
 }

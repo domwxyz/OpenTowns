@@ -9,8 +9,9 @@ The original game shipped against Java-6-era APIs and the long-abandoned LWJGL 2
 
 # Status
 
-The codebase currently compiles and runs from source with Gradle and a Java 8 toolchain.
+The game compiles and runs from source on a Java 25 toolchain with LWJGL 3. Windowing, input, and audio were ported (GLFW window, OpenAL audio); the rendering code is unchanged.
 
+One player-visible fix over the original: text entry now follows the OS keyboard layout instead of assuming QWERTY.
 
 # Building
 
