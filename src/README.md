@@ -1,6 +1,6 @@
 # OpenTowns Source Map
 
-Developer notes on the codebase. The game is roughly 82,500 lines of Java across 181 files in a single root package, `xaos`.
+Developer notes on the codebase. The game is roughly 8X,000 lines of Java in a single root package, `xaos`.
 
 
 ## Layout of src/
@@ -134,7 +134,6 @@ Every run sandboxes its user folder under the system temp dir. Repo assets suffi
 **Golden pins** (`test/xaos/test/Golden.java`) freeze vanilla behavior itself, not just run-to-run determinism: they record the expected state hashes and counters for fixed seed/map/tick scenarios (worldgen at tick 0 for all six map types, plus three simulated scenarios and the 20k-tick in-JVM run), captured while the source was at its original pre-refactor behavior. The hash definition lives in `TownsHeadless.computeStateHash` and is frozen along with them. A pin mismatch means worldgen or the sim changed behavior; updating a pin is a deliberate act that must be explained in the same commit (take the new value from the failing assertion message).
 
 ## Next intended steps
-- Decouple `UIPanel`. Extraction of one sub-panel at a time, retaining original behavior.
 - Player-ready release. Self-contained builds using `jpackage`.
 
 ## Pie-in-the-sky desires
