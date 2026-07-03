@@ -1,0 +1,26 @@
+name: test
+
+on:
+  push:
+  pull_request:
+
+jobs:
+  test:
+    # windows-latest matches the development machine; the headless sim has
+    # not yet been validated for determinism on Linux (file listing order,
+    # locale), so keep CI on Windows until that is investigated.
+    runs-on: windows-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      # Any JDK that can run Gradle; the build's toolchain block provisions
+      # the actual JDK 25 via the foojay resolver.
+      - uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: 21
+
+      - uses: gradle/actions/setup-gradle@v4
+
+      - name: Run tests
+        run: .\gradlew test --console=plain

@@ -22,6 +22,16 @@ sourceSets {
             srcDirs = []
         }
     }
+    // Tests live in a top-level test/ directory; they cannot go under src/
+    // or the main sourceSet (srcDirs = ['src']) would compile them too.
+    test {
+        java {
+            srcDirs = ['test']
+        }
+        resources {
+            srcDirs = []
+        }
+    }
 }
 
 repositories {
@@ -29,12 +39,19 @@ repositories {
 }
 
 dependencies {
-    // Vendored jars from the original Steam install (src/lib is gitignored).
-    // Only JNA (Steam) and the PNG decoder survive the LWJGL 3 port; the
-    // LWJGL 2, lwjgl_util and slick-util jars in src/lib are no longer used.
-    // xaos.jar is the original compiled game: reference only, must never
-    // be on the classpath or it can shadow the freshly built classes.
-    implementation fileTree(dir: 'src/lib', include: ['jna.jar', 'platform.jar', 'pngdecoder.jar'])
+    // The same libraries the Steam install vendored, sourced from Maven
+    // Central so a bare checkout compiles (src/lib is gitignored). JNA is
+    // the Steam API binding (optional at runtime, failure ignored); the
+    // TWL PNGDecoder feeds textures to GL. src/lib/xaos.jar is the original
+    // compiled game: reference only, must never be on the classpath or it
+    // can shadow the freshly built classes.
+    // Note: the vendored platform.jar (JNA platform utilities) turned out
+    // to be unused; no source imports com.sun.jna.platform. Dropped.
+    implementation 'net.java.dev.jna:jna:3.3.0'
+    implementation 'org.l33tlabs.twl:pngdecoder:1.0'
+
+    testImplementation 'org.junit.jupiter:junit-jupiter:5.11.4'
+    testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
 
     // LWJGL 3. Windowing/input goes through the xaos.compat shims (GLFW),
     // rendering uses the same GL11/GL13 bindings the game always called,
@@ -80,6 +97,24 @@ tasks.register('runHeadless', JavaExec) {
     }
     if (project.hasProperty('userFolder')) {
         args "--user-folder=${project.property('userFolder')}"
+    }
+}
+
+test {
+    useJUnitPlatform()
+    // Same working-directory contract as run/runHeadless: towns.ini,
+    // graphics.ini and data/ resolve relative to the CWD.
+    workingDir = file('src')
+    // One JVM per test class = one game per JVM. The static god-objects
+    // (Game, World, the managers) do not reset cleanly for a second new
+    // game in the same JVM (World.maxEntityID keeps counting), so every
+    // test class that boots a game must get a fresh JVM.
+    forkEvery = 1
+    jvmArgs '--enable-native-access=ALL-UNNAMED'
+    jvmArgs '--sun-misc-unsafe-memory-access=allow'
+    testLogging {
+        events 'passed', 'skipped', 'failed'
+        exceptionFormat 'full'
     }
 }
 

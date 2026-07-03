@@ -26,6 +26,13 @@ import xaos.utils.Utils;
  *
  * Usage:
  *   xaos.TownsHeadless [--seed=N] [--ticks=N] [--map=normal|desert|jungle|mixed|snow|mountains] [--user-folder=path]
+ *                      [--save=name] [--load=name]
+ *
+ * --save=name writes a savegame (user-folder/save/name.zip) after the tick
+ * loop, right before the summary. --load=name skips worldgen and loads that
+ * savegame instead, then runs the tick loop as usual; combined with
+ * --ticks=0 it prints the hash of the loaded state, which lets tests assert
+ * a save/load round-trip preserves world state across two processes.
  *
  * A windowed "New game" is campaign c1 with the map type as mission id;
  * --map picks the same thing (default normal). Works from the same working
@@ -43,6 +50,8 @@ public final class TownsHeadless {
         long ticks = 3000;
         String map = "normal";
         String userFolderBase = System.getProperty("java.io.tmpdir") + System.getProperty("file.separator") + "opentowns-headless";
+        String saveName = null;
+        String loadName = null;
 
         for (int i = 0; i < args.length; i++) {
             String arg = args[i];
@@ -54,9 +63,13 @@ public final class TownsHeadless {
                 map = arg.substring("--map=".length());
             } else if (arg.startsWith("--user-folder=")) {
                 userFolderBase = arg.substring("--user-folder=".length());
+            } else if (arg.startsWith("--save=")) {
+                saveName = arg.substring("--save=".length());
+            } else if (arg.startsWith("--load=")) {
+                loadName = arg.substring("--load=".length());
             } else {
                 System.err.println("Unknown argument: " + arg);
-                System.err.println("Usage: xaos.TownsHeadless [--seed=N] [--ticks=N] [--map=type] [--user-folder=path]");
+                System.err.println("Usage: xaos.TownsHeadless [--seed=N] [--ticks=N] [--map=type] [--user-folder=path] [--save=name] [--load=name]");
                 System.exit(1);
             }
         }
@@ -79,8 +92,21 @@ public final class TownsHeadless {
         System.out.println("[TownsHeadless] seed=" + (seed != null ? seed.toString() : "none") + " ticks=" + ticks + " map=" + map);
 
         long lTime = System.currentTimeMillis();
-        Game.startGame("c1", map);
-        System.out.println("[TownsHeadless] worldgen done (" + (System.currentTimeMillis() - lTime) + "ms)");
+        if (loadName != null) {
+            // continueGame's missing-file branch goes through exitToMainMenu,
+            // which touches windowed-only panels; check here instead.
+            String sZip = loadName + ".zip";
+            File fSave = new File(Game.getUserFolder() + Game.getFileSeparator() + Game.SAVE_FOLDER1 + Game.getFileSeparator() + sZip);
+            if (!fSave.exists()) {
+                System.err.println("[TownsHeadless] savegame not found: " + fSave.getAbsolutePath());
+                System.exit(1);
+            }
+            Game.continueGame(sZip, null);
+            System.out.println("[TownsHeadless] loaded " + sZip + " (" + (System.currentTimeMillis() - lTime) + "ms)");
+        } else {
+            Game.startGame("c1", map);
+            System.out.println("[TownsHeadless] worldgen done (" + (System.currentTimeMillis() - lTime) + "ms)");
+        }
 
         World world = Game.getWorld();
 
@@ -92,6 +118,18 @@ public final class TownsHeadless {
             }
         }
         System.out.println("[TownsHeadless] " + ticks + " ticks done (" + (System.currentTimeMillis() - lTime) + "ms)");
+
+        if (saveName != null) {
+            try {
+                Game.setSavegameName(saveName);
+                Utils.save(true);
+                System.out.println("[TownsHeadless] saved " + saveName + ".zip");
+            } catch (Exception e) {
+                System.err.println("[TownsHeadless] save failed: " + e);
+                e.printStackTrace();
+                System.exit(1);
+            }
+        }
 
         printSummary(world);
 

@@ -99,7 +99,7 @@ Still vendored in `lib/` (from a Steam Towns install):
 - Runs on a Java 25 toolchain (Gradle auto-provisions it) and LWJGL 3. The Java 8 to 25 jump required zero source changes. The `run` task carries two JVM flags: `--enable-native-access` (JNA and LWJGL load native code) and `--sun-misc-unsafe-memory-access=allow` (LWJGL 3 still uses Unsafe internally).
 - Sources are UTF-8 (converted from the original ISO-8859-1 in a mechanical commit; due to accented Spanish comments throughout). Java files must stay UTF-8 without a BOM; javac rejects BOMs.
 - Java 6/7 idioms in the game code: no lambdas, no diamond operator, raw types are common (hence the `unchecked` compile warnings; these are expected). Heavy use of static state; `Game`, `UIPanel` and most managers are effectively singletons. Only `xaos.compat` uses current Java.
-- No tests. Verification is running the game. The manual smoke test: main menu appears, new game, worldgen completes, save, reload.
+- Automated tests cover the headless sim (see the Testing section): determinism, worldgen invariants, save/load round-trip, long-run smoke. The manual smoke test for the windowed game remains: main menu appears, new game, worldgen completes, save, reload.
 - The source corresponds to the unreleased v15 work-in-progress, one step past the last shipped v14e.
 - Savegame compatibility is versioned (`Game.SAVEGAME_VERSION`); `World` and entity serialization is hand-rolled `Externalizable`. Be careful editing fields on anything that gets saved.
 - `data/languages/*.properties` must stay ISO-8859-1/ASCII; Java 8 era `PropertyResourceBundle` reads that encoding by spec.
@@ -139,8 +139,34 @@ The bury feature is excluded from the deterministic surface on purpose
 is untouched: every guard is behind the headless flag, which only
 `TownsHeadless` sets.
 
+## Testing
+
+`.\gradlew test` runs the JUnit 5 suite in `test/` (a top-level directory;
+test sources cannot live under `src/`, the main sourceSet would compile
+them). The Gradle `test` task sets the working directory to `src/` and forks
+one JVM per test class (`forkEvery = 1`): the static god-objects do not
+support a second new game in the same JVM (`World.maxEntityID` keeps
+counting across games, shifting entity IDs and HashMap iteration order), so
+every test class that boots a game gets a fresh JVM.
+
+Two kinds of tests, both built on headless mode:
+
+- **Process-level** (`HeadlessRunner`): forks `xaos.TownsHeadless` as a
+  child JVM and parses the printed state hashes. Used where two independent
+  full runs must be compared: determinism regression (`DeterminismTest`,
+  same seed = same hash) and the save/load round-trip
+  (`SaveLoadRoundTripTest`, hash before save equals hash after load).
+- **In-JVM** (`Worldgen*Test`, `LongRunSmokeTest`): boots the game once per
+  class via `Game.initHeadless` + `Game.startGame` and asserts invariants
+  directly on the `World` objects.
+
+Every run sandboxes its user folder under the system temp dir. Repo assets
+suffice (no proprietary files needed), so the suite also runs in CI
+(`.github/workflows/test.yml`, `windows-latest`). The seeded tests are fully
+deterministic: a failure always means a real behavior change, never a flake.
+The bury feature stays outside the tested deterministic surface.
+
 ## Next intended steps
-- Full test suite on top of headless mode, then CI.
 - Decouple `UIPanel`. Extraction of one sub-panel at a time, retaining original behavior.
 - Decouple `Utils`. Extraction into mechanical pieces based on responsibility.
 - Player-ready release. Self-contained builds using `jpackage`.
