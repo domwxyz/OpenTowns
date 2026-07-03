@@ -10,3 +10,6 @@ b8956508c79577460892e7a59888d4dd47a2c0ab
 
 # Decouple Utils into UtilsGeometry/Dice/LineOfSight/String/Files/Savegame
 712c613b270198bcdc3664743e962d7fe73956d0
+
+# Decouple UIPanel into PrioritiesUIPanel/Messages/Mats/Professions/Pile/Production/RightMenu/BottomMenu/Trade/Livings
+a1eecc199a24c32e022b5362d6f9065f5d95795f
