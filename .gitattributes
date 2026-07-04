@@ -10,6 +10,10 @@
 *.properties   text eol=lf
 gradlew        text eol=lf
 *.sh           text eol=lf
+# GitHub Actions runs the bash run: blocks; CRLF on the Windows runner would
+# put a stray \r into values like the derived app version. Force LF.
+*.yml          text eol=lf
+*.yaml         text eol=lf
 .gitattributes text eol=lf
 .gitignore     text eol=lf
 .git-blame-ignore-revs text eol=lf
