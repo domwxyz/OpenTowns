@@ -279,8 +279,10 @@ public final class UtilsFiles {
     public static ArrayList<LanguageData> getLanguages() {
         ArrayList<LanguageData> alReturn = new ArrayList<LanguageData>();
 
-        // Vanilla
-        File fLanguagesFolder = new File("data/languages/"); //$NON-NLS-1$
+        // Vanilla. Uses DATA_FOLDER (rooted at the app home for a packaged
+        // build) rather than a hardcoded relative path, like every other
+        // data/ lookup in the game.
+        File fLanguagesFolder = new File(Towns.getPropertiesString("DATA_FOLDER") + "languages/"); //$NON-NLS-1$ //$NON-NLS-2$
         if (fLanguagesFolder.exists()) {
             String[] asFiles = fLanguagesFolder.list();
             for (int i = 0; i < asFiles.length; i++) {

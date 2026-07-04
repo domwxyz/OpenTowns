@@ -26,6 +26,59 @@ public final class Towns {
     public static Properties propertiesMain;
     public static Properties propertiesGraphics;
 
+    // Root directory the game resolves its bundled content against: the three
+    // .ini files (towns.ini, graphics.ini, audio.ini) and, via the *_FOLDER
+    // keys, the whole data/ tree. Empty string means "resolve relative to the
+    // process working directory", which is exactly what `gradlew run`
+    // (workingDir = src/), the headless entry point and the test suite rely on,
+    // so leaving towns.home unset keeps their behavior byte-for-byte unchanged.
+    // A packaged build sets -Dtowns.home=$APPDIR because a jpackage launcher's
+    // working directory is not the app dir (it is "/" on macOS: JDK-8306974).
+    private static String appHome;
+
+    /** The app-home directory, or "" to resolve bundled content against the CWD. */
+    public static String getHome() {
+        if (appHome == null) {
+            appHome = System.getProperty("towns.home", "").trim(); //$NON-NLS-1$
+        }
+        return appHome;
+    }
+
+    /** Resolve a bundled relative path against the app home (unchanged when unset). */
+    public static String resolveHome(String relative) {
+        String home = getHome();
+        if (home.isEmpty()) {
+            return relative;
+        }
+        return home + File.separator + relative;
+    }
+
+    // Rewrites the data/graphics/audio/campaigns folder keys to absolute paths
+    // under the app home so the ~50 call sites that do getPropertiesString
+    // ("DATA_FOLDER") + file keep working from a packaged build with no change.
+    // No-op when the home is unset (dev/test/headless) or the value is already
+    // absolute (a player who pointed a folder key elsewhere in their towns.ini).
+    private static void rootFolderKeysAtHome() {
+        if (getHome().isEmpty() || propertiesMain == null) {
+            return;
+        }
+        rootFolderKey("DATA_FOLDER"); //$NON-NLS-1$
+        rootFolderKey("GRAPHICS_FOLDER"); //$NON-NLS-1$
+        rootFolderKey("AUDIO_FOLDER"); //$NON-NLS-1$
+        rootFolderKey("CAMPAIGNS_FOLDER"); //$NON-NLS-1$
+    }
+
+    private static void rootFolderKey(String key) {
+        String value = propertiesMain.getProperty(key);
+        if (value == null || value.length() == 0 || new File(value).isAbsolute()) {
+            return;
+        }
+        // Call sites concatenate this value with a child path, so preserve a
+        // trailing separator (new File(...) drops the one the .ini value had).
+        String absolute = new File(getHome(), value).getPath() + File.separator;
+        propertiesMain.setProperty(key, absolute);
+    }
+
     public static boolean loadSteamAPI(String sLibName) {
         try {
             JNASteamAPI steamAPI = (JNASteamAPI) Native.loadLibrary(sLibName, JNASteamAPI.class);
@@ -78,11 +131,14 @@ public final class Towns {
 
         String sFile = "towns.ini"; //$NON-NLS-1$
         try {
-            propertiesMain.load(new FileInputStream(sFile));
+            propertiesMain.load(new FileInputStream(resolveHome(sFile)));
             try {
                 propertiesMain.load(new FileInputStream(Game.getUserFolder() + Game.getFileSeparator() + sFile));
             } catch (Exception e) {
             }
+            // After both layers are merged, root the folder keys at the app
+            // home so a packaged build finds data/, graphics/, audio/, etc.
+            rootFolderKeysAtHome();
         } catch (FileNotFoundException e) {
             Log.log(Log.LEVEL_ERROR, Messages.getString("Towns.2") + sFile, "Towns"); //$NON-NLS-1$ //$NON-NLS-2$
             Game.exit();
@@ -102,7 +158,7 @@ public final class Towns {
 
         String sFile = "graphics.ini"; //$NON-NLS-1$
         try {
-            propertiesGraphics.load(new FileInputStream(sFile));
+            propertiesGraphics.load(new FileInputStream(resolveHome(sFile)));
 
             // Mods
             File fUserFolder = new File(Game.getUserFolder());

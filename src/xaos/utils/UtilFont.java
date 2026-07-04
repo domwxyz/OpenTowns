@@ -43,7 +43,11 @@ public final class UtilFont {
             // now parse the font file
             BufferedReader in = null;
 
-            String sFontFilePath = Towns.getPropertiesString(PropertyFile.PROPERTY_FILE_GRAPHICS, "FONT_FILE"); //$NON-NLS-1$
+            // FONT_FILE carries its own data/ prefix (not GRAPHICS_FOLDER), so
+            // root it at the app home directly for a packaged build. The mod
+            // lookup below keeps the raw relative value: it is a suffix under
+            // each mod folder, not a bundled path.
+            String sFontFilePath = Towns.resolveHome(Towns.getPropertiesString(PropertyFile.PROPERTY_FILE_GRAPHICS, "FONT_FILE")); //$NON-NLS-1$
             File f = new File(sFontFilePath);
             if (f.exists()) {
                 in = new BufferedReader(new FileReader(sFontFilePath));

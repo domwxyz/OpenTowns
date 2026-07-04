@@ -31,9 +31,21 @@ public final class FirstRunSetup {
     private FirstRunSetup() {
     }
 
+    /**
+     * The data/ directory the proprietary assets are copied into. Rooted at the
+     * app home (towns.home, set by the packaged launcher to $APPDIR) when
+     * present, otherwise resolved against the working directory as before. Read
+     * straight from the system property, not via Towns, to keep this class free
+     * of game-package imports (it must not class-initialize Game or draw RNG).
+     */
+    private static Path dataDir() {
+        String home = System.getProperty("towns.home", "").trim();
+        return home.isEmpty() ? Path.of("data") : Path.of(home, "data");
+    }
+
     /** Returns normally when the assets are present; exits the JVM otherwise. */
     public static void run() {
-        Path data = Path.of("data");
+        Path data = dataDir();
         if (assetsPresent(data)) {
             return;
         }
@@ -190,7 +202,7 @@ public final class FirstRunSetup {
                 if (exit) {
                     System.out.println("First-run setup cancelled. To set up manually, copy the");
                     System.out.println("data/graphics, data/audio and data/fonts folders from your");
-                    System.out.println("Towns install into " + Path.of("data").toAbsolutePath() + ".");
+                    System.out.println("Towns install into " + dataDir().toAbsolutePath() + ".");
                     System.exit(0);
                 }
                 continue;

@@ -79,7 +79,7 @@ public final class UtilsAL {
 
         Properties propsAudio = new Properties();
         try {
-            propsAudio.load(new FileInputStream("audio.ini")); //$NON-NLS-1$
+            propsAudio.load(new FileInputStream(Towns.resolveHome("audio.ini"))); //$NON-NLS-1$
 
             // Mods
             File fUserFolder = new File(Game.getUserFolder());
