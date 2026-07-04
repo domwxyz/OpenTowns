@@ -135,16 +135,7 @@ Every run sandboxes its user folder under the system temp dir. Repo assets suffi
 **Golden pins** (`test/xaos/test/Golden.java`) freeze vanilla behavior itself, not just run-to-run determinism: they record the expected state hashes and counters for fixed seed/map/tick scenarios (worldgen at tick 0 for all six map types, plus three simulated scenarios and the 20k-tick in-JVM run), captured while the source was at its original pre-refactor behavior. The hash definition lives in `TownsHeadless.computeStateHash` and is frozen along with them. A pin mismatch means worldgen or the sim changed behavior; updating a pin is a deliberate act that must be explained in the same commit (take the new value from the failing assertion message).
 
 ## Next intended steps
-- Player-ready release. Self-contained portable builds via `jpackage` are in
-  place (`./gradlew jpackageZip`, built per-OS by `.github/workflows/release.yml`
-  on a version tag and uploaded as run artifacts; the GitHub release itself is
-  published by hand from those artifacts). A packaged build sets `-Dtowns.home=$APPDIR`
-  so the game roots its bundled content (the `.ini` files and `data/`) at the app
-  dir instead of the working directory, which a jpackage launcher does not control
-  (it is `/` on macOS). Still open before a general release: native installers
-  (`.msi`/`.dmg`/`.deb`, which need a read-only-install asset model and a macOS
-  signing/notarization story), and a per-OS windowed smoke test of the packaged
-  build with real assets.
+- Player-ready release. Self-contained portable builds via `jpackage` are in place (`./gradlew jpackageZip`, built per-OS by `.github/workflows/release.yml` on a version tag and uploaded as run artifacts. Still open before a general release: native installers (`.msi`/`.dmg`/`.deb`, which need a read-only-install asset model and a macOS signing/notarization story), and a per-OS windowed smoke test of the packaged build with real assets.
 
 ## Pie-in-the-sky desires
 - Expose `data\*.xml` as a public moddable API, with load-time validation.
