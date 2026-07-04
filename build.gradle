@@ -266,6 +266,15 @@ tasks.register('jpackageImage') {
             javaOptions << '-XstartOnFirstThread'
         }
 
+        // Platform app icon, baked into the launcher (.exe), the .app bundle or
+        // the Linux app-image by jpackage. One file per OS, format fixed by the
+        // platform; all three are generated from packaging/icons/source/ by
+        // packaging/icons/generate.py and committed under packaging/icons/.
+        def iconFile = osName.contains('win')
+                ? file('packaging/icons/OpenTowns.ico')
+                : (isMac ? file('packaging/icons/OpenTowns.icns')
+                         : file('packaging/icons/OpenTowns.png'))
+
         def cmd = [
                 jpackageExe.absolutePath,
                 '--type', 'app-image',
@@ -276,6 +285,13 @@ tasks.register('jpackageImage') {
                 '--main-class', 'xaos.Towns',
                 '--dest', destDir.get().asFile.absolutePath,
         ]
+        // Attach the icon when present so a partial checkout (icons not yet
+        // generated) still packages, just with jpackage's default icon.
+        if (iconFile.exists()) {
+            cmd += ['--icon', iconFile.absolutePath]
+        } else {
+            logger.warn("jpackage: ${iconFile} missing; packaging without a custom icon")
+        }
         javaOptions.each { cmd += ['--java-options', it] }
 
         exec { commandLine cmd }
