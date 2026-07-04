@@ -4,12 +4,23 @@ on:
   push:
   pull_request:
 
+# One in-flight run per ref; a new push cancels the previous run for that ref.
+concurrency:
+  group: test-${{ github.ref }}
+  cancel-in-progress: true
+
 jobs:
   test:
-    # windows-latest matches the development machine; the headless sim has
-    # not yet been validated for determinism on Linux (file listing order,
-    # locale), so keep CI on Windows until that is investigated.
-    runs-on: windows-latest
+    # Run the headless deterministic test suite on all three desktop targets.
+    # Windows is the development machine; Linux and macOS are being validated. 
+    # Determinism could still drift per-OS (file listing order, default locale,
+    # floating-point), so fail-fast is off: every OS reports independently
+    # instead of one failure cancelling the rest.
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [windows-latest, ubuntu-latest, macos-latest]
+    runs-on: ${{ matrix.os }}
     steps:
       - uses: actions/checkout@v4
 
@@ -22,5 +33,17 @@ jobs:
 
       - uses: gradle/actions/setup-gradle@v4
 
+      # bash runs on all three runners (Git Bash on Windows), so ./gradlew is
+      # a single portable invocation across the matrix.
       - name: Run tests
-        run: .\gradlew test --console=plain
+        shell: bash
+        run: ./gradlew test --console=plain
+
+      # HTML + XML reports for whichever OS failed, so a per-OS divergence
+      # (e.g. a golden-hash mismatch) can be inspected without re-running.
+      - name: Upload test report
+        if: failure()
+        uses: actions/upload-artifact@v4
+        with:
+          name: test-report-${{ matrix.os }}
+          path: build/reports/tests/test
