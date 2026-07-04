@@ -1,9 +1,13 @@
 name: release
 
 # Builds the portable, self-contained app image on each desktop OS and uploads
-# the three zips as run artifacts. jpackage cannot cross-build, so every
-# artifact is produced on its own runner (which also supplies that OS's LWJGL
-# natives and native launcher).
+# the zips as run artifacts. jpackage cannot cross-build, so every artifact is
+# produced on its own runner (which also supplies that OS's LWJGL natives and
+# native launcher). macOS is built twice: macos-latest (Apple Silicon, arm64)
+# and macos-13 (the last Intel x86_64 runner) for pre-2020 Mac compatibility.
+# Since jpackage links a runtime for the host arch and the LWJGL native
+# classifier is chosen from the host arch, each runner yields the matching
+# Intel/Apple-Silicon build with no extra configuration.
 #
 # Nothing is published automatically: download the artifacts from the run and
 # upload them to a GitHub release by hand through the browser UI.
@@ -22,7 +26,8 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        os: [windows-latest, ubuntu-latest, macos-latest]
+        # macos-latest = Apple Silicon (arm64); macos-13 = Intel (x86_64).
+        os: [windows-latest, ubuntu-latest, macos-latest, macos-13]
     runs-on: ${{ matrix.os }}
     timeout-minutes: 45
     steps:
