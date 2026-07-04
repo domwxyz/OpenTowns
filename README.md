@@ -63,5 +63,5 @@ The Towns community Discord is the place to discuss ideas, mods, and the future 
 [[Discord invite link](https://discord.gg/wAW28PkrwF)]
 
 [Towns game]: https://store.steampowered.com/app/221020/Towns/
-[Releases]: https://github.com/domwxyz/OpenTowns/releases
+[Releases]: https://github.com/OpenTowns/OpenTowns/releases
 [LICENSE]: ./LICENSE
