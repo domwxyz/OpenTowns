@@ -38,6 +38,22 @@ repositories {
     mavenCentral()
 }
 
+// LWJGL 3 ships its native binaries as per-platform classifier jars. Pick the
+// classifier for the build host so a checkout links the right natives on
+// Windows, Linux and macOS (incl. Apple Silicon). The headless sim is designed
+// not to touch GL/AL, but selecting host natives keeps `run`/`runHeadless`
+// working everywhere and removes "missing natives" as a cross-platform variable.
+def osName = System.getProperty('os.name').toLowerCase()
+def osArch = System.getProperty('os.arch').toLowerCase()
+def lwjglNatives
+if (osName.contains('win')) {
+    lwjglNatives = osArch.contains('aarch64') ? 'natives-windows-arm64' : 'natives-windows'
+} else if (osName.contains('mac') || osName.contains('darwin')) {
+    lwjglNatives = osArch.contains('aarch64') ? 'natives-macos-arm64' : 'natives-macos'
+} else {
+    lwjglNatives = (osArch.contains('aarch64') || osArch.contains('arm')) ? 'natives-linux-arm64' : 'natives-linux'
+}
+
 dependencies {
     // The same libraries the Steam install vendored, sourced from Maven
     // Central so a bare checkout compiles (src/lib is gitignored). JNA is
@@ -62,11 +78,11 @@ dependencies {
     implementation 'org.lwjgl:lwjgl-opengl'
     implementation 'org.lwjgl:lwjgl-openal'
     implementation 'org.lwjgl:lwjgl-stb'
-    runtimeOnly 'org.lwjgl:lwjgl::natives-windows'
-    runtimeOnly 'org.lwjgl:lwjgl-glfw::natives-windows'
-    runtimeOnly 'org.lwjgl:lwjgl-opengl::natives-windows'
-    runtimeOnly 'org.lwjgl:lwjgl-openal::natives-windows'
-    runtimeOnly 'org.lwjgl:lwjgl-stb::natives-windows'
+    runtimeOnly "org.lwjgl:lwjgl::$lwjglNatives"
+    runtimeOnly "org.lwjgl:lwjgl-glfw::$lwjglNatives"
+    runtimeOnly "org.lwjgl:lwjgl-opengl::$lwjglNatives"
+    runtimeOnly "org.lwjgl:lwjgl-openal::$lwjglNatives"
+    runtimeOnly "org.lwjgl:lwjgl-stb::$lwjglNatives"
 }
 
 tasks.withType(JavaCompile).configureEach {
