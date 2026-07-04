@@ -97,6 +97,21 @@ application {
     mainClass = 'xaos.Towns'
 }
 
+// The packaged app jar names its dependencies via a manifest Class-Path so the
+// jpackage launcher (which classpaths only the main jar) resolves them from the
+// lib/ subfolder they are staged into. Resolved in doFirst so the runtime
+// configuration is not read at configuration time. Harmless to gradlew run,
+// which builds its own classpath and ignores the manifest.
+def runtimeJars = configurations.runtimeClasspath
+tasks.named('jar') {
+    manifest {
+        attributes 'Main-Class': 'xaos.Towns'
+    }
+    doFirst {
+        manifest.attributes 'Class-Path': runtimeJars.files.collect { "lib/${it.name}" }.join(' ')
+    }
+}
+
 // Headless deterministic test mode: worldgen + simulation, no window and
 // no proprietary assets. Same JVM setup as run, different entry point.
 //   .\gradlew runHeadless -Pseed=42 -Pticks=3000
@@ -163,4 +178,116 @@ tasks.named('run') {
     if (osName.contains('mac') || osName.contains('darwin')) {
         jvmArgs '-XstartOnFirstThread'
     }
+}
+
+// ---------------------------------------------------------------------------
+// Player-ready release: a portable, self-contained app image built by jpackage.
+//
+// The output is a bundled-JRE app image (the player needs no system Java),
+// zipped per OS. Run `./gradlew jpackageZip` ON EACH TARGET OS: jpackage cannot
+// cross-build, and building on the host also picks up that host's LWJGL natives
+// (selected into runtimeClasspath above) and its native launcher.
+//
+// Type is app-image (not msi/dmg/deb), so no WiX/extra tooling is needed on any
+// OS, and the unzip-and-run result needs no installer and no admin rights.
+//
+// The packaged game roots its bundled content (the three .ini files and data/)
+// at $APPDIR via -Dtowns.home, because a jpackage launcher's working directory
+// is not the app dir (it is "/" on macOS: JDK-8306974). Everything the game
+// resolves relative to the CWD in dev therefore resolves under $APPDIR here.
+def appName = 'OpenTowns'
+// jpackage requires a plain numeric MAJOR.MINOR.PATCH; macOS additionally
+// requires MAJOR >= 1. Override per release with -PappVersion=1.2.3. RC status
+// is carried by the git tag / GitHub prerelease, not by this number.
+def appVersion = (project.findProperty('appVersion') ?: '1.0.0').toString()
+def isMac = osName.contains('mac') || osName.contains('darwin')
+
+// Stage everything the packaged game needs into a single --input directory:
+// the app jar, every runtime dependency jar (LWJGL core + host natives, JNA,
+// PNGDecoder), and the redistributable runtime content (the three .ini files
+// and the data/ tree). The proprietary asset folders stay out: they are
+// gitignored and the player's first-run setup copies them in.
+tasks.register('stageJpackageInput', Sync) {
+    dependsOn tasks.named('jar')
+    into layout.buildDirectory.dir('jpackage-input')
+    from tasks.named('jar')
+    // Dependency jars go in a lib/ subfolder to keep the app dir tidy (just the
+    // app jar, lib/, the .ini files and data/). The app jar's manifest Class-Path
+    // (set on the jar task) points the launcher at these; jpackage puts only the
+    // root --main-jar on the classpath, so the manifest is what pulls lib/ in.
+    from(configurations.runtimeClasspath) {
+        into 'lib'
+    }
+    from('src') {
+        include 'towns.ini'
+        include 'graphics.ini'
+        include 'audio.ini'
+    }
+    from('src/data') {
+        into 'data'
+        // Defensive: exclude the proprietary assets in case a developer's
+        // working tree has them present (they are gitignored, not tracked).
+        exclude 'graphics/**'
+        exclude 'audio/**'
+        exclude 'fonts/**'
+    }
+}
+
+// Invoke the toolchain JDK's own jpackage so it matches the JDK 25 the game is
+// built and run against (a full JDK ships the jmods jpackage needs to jlink a
+// runtime).
+tasks.register('jpackageImage') {
+    dependsOn 'stageJpackageInput'
+    def inputDir = layout.buildDirectory.dir('jpackage-input')
+    def destDir = layout.buildDirectory.dir('jpackage')
+    def jarTask = tasks.named('jar')
+    inputs.dir inputDir
+    outputs.dir destDir
+    doLast {
+        def launcher = javaToolchains.launcherFor(java.toolchain).get()
+        def jpackageExe = launcher.metadata.installationPath
+                .file('bin/jpackage' + (osName.contains('win') ? '.exe' : '')).asFile
+        // jpackage refuses to write into an existing app image; clear it first.
+        delete destDir
+        destDir.get().asFile.mkdirs()
+
+        // Each JVM flag the game needs at runtime, mirrored from the run task.
+        // $APPDIR is substituted by the launcher to the app's content dir.
+        def javaOptions = [
+                '--enable-native-access=ALL-UNNAMED',
+                '--sun-misc-unsafe-memory-access=allow',
+                '-Dtowns.home=$APPDIR',
+                // Lets a player drop steam_api into the app dir for Steam
+                // features; harmless (and Steam stays optional) when absent.
+                '-Djava.library.path=$APPDIR',
+        ]
+        if (isMac) {
+            // GLFW must own the first thread on macOS (see the run task).
+            javaOptions << '-XstartOnFirstThread'
+        }
+
+        def cmd = [
+                jpackageExe.absolutePath,
+                '--type', 'app-image',
+                '--name', appName,
+                '--app-version', appVersion,
+                '--input', inputDir.get().asFile.absolutePath,
+                '--main-jar', jarTask.get().archiveFileName.get(),
+                '--main-class', 'xaos.Towns',
+                '--dest', destDir.get().asFile.absolutePath,
+        ]
+        javaOptions.each { cmd += ['--java-options', it] }
+
+        exec { commandLine cmd }
+    }
+}
+
+// Zip the app image for distribution. The classifier mirrors the LWJGL native
+// bundle so the three OS artifacts never collide (e.g. -windows, -macos-arm64).
+tasks.register('jpackageZip', Zip) {
+    dependsOn 'jpackageImage'
+    def classifier = lwjglNatives.replace('natives-', '')
+    archiveFileName = "${appName}-${appVersion}-${classifier}.zip"
+    destinationDirectory = layout.buildDirectory.dir('distributions')
+    from layout.buildDirectory.dir('jpackage')
 }

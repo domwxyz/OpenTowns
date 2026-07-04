@@ -16,6 +16,16 @@ Hash-verified deterministic test suite was established in order to track potenti
 
 See `src/README.md` for more information about source status.
 
+# Download and Play
+
+Prebuilt, self-contained release candidates are published on the [Releases page][Releases] for Windows, macOS and Linux. They bundle their own Java runtime, so no separate Java install is needed.
+
+1. Download the zip for your OS and unzip it to any writable location (for example your Desktop; do not run it from inside a read-only folder).
+2. Launch `OpenTowns` (`OpenTowns.exe` on Windows, `OpenTowns.app` on macOS, the `bin/OpenTowns` launcher on Linux).
+3. On first launch the game copies the proprietary assets from your own Towns install, exactly as the from-source build does (see below). You still need a copy of the original game for those assets.
+
+**macOS:** the builds are not yet code-signed, so the first launch is blocked by Gatekeeper as coming from an unidentified developer. Right-click (or Control-click) the app and choose **Open**, then confirm; macOS remembers the choice for later launches.
+
 # Building
 
 You need a copy of the original game (available on [Steam][Towns game]) for its assets, which are proprietary and not included here.
@@ -53,4 +63,5 @@ The Towns community Discord is the place to discuss ideas, mods, and the future 
 [[Discord invite link](https://discord.gg/wAW28PkrwF)]
 
 [Towns game]: https://store.steampowered.com/app/221020/Towns/
+[Releases]: https://github.com/domwxyz/OpenTowns/releases
 [LICENSE]: ./LICENSE

@@ -1,0 +1,66 @@
+name: release
+
+# Builds the portable, self-contained app image on each desktop OS and uploads
+# the three zips as run artifacts. jpackage cannot cross-build, so every
+# artifact is produced on its own runner (which also supplies that OS's LWJGL
+# natives and native launcher).
+#
+# Nothing is published automatically: download the artifacts from the run and
+# upload them to a GitHub release by hand through the browser UI.
+#
+# Trigger by pushing a version tag (e.g. v1.0.0 or v1.0.0-rc1); the tag also
+# sets the app version baked into the build. workflow_dispatch runs the same
+# build on demand (defaulting the version) for a dry run.
+on:
+  push:
+    tags:
+      - 'v*'
+  workflow_dispatch:
+
+jobs:
+  package:
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [windows-latest, ubuntu-latest, macos-latest]
+    runs-on: ${{ matrix.os }}
+    timeout-minutes: 45
+    steps:
+      - uses: actions/checkout@v4
+
+      # Any JDK that can run Gradle; the build's toolchain block provisions the
+      # actual JDK 25 (which includes the jmods jpackage needs to link a runtime).
+      - uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: 21
+
+      - uses: gradle/actions/setup-gradle@v4
+
+      # jpackage requires a plain numeric MAJOR.MINOR.PATCH. Derive it from the
+      # tag (stripping the leading v and any -rc suffix); default for a manual
+      # dry run. bash runs on all three runners (Git Bash on Windows).
+      - name: Derive app version
+        id: version
+        shell: bash
+        run: |
+          ref="${GITHUB_REF_NAME}"
+          if [[ "$ref" =~ ^v([0-9]+\.[0-9]+\.[0-9]+) ]]; then
+            echo "value=${BASH_REMATCH[1]}" >> "$GITHUB_OUTPUT"
+          else
+            echo "value=1.0.0" >> "$GITHUB_OUTPUT"
+          fi
+
+      - name: Build portable app image
+        shell: bash
+        run: ./gradlew jpackageZip -PappVersion=${{ steps.version.outputs.value }} --console=plain
+
+      # The only output: the per-OS zip, kept as a run artifact to download and
+      # upload to a release by hand.
+      - name: Upload zip
+        uses: actions/upload-artifact@v4
+        with:
+          name: OpenTowns-${{ matrix.os }}
+          path: build/distributions/*.zip
+          if-no-files-found: error
+          retention-days: 7
