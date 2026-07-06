@@ -24,6 +24,8 @@ Prebuilt, self-contained release candidates are published on the [Releases page]
 2. Launch `OpenTowns` (`OpenTowns.exe` on Windows, `OpenTowns.app` on macOS, the `bin/OpenTowns` launcher on Linux).
 3. On first launch the game copies the proprietary assets from your own Towns install, exactly as the from-source build does (see below). You still need a copy of the original game for those assets.
 
+**Windows:** the builds are not yet code-signed, so the first launch triggers a SmartScreen "Windows protected your PC" warning naming an unrecognized publisher. Click **More info**, then **Run anyway**; Windows remembers the choice for later launches.
+
 **macOS:** the builds are not yet code-signed, so the first launch is blocked by Gatekeeper as coming from an unidentified developer. Right-click (or Control-click) the app and choose **Open**, then confirm; macOS remembers the choice for later launches.
 
 # Building
