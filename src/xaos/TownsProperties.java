@@ -10,9 +10,9 @@ package xaos;
 public class TownsProperties {
 
     public final static boolean GODS_ACTIVATED = false;
-    public final static boolean DEBUG_MODE = true; //${debugMode}; //should be false in production
+    public final static boolean DEBUG_MODE = false; //${debugMode}; //should be false in production
     public final static boolean DEMO_VERSION = false; //${demoVersion};
-    public final static boolean TEST_COMMANDS = true; //${testCommands}; //should be false in production
+    public final static boolean TEST_COMMANDS = false; //${testCommands}; //should be false in production
     public final static String GAME_NAME = "Towns"; //$NON-NLS-1$
     public final static String GAME_VERSION = "v14f";
     public final static String GAME_VERSION_FULL = GAME_VERSION; //"${project.version}.${buildNumber} (" + "${buildRevision}".substring(0, 7) + ")"; //$NON-NLS-1$
