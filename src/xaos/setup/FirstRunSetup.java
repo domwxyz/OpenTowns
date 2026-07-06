@@ -18,7 +18,10 @@ import org.lwjgl.util.tinyfd.TinyFileDialogs;
  * Steam Towns install (or ask the user for one) and copy them in.
  *
  * Runs at the top of Towns.main, before any Game/GLFW/AL initialization;
- * TownsHeadless never calls it. The data/ folder names are hardcoded on
+ * TownsHeadless never calls it. The launcher (xaos.launcher) normally takes
+ * care of the assets first through the public helpers here, making run() a
+ * no-op; the run() dialog flow remains as the fallback for
+ * -Dtowns.skipLauncher=true and launcher-less startup paths. The data/ folder names are hardcoded on
  * purpose: reading GRAPHICS_FOLDER etc. through Towns.getPropertiesString
  * would class-initialize Game, and a player who customized the folder layout
  * already has assets and never enters setup. Dialog text avoids quote
@@ -38,7 +41,7 @@ public final class FirstRunSetup {
      * straight from the system property, not via Towns, to keep this class free
      * of game-package imports (it must not class-initialize Game or draw RNG).
      */
-    private static Path dataDir() {
+    public static Path dataDir() {
         String home = System.getProperty("towns.home", "").trim();
         return home.isEmpty() ? Path.of("data") : Path.of(home, "data");
     }
@@ -80,7 +83,7 @@ public final class FirstRunSetup {
     }
 
     /** True when data/graphics, data/audio and data/fonts all exist and are non-empty. */
-    static boolean assetsPresent(Path data) {
+    public static boolean assetsPresent(Path data) {
         for (String name : REQUIRED_FOLDERS) {
             if (!isNonEmptyDir(data.resolve(name))) {
                 return false;
@@ -95,7 +98,7 @@ public final class FirstRunSetup {
      * Returns the normalized data root, or null when the folder does not look
      * like a Towns install.
      */
-    static Path validateSelection(Path picked) {
+    public static Path validateSelection(Path picked) {
         if (picked == null) {
             return null;
         }
@@ -115,7 +118,7 @@ public final class FirstRunSetup {
      * renamed into place, so an interrupted copy can never look like a complete
      * install on the next run. Folders already present and non-empty are kept.
      */
-    static void copyAssets(Path sourceData, Path targetData) throws IOException {
+    public static void copyAssets(Path sourceData, Path targetData) throws IOException {
         Files.createDirectories(targetData);
         for (String name : REQUIRED_FOLDERS) {
             Path target = targetData.resolve(name);

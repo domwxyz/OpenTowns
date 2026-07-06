@@ -11,6 +11,7 @@ import java.io.Writer;
 import java.util.ArrayList;
 import java.util.Properties;
 
+import xaos.launcher.Launcher;
 import xaos.main.Game;
 import xaos.setup.FirstRunSetup;
 import xaos.utils.JNASteamAPI;
@@ -92,6 +93,11 @@ public final class Towns {
 
     public static void main(String[] args) {
 //		if (true) System.exit (0);
+        // Pre-launch settings window (window size, audio, mods). Returns when
+        // the player clicks Play, exits the JVM if the window is closed.
+        // Skippable with -Dtowns.skipLauncher=true.
+        Launcher.run();
+
         // First run: fetch the proprietary assets from the player's Towns install
         FirstRunSetup.run();
 

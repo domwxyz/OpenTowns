@@ -45,6 +45,7 @@ The pins hash the *result* of loading these, so they are just as load-bearing:
 - `src/xaos/compat/**` (the platform layer, meant to be edited)
 - `src/xaos/panels/**` behavior (UI, minimap, menus, info), minus the two `<clinit>` Tile lists noted above
 - `src/xaos/setup/**` (first-run asset copy; not in the headless path)
+- `src/xaos/launcher/**` (pre-launch settings window; not in the headless path)
 - Free `src/xaos/utils/`: `UtilsGL`, `UtilsAL`, `UtilsKeyboard`, `UtilsServer`, `JNASteamAPI`, `Log`, `Messages`, `LanguageData`, `LocalResourceClassLoader`, `PropertiesWriter`, `UtilFont`, `CharDef`, `ImageData`, `TextureData`, `ColorGL`
   - One watch-point in `UtilsServer`: the bury-download path draws one `Utils.getRandomBetween` to pick a random bury file.
 - `test/**` (the guard itself)

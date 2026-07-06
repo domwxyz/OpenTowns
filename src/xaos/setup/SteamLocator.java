@@ -18,7 +18,7 @@ import java.util.regex.Pattern;
  * it runs before Game exists and must not class-initialize anything that
  * touches config, GL or the game RNG.
  */
-final class SteamLocator {
+public final class SteamLocator {
 
     private static final Pattern VDF_PATH = Pattern.compile("\"path\"\\s+\"(.*)\"");
 
@@ -26,7 +26,7 @@ final class SteamLocator {
     }
 
     /** First Steam library containing a valid Towns install, or null. */
-    static Path findTownsInstall() {
+    public static Path findTownsInstall() {
         for (Path root : steamRoots()) {
             for (Path library : libraryFolders(root)) {
                 Path towns = library.resolve("steamapps").resolve("common").resolve("Towns");

@@ -223,6 +223,18 @@ tasks.register('stageJpackageInput', Sync) {
         include 'graphics.ini'
         include 'audio.ini'
     }
+    // The launcher's in-window logo and pre-scaled window icons; in dev it
+    // reads the same files straight from packaging/icons/ (the working
+    // directory is src/).
+    from('packaging/icons') {
+        include 'OpenTowns.png'
+    }
+    from('packaging/icons/source') {
+        include 'logo-16.png'
+        include 'logo-32.png'
+        include 'logo-48.png'
+        into 'icons'
+    }
     from('src/data') {
         into 'data'
         // Defensive: exclude the proprietary assets in case a developer's
