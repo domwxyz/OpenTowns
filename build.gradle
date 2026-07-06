@@ -318,4 +318,7 @@ tasks.register('jpackageZip', Zip) {
     archiveFileName = "${appName}-${appVersion}-${classifier}.zip"
     destinationDirectory = layout.buildDirectory.dir('distributions')
     from layout.buildDirectory.dir('jpackage')
+    from(rootDir) {
+        include 'LICENSE', 'README.md', 'CHANGELOG.md'
+    }
 }
