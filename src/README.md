@@ -22,7 +22,7 @@ src/
 
 Since the LWJGL 3 port, only `jna.jar`, `platform.jar`, `pngdecoder.jar` and the `steam_api` DLLs in `lib/` are actually used. The LWJGL 2, slick-util and jinput files that come along when copying `lib/` from a Towns install are ignored by the build.
 
-There is a second config layer: the game creates a user folder (`~/Towns` by default) and re-reads `towns.ini` from there on top of the local one. Saves, mods, and screenshots also live in the user folder.
+There is a second config layer: the game creates a user folder (`~/.towns` by default; the base directory can be moved with `USER_FOLDER` in towns.ini) and re-reads `towns.ini` from there on top of the local one. Saves, mods, and screenshots also live in the user folder.
 
 
 ## Startup flow
@@ -80,7 +80,7 @@ Input rules: game hotkeys match physical keys (layout-independent, as in the ori
 
 ## Data-driven design
 
-Nearly all game content is defined in `data/*.xml` and parsed at load time by the matching manager class: items, buildings, creatures, terrain, skills, gods, events, heroes, caravans, menus. Modding works by overlaying these files (plus `graphics.ini` and the language files) from `~/Towns/mods/<modname>/`, controlled by the `MODS=` key in `towns.ini`.
+Nearly all game content is defined in `data/*.xml` and parsed at load time by the matching manager class: items, buildings, creatures, terrain, skills, gods, events, heroes, caravans, menus. Modding works by overlaying these files (plus `graphics.ini` and the language files) from `~/.towns/mods/<modname>/`, controlled by the `MODS=` key in `towns.ini`.
 
 
 ## Dependencies
@@ -131,7 +131,7 @@ Two kinds of tests, both built on headless mode:
 - **Process-level** (`HeadlessRunner`): forks `xaos.TownsHeadless` as a child JVM and parses the printed state hashes. Used where two independent full runs must be compared: determinism regression (`DeterminismTest`, same seed = same hash) and the save/load round-trip (`SaveLoadRoundTripTest`, hash before save equals hash after load).
 - **In-JVM** (`Worldgen*Test`, `LongRunSmokeTest`): boots the game once per class via `Game.initHeadless` + `Game.startGame` and asserts invariants directly on the `World` objects.
 
-Every run sandboxes its user folder under the system temp dir. Repo assets suffice (no proprietary files needed), so the suite also runs in CI (`.github/workflows/test.yml`, `windows-latest`). The seeded tests are fully deterministic: a failure always means a real behavior change, never a flake. The bury feature stays outside the tested deterministic surface.
+Every run sandboxes its user folder under the system temp dir. Repo assets suffice (no proprietary files needed), so the suite also runs in CI (`.github/workflows/test.yml`) on `windows-latest`, `ubuntu-latest` and `macos-latest`, with `fail-fast` off so each OS reports independently (determinism could still drift per-OS: file listing order, default locale, floating point). The seeded tests are fully deterministic: a failure always means a real behavior change, never a flake. Separately, the release packaging build (`.github/workflows/release.yml`) runs `jpackageZip` per-OS on Windows, Linux and both macOS architectures; that validates only that packaging succeeds on each target and runs no tests. The bury feature stays outside the tested deterministic surface.
 
 **Golden pins** (`test/xaos/test/Golden.java`) freeze vanilla behavior itself, not just run-to-run determinism: they record the expected state hashes and counters for fixed seed/map/tick scenarios (worldgen at tick 0 for all six map types, plus three simulated scenarios and the 20k-tick in-JVM run), captured while the source was at its original pre-refactor behavior. The hash definition lives in `TownsHeadless.computeStateHash` and is frozen along with them. A pin mismatch means worldgen or the sim changed behavior; updating a pin is a deliberate act that must be explained in the same commit (take the new value from the failing assertion message).
 

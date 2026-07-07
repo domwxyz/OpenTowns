@@ -9,8 +9,12 @@ import java.util.Map;
  * change to worldgen, the sim, or the hash definition in
  * TownsHeadless.computeStateHash shows up as a pin mismatch.
  *
- * Recorded on the original dev machine (Windows, Adoptium JDK 25); CI on
- * windows-latest must reproduce them identically.
+ * Recorded on the original dev machine (Windows, Adoptium JDK 25). CI
+ * (.github/workflows/test.yml) runs the suite on Windows, Linux and macOS
+ * runners, and every OS is expected to reproduce these pins identically;
+ * the matrix keeps fail-fast off so a per-OS divergence (file listing
+ * order, default locale, floating point) reports on its own instead of
+ * being cancelled by another OS's failure.
  */
 final class Golden {
 

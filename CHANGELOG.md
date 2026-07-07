@@ -11,6 +11,10 @@ OpenTowns v1.0.0-rc2
 (2 release 2 candidate)
 
 - Add: A pre-game launcher window. Set window size, fullscreen, audio and enabled mods before playing, and copy the Steam assets from there on first run instead of the bare setup prompt.
+- Add: A macOS Intel (x86_64) build alongside the Apple Silicon one, so pre-2020 Macs get a matching download.
+- Add: The OpenTowns application icon on the packaged builds for Windows, macOS and Linux.
+- Change: Debug mode and test commands are turned off, as in the original shipped releases.
+- Change: The packaged zip now includes the LICENSE, README and changelog alongside the app.
 - Fix: On HiDPI displays (macOS Retina) the game no longer renders into only the lower-left quarter of its window; the OpenGL viewport now uses the framebuffer pixel size instead of the window size, including when a window moves between displays with different scale factors.
 - Fix: In-game screenshots (F8 by default) on HiDPI displays now capture the whole frame at native pixel size instead of the lower-left quarter.
 - Fix: The error.log crash log is now written next to the installed app instead of the working directory, so packaged builds (notably macOS, where the working directory is "/") can actually write it. Running from source is unchanged.
