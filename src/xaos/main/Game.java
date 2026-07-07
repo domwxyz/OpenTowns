@@ -1869,8 +1869,11 @@ public final class Game {
 		try {
 			// Tomamos el pantallazo
 			GL11.glReadBuffer (GL11.GL_FRONT);
-			int width = UtilsGL.getWidth ();
-			int height = UtilsGL.getHeight ();
+			// Read the full framebuffer, not the window size: on HiDPI displays
+			// (macOS Retina) the framebuffer is larger and the window size would
+			// capture only the lower-left corner. Identical elsewhere.
+			int width = Display.getFramebufferWidth ();
+			int height = Display.getFramebufferHeight ();
 			int bpp = 4; // Assuming a 32-bit display with a byte each for red, green, blue, and alpha.
 			ByteBuffer buffer = BufferUtils.createByteBuffer (width * height * bpp);
 			GL11.glReadPixels (0, 0, width, height, GL11.GL_RGBA, GL11.GL_UNSIGNED_BYTE, buffer);

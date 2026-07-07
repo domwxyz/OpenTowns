@@ -16,6 +16,8 @@ OpenTowns v1.0.0-rc1
 - Add: A headless simulation mode plus a JUnit test suite in CI, pinned to golden hashes so any drift in world generation or simulation behavior is caught.
 - Add: First-run setup that finds a Steam Towns install and copies its graphics, audio and font assets over automatically, or lets you point at them.
 - Fix: Text entry now follows the OS keyboard layout instead of assuming QWERTY.
+- Fix: On HiDPI displays (macOS Retina) the game no longer renders into only the lower-left quarter of its window; the OpenGL viewport now uses the framebuffer pixel size instead of the window size, including when a window moves between displays with different scale factors.
+- Fix: In-game screenshots (F8 by default) on HiDPI displays now capture the whole frame at native pixel size instead of the lower-left quarter.
 - Fix: Startup no longer freezes for ~20 seconds trying to reach the offline townsmods.net server; the lookup is now bounded and runs in the background.
 - Change: The source was fully converted to UTF-8 with normalized (LF) line endings.
 - Change: The oversized Utils and UIPanel classes were split into smaller focused classes for readability, with no change to behavior.

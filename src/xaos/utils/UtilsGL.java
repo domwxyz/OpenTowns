@@ -28,6 +28,7 @@ import org.lwjgl.opengl.GL11;
 import org.lwjgl.opengl.GL13;
 
 import xaos.Towns;
+import xaos.TownsProperties;
 import xaos.data.GlobalEventData;
 import xaos.main.Game;
 import xaos.main.World;
@@ -114,6 +115,10 @@ public final class UtilsGL {
 			Display.setIcon (new ByteBuffer [] { iconImage.getImagePixels () });
 			Display.create ();
 
+			if (TownsProperties.DEBUG_MODE) {
+				Log.log (Log.LEVEL_DEBUG, "Window size " + Display.getWidth () + "x" + Display.getHeight () + ", framebuffer size " + Display.getFramebufferWidth () + "x" + Display.getFramebufferHeight (), "UtilsGL"); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$
+			}
+
 			setNativeCursor ();
 		}
 		catch (Exception e) {
@@ -122,6 +127,30 @@ public final class UtilsGL {
 		}
 
 		initGLModes ();
+	}
+
+
+	/**
+	 * The rectangle glViewport should cover, given the window client-area size
+	 * (screen units) and the framebuffer size (pixels). GLFW reports the two
+	 * independently: on HiDPI displays (macOS Retina) the framebuffer is
+	 * larger than the window, e.g. 2x, and a viewport sized in window units
+	 * confines rendering to the lower-left corner of the window. The viewport
+	 * must cover the whole framebuffer, while the projection and all mouse/UI
+	 * math stay in window units (the same split Launcher.drawFrame uses).
+	 *
+	 * When the framebuffer size equals the window size (Windows, Linux,
+	 * non-HiDPI macOS) the result is identical to the window-sized viewport
+	 * this method replaced, so those platforms are unaffected. A missing
+	 * framebuffer size (zero or negative) falls back to the window size.
+	 *
+	 * @return {x, y, width, height} for GL11.glViewport
+	 */
+	public static int[] viewportRect (int windowWidth, int windowHeight, int framebufferWidth, int framebufferHeight) {
+		if (framebufferWidth > 0 && framebufferHeight > 0) {
+			return new int[] { 0, 0, framebufferWidth, framebufferHeight };
+		}
+		return new int[] { 0, 0, windowWidth, windowHeight };
 	}
 
 
@@ -137,7 +166,8 @@ public final class UtilsGL {
 		GL11.glDisable (GL11.GL_POINT_SMOOTH);
 		GL11.glDisable (GL11.GL_POLYGON_SMOOTH);
 
-		GL11.glViewport (0, 0, Display.getWidth (), Display.getHeight ());
+		int[] viewport = viewportRect (Display.getWidth (), Display.getHeight (), Display.getFramebufferWidth (), Display.getFramebufferHeight ());
+		GL11.glViewport (viewport[0], viewport[1], viewport[2], viewport[3]);
 		GL11.glLoadIdentity ();
 		GL11.glMatrixMode (GL11.GL_PROJECTION);
 		GL11.glLoadIdentity ();

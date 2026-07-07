@@ -6,6 +6,7 @@ import java.nio.IntBuffer;
 import org.lwjgl.glfw.Callbacks;
 import org.lwjgl.glfw.GLFW;
 import org.lwjgl.glfw.GLFWErrorCallback;
+import org.lwjgl.glfw.GLFWFramebufferSizeCallback;
 import org.lwjgl.glfw.GLFWImage;
 import org.lwjgl.glfw.GLFWVidMode;
 import org.lwjgl.glfw.GLFWWindowSizeCallback;
@@ -54,6 +55,11 @@ public final class Display {
 
     private static int width;
     private static int height;
+    // Framebuffer size in pixels. Equal to width/height everywhere except
+    // HiDPI displays (macOS Retina), where GLFW's default
+    // GLFW_COCOA_RETINA_FRAMEBUFFER=true makes it larger (e.g. 2x).
+    private static int framebufferWidth;
+    private static int framebufferHeight;
     private static boolean resizedSinceUpdate;
 
     // Windowed position/size, remembered across fullscreen switches.
@@ -62,6 +68,7 @@ public final class Display {
 
     private static GLFWErrorCallback errorCallback;
     private static GLFWWindowSizeCallback sizeCallback; // strong ref, see Keyboard
+    private static GLFWFramebufferSizeCallback framebufferSizeCallback; // strong ref
 
     private static long syncNextFrame;
 
@@ -254,6 +261,9 @@ public final class Display {
             GLFW.glfwGetWindowSize(window, w, h);
             width = w.get(0);
             height = h.get(0);
+            GLFW.glfwGetFramebufferSize(window, w, h);
+            framebufferWidth = w.get(0);
+            framebufferHeight = h.get(0);
         }
 
         sizeCallback = GLFWWindowSizeCallback.create((win, w, h) -> {
@@ -265,6 +275,20 @@ public final class Display {
             }
         });
         GLFW.glfwSetWindowSizeCallback(window, sizeCallback);
+
+        // Fires on window resizes (alongside the size callback) but also when
+        // the framebuffer size changes with the window size staying put:
+        // dragging the window between a Retina and a non-Retina monitor, or an
+        // OS display-scale change. Flagging a resize routes those through the
+        // game's normal resize handling, which recomputes the viewport.
+        framebufferSizeCallback = GLFWFramebufferSizeCallback.create((win, w, h) -> {
+            if (w > 0 && h > 0 && (w != framebufferWidth || h != framebufferHeight)) {
+                framebufferWidth = w;
+                framebufferHeight = h;
+                resizedSinceUpdate = true;
+            }
+        });
+        GLFW.glfwSetFramebufferSizeCallback(window, framebufferSizeCallback);
 
         // Input shims: register their callbacks and hand them the initial
         // window height for the y-axis flip.
@@ -305,6 +329,20 @@ public final class Display {
 
     public static int getHeight() {
         return height;
+    }
+
+    /**
+     * Framebuffer width in pixels, as opposed to getWidth()'s screen units.
+     * The two differ only on HiDPI displays (macOS Retina); glViewport must
+     * use this one, while projection and mouse math stay in screen units.
+     */
+    public static int getFramebufferWidth() {
+        return framebufferWidth > 0 ? framebufferWidth : width;
+    }
+
+    /** Framebuffer height in pixels; see getFramebufferWidth(). */
+    public static int getFramebufferHeight() {
+        return framebufferHeight > 0 ? framebufferHeight : height;
     }
 
     /**
